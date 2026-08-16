@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="as"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>অসমীয়া সহায়িকা-9&10+HSLC</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f7fb;color:#172033}
+header{background:linear-gradient(135deg,#075e54,#00897b,#1565c0);color:#fff;text-align:center;padding:20px 12px}
+header h1{margin:0 0 5px;font-size:24px}.container{max-width:950px;margin:auto;padding:15px}
+.card{background:#fff;border-radius:16px;padding:18px;margin:12px 0;box-shadow:0 3px 12px #0001}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.menu,.primary{border:0;border-radius:11px;padding:13px;font:inherit;font-weight:700;cursor:pointer}
+.menu{background:#e0f2f1;color:#064e48}.primary{background:#00897b;color:#fff}
+input,textarea,select{width:100%;padding:12px;margin:6px 0;border:2px solid #00897b;border-radius:10px;font:inherit}
+.section{display:none}.active{display:block}.item{background:#f8fafc;border-left:5px solid #00897b;padding:12px;margin:10px 0;border-radius:9px}
+.small{font-size:13px;color:#666}@media(max-width:600px){header h1{font-size:21px}}
+</style></head><body>
+<header><h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1><p>নৱম • দশম • HSLC • AI • Online Search • Translation</p>
+<button onclick="setLanguage('as')">অসমীয়া</button> <button onclick="setLanguage('en')">English</button>
+<button onclick="setLanguage('hi')">हिन्दी</button> <button onclick="setLanguage('brx')">बड़ो</button></header>
+<main class="container">
+
+<section id="home" class="section active"><div class="card"><h2>🎓 অধ্যয়নৰ শাখা</h2><div class="grid">
+<button class="menu" onclick="show('class9')">📘 নৱম শ্ৰেণী</button><button class="menu" onclick="show('class10')">📕 দশম শ্ৰেণী</button>
+<button class="menu" onclick="show('hslc')">📝 HSLC</button><button class="menu" onclick="show('grammar')">📖 ব্যাকৰণ</button>
+<button class="menu" onclick="show('writing')">✍️ লিখন-কলা</button><button class="menu" onclick="show('previous')">📄 পূৰ্বৰ HSLC</button>
+<button class="menu" onclick="show('search')">🔎 Online Search</button><button class="menu" onclick="show('ai')">🤖 AI সহায়তা</button>
+<button class="menu" onclick="show('translation')">🌐 Translation</button><button class="menu" onclick="show('owner')">🔐 Owner Admin</button>
+<button class="menu" onclick="show('premium')">⭐ Premium ₹29</button></div></div>
+<div class="card"><h2>🔍 App Search</h2><input id="appSearch" placeholder="বিষয়/প্ৰশ্ন বিচাৰক..." oninput="localSearch()"><div id="localResults"></div></div></section>
+
+<section id="class9" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>📘 নৱম শ্ৰেণী</h2>
+<div class="grid"><button class="menu" onclick="loadContent('class9','অতি চমু')">অতি চমু</button><button class="menu" onclick="loadContent('class9','চমু')">চমু</button>
+<button class="menu" onclick="loadContent('class9','ৰচনাধৰ্মী')">ৰচনাধৰ্মী</button><button class="menu" onclick="loadContent('class9','অতিৰিক্ত')">অতিৰিক্ত</button></div><div id="contentList"></div></div></section>
+
+<section id="class10" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>📕 দশম শ্ৰেণী</h2>
+<div class="grid"><button class="menu" onclick="loadContent('class10','অতি চমু')">অতি চমু</button><button class="menu" onclick="loadContent('class10','চমু')">চমু</button>
+<button class="menu" onclick="loadContent('class10','ৰচনাধৰ্মী')">ৰচনাধৰ্মী</button><button class="menu" onclick="loadContent('class10','অতিৰিক্ত')">অতিৰিক্ত</button></div><div id="contentList"></div></div></section>
+
+<section id="hslc" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>📝 HSLC</h2>
+<div class="grid"><button class="menu" onclick="loadContent('hslc','সম্ভাব্য প্ৰশ্ন')">সম্ভাব্য প্ৰশ্ন</button><button class="menu" onclick="loadContent('hslc','Model Answer')">Model Answer</button>
+<button class="menu" onclick="loadContent('previous','অসমীয়া')">Previous Assamese</button><button class="menu" onclick="loadContent('previous','English')">Previous English</button></div><div id="contentList"></div></div></section>
+
+<section id="grammar" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>📖 ব্যাকৰণ</h2><div class="grid">
+<button class="menu" onclick="loadContent('grammar','সন্ধি')">সন্ধি</button><button class="menu" onclick="loadContent('grammar','সমাস')">সমাস</button>
+<button class="menu" onclick="loadContent('grammar','প্ৰত্যয়')">প্ৰত্যয়</button><button class="menu" onclick="loadContent('grammar','উপসৰ্গ')">উপসৰ্গ</button>
+<button class="menu" onclick="loadContent('grammar','অনুসৰ্গ')">অনুসৰ্গ</button><button class="menu" onclick="loadContent('grammar','বিপৰীত শব্দ')">বিপৰীত শব্দ</button>
+<button class="menu" onclick="loadContent('grammar','সমাৰ্থক শব্দ')">সমাৰ্থক শব্দ</button><button class="menu" onclick="loadContent('grammar','জতুৱা ঠাঁচ')">জতুৱা ঠাঁচ</button>
+<button class="menu" onclick="loadContent('grammar','এটা শব্দত প্ৰকাশ')">এটা শব্দত প্ৰকাশ</button><button class="menu" onclick="loadContent('grammar','বাক্য শুদ্ধকৰণ')">বাক্য শুদ্ধকৰণ</button>
+<button class="menu" onclick="loadContent('grammar','বাক্য পৰিৱৰ্তন')">বাক্য পৰিৱৰ্তন</button><button class="menu" onclick="loadContent('grammar','ছন্দ')">ছন্দ</button>
+<button class="menu" onclick="loadContent('grammar','ণত্ববিধি')">ণত্ববিধি</button><button class="menu" onclick="loadContent('grammar','ষত্ববিধি')">ষত্ববিধি</button></div>
+<div id="contentList"></div></div></section>
+
+<section id="writing" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>✍️ লিখন-কলা</h2><div class="grid">
+<button class="menu" onclick="loadContent('writing','ভাব-সম্প্ৰসাৰণ')">ভাব-সম্প্ৰসাৰণ</button><button class="menu" onclick="loadContent('writing','আবেদন')">আবেদন</button>
+<button class="menu" onclick="loadContent('writing','প্ৰতিবেদন')">প্ৰতিবেদন</button><button class="menu" onclick="loadContent('writing','ৰচনা')">ৰচনা</button>
+<button class="menu" onclick="loadContent('writing','পৌৰাণিক-আধুনিক')">পৌৰাণিক → আধুনিক</button></div><div id="contentList"></div></div></section>
+
+<section id="previous" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>📄 পূৰ্বৰ HSLC</h2><div class="grid">
+<button class="menu" onclick="loadContent('previous','অসমীয়া')">অসমীয়া</button><button class="menu" onclick="loadContent('previous','English')">English</button></div><div id="contentList"></div></div></section>
+
+<section id="search" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>🔎 Online / Google Search</h2>
+<input id="webQ" placeholder="যেনে: অসমীয়া সন্ধিৰ নিয়ম"><button class="primary" onclick="webSearch()">Search</button><div id="webResults"></div>
+<p class="small">Search API server-side Edge Function-ত সংযোগ কৰিব লাগে।</p></div></section>
+
+<section id="ai" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>🤖 AI Study Assistant</h2>
+<textarea id="aiQ" rows="6" placeholder="আপোনাৰ প্ৰশ্ন লিখক..."></textarea><button class="primary" onclick="askAI()">উত্তৰ বিচাৰক</button><div id="aiResult"></div></div></section>
+
+<section id="translation" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>🌐 Online Translation</h2>
+<textarea id="trText" rows="7" placeholder="অনুবাদ কৰিবলগীয়া text..."></textarea><select id="trLang"><option value="en">English</option><option value="hi">Hindi</option><option value="brx">Bodo</option><option value="as">Assamese</option></select>
+<button class="primary" onclick="translateOnline()">Translate</button><div id="trResult"></div></div></section>
+
+<section id="owner" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>🔐 Owner Admin</h2>
+<p>Supabase Auth + RLS-ৰ জৰিয়তে কেৱল আপোনাৰ account-এ write কৰিব।</p>
+<input id="email" type="email" placeholder="Owner email"><input id="password" type="password" placeholder="Password"><button class="primary" onclick="ownerLogin()">Login</button>
+<hr><select id="cat"><option>class9</option><option>class10</option><option>hslc</option><option>grammar</option><option>writing</option><option>previous</option></select>
+<input id="topic" placeholder="Topic/Submenu"><input id="title" placeholder="প্ৰশ্ন/শিৰোনাম"><textarea id="answer" rows="8" placeholder="উত্তৰ"></textarea>
+<button class="primary" onclick="addContent()">➕ Add Content</button><div id="ownerMsg"></div></div></section>
+
+<section id="premium" class="section"><button class="primary" onclick="show('home')">← Home</button><div class="card"><h2>⭐ Premium ₹29</h2>
+<p>UPI ID: <b>rajenburahgohain@okicici</b></p><button class="primary" onclick="payUPI()">💳 ₹29 UPI Payment</button>
+<p class="small">Automatic confirmationৰ বাবে payment gateway + webhook verification লাগিব।</p></div></section>
+</main>
+
+<script>
+const CONFIG={SUPABASE_URL:"YOUR_SUPABASE_PROJECT_URL",SUPABASE_KEY:"YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY"};
+const sections=["home","class9","class10","hslc","grammar","writing","previous","search","ai","translation","owner","premium"];
+function show(id){sections.forEach(x=>document.getElementById(x)?.classList.remove("active"));document.getElementById(id)?.classList.add("active");scrollTo(0,0)}
+function setLanguage(x){alert(x==="as"?"অসমীয়া":x==="en"?"English":x==="hi"?"হিন্দী":"Bodo")}
+function esc(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+async function rest(path,opts={}){if(CONFIG.SUPABASE_URL.startsWith("YOUR_"))throw Error("Supabase config নাই");return fetch(CONFIG.SUPABASE_URL+"/rest/v1/"+path,{...opts,headers:{apikey:CONFIG.SUPABASE_KEY,Authorization:"Bearer "+CONFIG.SUPABASE_KEY,"Content-Type":"application/json",...(opts.headers||{})}}).then(async r=>{if(!r.ok)throw Error(await r.text());return r.status===204?null:r.json()})}
+async function loadContent(category,topic){show(category==="previous"?"previous":category);let b=document.getElementById("contentList");b.innerHTML="<div class=item>Loading...</div>";try{let d=await rest("content?select=*&category=eq."+encodeURIComponent(category)+"&topic=eq."+encodeURIComponent(topic)+"&order=created_at.asc");b.innerHTML=d.length?d.map(x=>`<div class=item><b>${esc(x.title)}</b><p>${esc(x.answer).replaceAll("\n","<br>")}</p></div>`).join(""):"<div class=item>এই শিতানত এতিয়াও content যোগ কৰা হোৱা নাই।</div>"}catch(e){b.innerHTML="<div class=item>Supabase setup কৰাৰ পিছত content দেখা যাব।</div>"}}
+async function localSearch(){let q=appSearch.value.trim();if(!q){localResults.innerHTML="";return}try{let d=await rest("content?select=category,topic,title,answer&or=(title.ilike.*"+encodeURIComponent(q)+"*,answer.ilike.*"+encodeURIComponent(q)+"*)&limit=30");localResults.innerHTML=d.length?d.map(x=>`<div class=item><b>${esc(x.title)}</b><p>${esc(x.answer)}</p></div>`).join(""):"<div class=item>ফলাফল নাই।</div>"}catch(e){localResults.innerHTML="<div class=item>Database setup কৰক।</div>"}}
+async function callFn(name,body){if(CONFIG.SUPABASE_URL.startsWith("YOUR_"))throw Error("Supabase config নাই");let r=await fetch(CONFIG.SUPABASE_URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json",apikey:CONFIG.SUPABASE_KEY,Authorization:"Bearer "+CONFIG.SUPABASE_KEY},body:JSON.stringify(body)});return r.json()}
+async function webSearch(){let q=webQ.value.trim();if(!q)return;webResults.innerHTML="<div class=item>🔎 Search...</div>";try{let d=await callFn("online-search",{query:q});webResults.innerHTML=(d.results||[]).map(x=>`<div class=item><b>${esc(x.title)}</b><p>${esc(x.snippet)}</p>${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">Source</a>`:""}</div>`).join("")||"<div class=item>No results.</div>"}catch(e){webResults.innerHTML="<div class=item>Search provider setup কৰক।</div>"}}
+async function askAI(){let q=aiQ.value.trim();if(!q)return;aiResult.innerHTML="<div class=item>🤖...</div>";try{let d=await callFn("ai-answer",{question:q});aiResult.innerHTML=`<div class=item>${esc(d.answer||d.error)}</div>`}catch(e){aiResult.innerHTML="<div class=item>AI backend setup কৰক।</div>"}}
+async function translateOnline(){let t=trText.value.trim();if(!t)return;trResult.innerHTML="<div class=item>🌐...</div>";try{let d=await callFn("translate",{text:t,target:trLang.value});trResult.innerHTML=`<div class=item>${esc(d.translation||d.error)}</div>`}catch(e){trResult.innerHTML="<div class=item>Translation backend setup কৰক।</div>"}}
+async function ownerLogin(){ownerMsg.innerHTML="<div class=item>Supabase Auth setup কৰক। Password এই HTML-ত save নহয়।</div>"}
+async function addContent(){ownerMsg.innerHTML="<div class=item>Auth + owner-only RLS policy সম্পূৰ্ণ কৰাৰ পিছত database insert enable কৰক।</div>"}
+function payUPI(){location.href="upi://pay?pa=rajenburahgohain@okicici&pn=Assamese%20Sahayika&am=29&cu=INR"}
+</script></body></html>

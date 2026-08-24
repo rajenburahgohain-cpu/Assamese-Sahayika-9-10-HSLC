@@ -717,10 +717,13 @@ async function loadChaptersFromDatabase() {
       return;
     }
 
-    const class9Box = document.getElementById("class9Menu");
-    const class10Box = document.getElementById("class10Menu");
+    const class9Box = document.getElementById('class9Content');
+const class10Box = document.getElementById('class10Content');
 
-    if (!class9Box || !class10Box) return;
+if (!class9Box || !class10Box) return;
+
+
+    
 
     const class9 = chapters.filter(x => x.class_id === 1);
     const class10 = chapters.filter(x => x.class_id === 2);

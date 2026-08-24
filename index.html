@@ -725,13 +725,16 @@ async function openDatabaseChapter(chapterId, title) {
 // পেজ ল'ড হোৱাৰ লগে লগে কাৰ্য্যকৰী হ'ব
 loadChaptersFromDatabase();
 
-</script>function escHTML(str) {
-    return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
-}
+</script>
+    function escHTML(str) {
+        return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
+    }
 
-function escAttr(str) {
-    return escHTML(str);
-}
+    function escAttr(str) {
+        return escHTML(str);
+    }
+</script>
+
 
 </script>
 </body>

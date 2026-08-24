@@ -535,283 +535,195 @@ Payment verification backend-ৰ
 
 
 function openPage(id){
-
-  document.querySelectorAll(".page")
-    .forEach(function(page){
-      page.classList.remove("active");
+    document.querySelectorAll(".page").forEach(function(page){
+        page.classList.remove("active");
     });
 
-  const page=document.getElementById(id);
-
-  if(page){
-    page.classList.add("active");
-  }
-
-  window.scrollTo(0,0);
-}
-
-
-/*
- SEARCH
-
- Frontend-এ direct secret API
- ব্যৱহাৰ নকৰে।
-
- Backend Edge Function:
- /functions/v1/search
-*/
-
-async function search(event){
-
-  if(event.key !== ){
-    return;}
-  }
-
-  const query=
-    document.getElementById("searchBox")
-    .value.trim();
-
-  if(!query){
-    return;
-  }
-
-  alert(
-    "Search request backend Edge Function-লৈ যাব:\n\n"+
-    query+
-    "\n\nSearch API setup কৰাৰ পিছত ইয়াত ফলাফল দেখা যাব।"
-  );
-}
-
-
-/*
- AI
-
- Actual AI API call:
- Browser
-    ↓
-Supabase Edge Function
-    ↓
-AI Provider
-
-Secret API key browser-ত নাথাকে.
-*/
-
-async function callAI(){
-
-  const question=
-    document.getElementById("aiQuestion")
-    .value.trim();
-
-  if(!question){
-    alert("প্ৰথমে প্ৰশ্ন লিখক।");
-    return;
-  }
-
-  document.getElementById("aiAnswer")
-    .innerHTML=
-    "<div class='item'>"+
-    "🤖 AI request Edge Function-লৈ পঠিওৱা হ'ব।"+
-    "<br><br>"+
-    "Backend সংযোগ কৰাৰ পিছত ইয়াত AI-ৰ উত্তৰ দেখা যাব।"+
-    "</div>";
-}
-
-
-/*
- TRANSLATION
-*/
-
-async function translateText(){
-
-  const text=
-    document.getElementById("translationText")
-    .value.trim();
-
-  if(!text){
-    alert("Text লিখক।");
-    return;
-  }
-
-  document.getElementById("translationResult")
-    .innerHTML=
-    "<div class='item'>"+
-    "🌐 Translation request secure Edge Function-লৈ যাব।"+
-    "</div>";
-}
-
-
-/*
- STUDENT QUESTION
-*/
-
-async function submitQuestion(){
-
-  const question=
-    document.getElementById("studentQuestion")
-    .value.trim();
-
-  if(!question){
-    alert("প্ৰশ্ন লিখক।");
-    return;
-  }
-
-  alert(
-    "প্ৰশ্নটো authenticated database system-লৈ "+
-    "পঠিয়াব পৰা architecture প্ৰস্তুত আছে।"
-  );
-}
-
-
-/*
- PAYMENT
-
- Real payment verification:
- Payment Gateway
-      ↓
-Webhook / Edge Function
-      ↓
-Database
-      ↓
-Premium access
-
-UPI ID বা secret verification
-frontend-ত trust কৰা নহ'ব।
-*/
-
-function startPayment(){
-
-  const upi=
-    "upi://pay?pa=rajenburahgohain@okicici"+
-    "&pn=Assamese%20Sahayika"+
-    "&am=29"+
-    "&cu=INR";
-
-  window.location.href=upi;
-}
-
-</script>
-<!-- Supabase Connection -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-const SUPABASE_URL = "https://rlmxfzdbipksbrikgfbs.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen":
-
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-console.log("<script>
-async function loadChaptersFromDatabase() {
-
-  try {
-
-    const { data: chapters, error } = await supabaseClient
-      .from("chapters")
-      .select("id, class_id, title, description")
-      .order("id");
-
-    if (error) {
-      console.error("Chapter loading error:", error);
-      return;
+    const page = document.getElementById(id);
+    if(page){
+        page.classList.add("active");
     }
 
-    const class9Box = document.getElementById('class9Content');
-const class10Box = document.getElementById('class10Content');
+    // নৱম বা দশম শ্ৰেণী খুলিলে ডাটাবেছৰ পৰা চ্যাপ্টাৰ ল'ড কৰিবলৈ
+    if(id === 'class9' || id === 'class10'){
+        loadChaptersFromDatabase();
+    }
 
-if (!class9Box || !class10Box) return;
-
-
-    
-
-    const class9 = chapters.filter(x => x.class_id === 1);
-    const class10 = chapters.filter(x => x.class_id === 2);
-
-    class9Box.innerHTML = class9.length
-      ? class9.map(x => `
-          <button class="subMenu"
-            onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
-            📘 ${escapeHTML(x.title)}
-          </button>
-        `).join("")
-      : "<div class='empty'>এতিয়াও নৱম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>";
-
-    class10Box.innerHTML = class10.length
-      ? class10.map(x => `
-          <button class="subMenu"
-            onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
-            📕 ${escapeHTML(x.title)}
-          </button>
-        `).join("")
-      : "<div class='empty'>এতিয়াও দশম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>";
-
-  } catch (err) {
-    console.error(err);
-  }
+    window.scrollTo(0,0);
 }
 
+async function search(event){
+    if(event.key !== "Enter"){
+        return;
+    }
+
+    const query = document.getElementById("searchBox").value.trim();
+
+    if(!query){
+        return;
+    }
+
+    alert(
+        "Search request backend Edge Function-লৈ যাব: \n\n" +
+        query +
+        "\n\nSearch API setup কৰাৰ পিছত ইয়াত ফলাফল দেখা যাব।"
+    );
+}
+
+async function callAI(){
+    const question = document.getElementById("aiQuestion").value.trim();
+
+    if(!question){
+        alert("প্ৰথম প্ৰশ্ন লিখক।");
+        return;
+    }
+
+    document.getElementById("aiAnswer").innerHTML = `
+        <div class="item">
+            🤖 AI request Edge Function-লৈ পঠিওৱা হৈছে...<br><br>
+            Backend সজ্জাটো কৰাৰ পিছত AI-ৰ উত্তৰ দেখা যাব।
+        </div>`;
+}
+
+async function translateText(){
+    const text = document.getElementById("translationText").value.trim();
+
+    if(!text){
+        alert("Text লিখক।");
+        return;
+    }
+
+    document.getElementById("translationResult").innerHTML = `
+        <div class="item">
+            🌐 Translation request secure Edge Function-লৈ যাব।
+        </div>`;
+}
+
+async function submitQuestion(){
+    const question = document.getElementById("studentQuestion").value.trim();
+
+    if(!question){
+        alert("প্ৰশ্ন লিখক।");
+        return;
+    }
+
+    alert(
+        "ছাত্ৰী authenticated database system-লৈ " +
+        "পঠিওৱাৰ পৰা architecture প্ৰস্তুত আছে।"
+    );
+}
+
+function startPayment(){
+    const upi = 
+        "upi://pay?pa=rajenburahgohain@okicici&" +
+        "pn=Assamese%20Sahayika&" +
+        "am=29&" +
+        "cu=INR";
+
+    window.location.href = upi;
+}
+
+// Supabase Connection
+const SUPABASE_URL = "https://rlmxfzdbipksbrikgfbs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_YbXRYD3badwrl6iUh3IFjg_k_ef#jen";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+console.log("<script>");
+
+async function loadChaptersFromDatabase() {
+    try {
+        const { data: chapters, error } = await supabaseClient
+            .from("chapters")
+            .select("id, class_id, title, description")
+            .order("id");
+
+        if (error) {
+            console.error("Chapter loading error:", error);
+            return;
+        }
+
+        const class9Box = document.getElementById('class9Content');
+        const class10Box = document.getElementById('class10Content');
+
+        if (!class9Box || !class10Box) return;
+
+        const class9 = chapters.filter(x => x.class_id === 1);
+        const class10 = chapters.filter(x => x.class_id === 2);
+
+        class9Box.innerHTML = class9.length ? class9.map(x => `
+            <button class="subMenu"
+                onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
+                📚 ${escHTML(x.title)}
+            </button>
+        `).join("") : '<div class="empty">এতিয়াও নৱম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>';
+
+        class10Box.innerHTML = class10.length ? class10.map(x => `
+            <button class="subMenu"
+                onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
+                🌸 ${escHTML(x.title)}
+            </button>
+        `).join("") : '<div class="empty">এতিয়াও দশম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>';
+
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 async function openDatabaseChapter(chapterId, title) {
+    showSection("topic");
 
-  showSection("topic");
+    document.getElementById("topicTitle").textContent = title;
 
-  document.getElementById("topicTitle").textContent = title;
-
-  const body = document.getElementById("topicBody");
-
-  body.innerHTML = `
-    <div class="item">
-      ⏳ পাঠৰ প্ৰশ্নোত্তৰ Database-ৰ পৰা লোৱা হৈ আছে...
-    </div>
-  `;
-
-  const { data: questions, error } = await supabaseClient
-    .from("questions")
-    .select("*")
-    .eq("chapter_id", chapterId)
-    .order("id");
-
-  if (error) {
+    const body = document.getElementById("topicBody");
 
     body.innerHTML = `
-      <div class="item">
-        ❌ প্ৰশ্নোত্তৰ লোড হোৱা নাই।
-      </div>
-    `;
+        <div class="item">
+            ⏳ পাঠৰ তথ্যবোৰ Database-ৰ পৰা লোৱা হৈ আছে...
+        </div>`;
 
-    console.error(error);
-    return;
-  }
+    const { data: questions, error } = await supabaseClient
+        .from("questions")
+        .select("")
+        .eq("chapter_id", chapterId)
+        .order("id");
 
-  if (!questions || questions.length === 0) {
+    if (error) {
+        body.innerHTML = `
+            <div class="item">
+                ❌ প্ৰশ্নবোৰ ল'ড হোৱা নাই।
+            </div>`;
+        console.error(error);
+        return;
+    }
 
-    body.innerHTML = `
-      <div class="item">
-        📚 এই পাঠৰ প্ৰশ্নোত্তৰ এতিয়াও Database-ত যোগ কৰা হোৱা নাই।
-      </div>
-    `;
+    if (!questions || questions.length === 0) {
+        body.innerHTML = `
+            <div class="item">
+                📭 এই পাঠৰ প্ৰশ্নবোৰ এতিয়াও Database-ত যোগ কৰা হোৱা নাই।
+            </div>`;
+        return;
+    }
 
-    return;
-  }
-
-  body.innerHTML = questions.map((q, i) => `
-    <div class="item">
-
-      <span class="tag">
-        ${escapeHTML(q.question_type || "প্ৰশ্নোত্তৰ")}
-      </span>
-
-      <h3>${i + 1}. ${escapeHTML(q.question)}</h3>
-
-      <p>
-        <b>উত্তৰ:</b><br>
-        ${escapeHTML(q.answer || "")}
-      </p>
-
-    </div>
-  `).join("");
+    body.innerHTML = questions.map((q, i) => `
+        <div class="item">
+            <span class="tag">
+                ${escHTML(q.question_type || "সাধাৰণ")}
+            </span>
+            <h3>${i + 1}. ${escHTML(q.question)}</h3>
+            <p>
+                <b>উত্তৰ:</b><br>
+                ${escHTML(q.answer || "")}
+            </p>
+        </div>
+    `).join("");
 }
+
+// পেজ ল'ড হোৱাৰ লগে লগে কাৰ্য্যকৰী হ'ব
+loadChaptersFromDatabase();
 
 
 loadChaptersFromDatabase();

@@ -702,7 +702,117 @@ const supabaseClient = supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
-console.log("Supabase connected");
+console.log("<script>
+async function loadChaptersFromDatabase() {
+
+  try {
+
+    const { data: chapters, error } = await supabaseClient
+      .from("chapters")
+      .select("id, class_id, title, description")
+      .order("id");
+
+    if (error) {
+      console.error("Chapter loading error:", error);
+      return;
+    }
+
+    const class9Box = document.getElementById("class9Menu");
+    const class10Box = document.getElementById("class10Menu");
+
+    if (!class9Box || !class10Box) return;
+
+    const class9 = chapters.filter(x => x.class_id === 1);
+    const class10 = chapters.filter(x => x.class_id === 2);
+
+    class9Box.innerHTML = class9.length
+      ? class9.map(x => `
+          <button class="subMenu"
+            onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
+            📘 ${escapeHTML(x.title)}
+          </button>
+        `).join("")
+      : "<div class='empty'>এতিয়াও নৱম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>";
+
+    class10Box.innerHTML = class10.length
+      ? class10.map(x => `
+          <button class="subMenu"
+            onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
+            📕 ${escapeHTML(x.title)}
+          </button>
+        `).join("")
+      : "<div class='empty'>এতিয়াও দশম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>";
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+async function openDatabaseChapter(chapterId, title) {
+
+  showSection("topic");
+
+  document.getElementById("topicTitle").textContent = title;
+
+  const body = document.getElementById("topicBody");
+
+  body.innerHTML = `
+    <div class="item">
+      ⏳ পাঠৰ প্ৰশ্নোত্তৰ Database-ৰ পৰা লোৱা হৈ আছে...
+    </div>
+  `;
+
+  const { data: questions, error } = await supabaseClient
+    .from("questions")
+    .select("*")
+    .eq("chapter_id", chapterId)
+    .order("id");
+
+  if (error) {
+
+    body.innerHTML = `
+      <div class="item">
+        ❌ প্ৰশ্নোত্তৰ লোড হোৱা নাই।
+      </div>
+    `;
+
+    console.error(error);
+    return;
+  }
+
+  if (!questions || questions.length === 0) {
+
+    body.innerHTML = `
+      <div class="item">
+        📚 এই পাঠৰ প্ৰশ্নোত্তৰ এতিয়াও Database-ত যোগ কৰা হোৱা নাই।
+      </div>
+    `;
+
+    return;
+  }
+
+  body.innerHTML = questions.map((q, i) => `
+    <div class="item">
+
+      <span class="tag">
+        ${escapeHTML(q.question_type || "প্ৰশ্নোত্তৰ")}
+      </span>
+
+      <h3>${i + 1}. ${escapeHTML(q.question)}</h3>
+
+      <p>
+        <b>উত্তৰ:</b><br>
+        ${escapeHTML(q.answer || "")}
+      </p>
+
+    </div>
+  `).join("");
+}
+
+
+loadChaptersFromDatabase();
+</script>");
 </script>
 </body>
 </html>

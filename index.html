@@ -1,4 +1,4 @@
-ত<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="as">
 <head>
 <meta charset="UTF-8">
@@ -27,16 +27,25 @@ header{
 }
 
 header h1{
-  font-size:23px;
+  font-size:25px;
+  margin-bottom:8px;
 }
 
 header p{
-  margin-top:5px;
+  font-size:16px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  padding:15px;
 }
 
 .search{
-  padding:15px;
   background:white;
+  padding:15px;
+  margin:15px 0;
+  border-radius:18px;
 }
 
 .search input{
@@ -47,89 +56,109 @@ header p{
   font-size:16px;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:15px;
-}
-
 .grid{
   display:grid;
-  grid-template-columns:`repeat(2, 1fr);`
+  grid-template-columns:repeat(2,1fr);
   gap:12px;
-}
-
-.card{
-  background:white;
-  padding:18px;
-  margin-bottom:15px;
-  border-radius:16px;
-  box-shadow:0 3px 12px #0001;
-}
-
-.menu{
-  border:0;
-  border-radius:14px;
-  padding:18px 8px;
-  background:#e0f2f1;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-button{
-  font-family:inherit;
-}
-
-.primary{
-  border:0;
-  padding:11px 18px;
-  background:#075e54;
-  color:white;
-  border-radius:10px;
-}
-
-.item{
-  padding:13px;
-  margin:8px 0;
-  background:#f8fafc;
-  border-left:4px solid #075e54;
-  border-radius:8px;
-}
-
-input,textarea,select{
-  width:100%;
-  padding:12px;
-  margin:6px 0;
-  border:1px solid #ccc;
-  border-radius:9px;
-}
-
-.premium{
-  background:#fff3cd;
-  border:2px solid #ffb300;
-}
-
-.admin{
-  background:#ede7f6;
-  border:2px solid #673ab7;
-}
-
-.back{
-  margin-bottom:12px;
 }
 
 @media(max-width:600px){
   .grid{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr;
   }
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 3px 12px #0001;
+}
+
+.card h2{
+  margin-bottom:10px;
+}
+
+button{
+  border:0;
+  border-radius:12px;
+  padding:13px 16px;
+  margin:5px 3px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.primary{
+  background:#075e54;
+  color:white;
+}
+
+.blue{
+  background:#1565c0;
+  color:white;
+}
+
+.orange{
+  background:#ef6c00;
+  color:white;
+}
+
+.gray{
+  background:#e9eef5;
+  color:#172033;
+}
+
+.chapter{
+  display:block;
+  width:100%;
+  text-align:left;
+  background:#f5f7fa;
+  border-left:5px solid #075e54;
+  margin:8px 0;
+}
+
+.question{
+  background:#f7f9fc;
+  border-left:5px solid #1565c0;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+}
+
+.tag{
+  display:inline-block;
+  background:#e3f2fd;
+  color:#075e54;
+  padding:5px 8px;
+  border-radius:8px;
+  margin-bottom:8px;
+  font-size:13px;
+}
+
+.hidden{
+  display:none;
+}
+
+.refbox{
+  background:#fff8e1;
+  border-left:5px solid #ff9800;
+}
+
+.refcode{
+  font-size:20px;
+  font-weight:bold;
+  padding:10px;
+  background:white;
+  border-radius:10px;
+  text-align:center;
+  margin:10px 0;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#666;
 }
 </style>
 </head>
@@ -137,602 +166,620 @@ input,textarea,select{
 <body>
 
 <header>
-  <h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1>
-  <p>নৱম • দশম • HSLC • AI Study Assistant</p>
+<h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1>
+<p>নৱম • দশম • HSLC • AI Study Assistant</p>
 </header>
 
+<div class="container">
+
 <div class="search">
-  <input
-    id="searchBox"
-    placeholder="🔎 বিষয় বা প্ৰশ্ন Search কৰক"
-    onkeydown="search(event)">
+<input
+  id="searchBox"
+  type="search"
+  placeholder="🔎 বিষয় বা প্ৰশ্ন Search কৰক"
+  oninput="searchContent()">
 </div>
 
-<main class="container">
-
-<!-- HOME -->
-
-<section id="home" class="page active">
+<div id="home">
 
 <div class="card">
-<h2>📚 অধ্যয়ন শাখা</h2>
+<h2>📚 অধ্যয়নৰ শাখা</h2>
 
 <div class="grid">
 
-<button class="menu"
-onclick="openPage('class9')">
-📘<br>নৱম
+<button class="primary" onclick="loadChapters(1,'নৱম শ্ৰেণী')">
+📘 নৱম শ্ৰেণী
 </button>
 
-<button class="menu"
-onclick="openPage('class10')">
-📕<br>দশম
+<button class="primary" onclick="loadChapters(2,'দশম শ্ৰেণী')">
+📗 দশম শ্ৰেণী
 </button>
 
-<button class="menu"
-onclick="openPage('hslc')">
-🎓<br>HSLC
-</button>
-
-<button class="menu"
-onclick="openPage('grammar')">
-📖<br>ব্যাকৰণ
-</button>
-
-<button class="menu"
-onclick="openPage('ai')">
-🤖<br>AI
-</button>
-
-<button class="menu"
-onclick="openPage('translation')">
-🌐<br>Translation
-</button>
-
-<button class="menu"
-onclick="openPage('questions')">
-❓<br>প্ৰশ্নোত্তৰ
-</button>
-
-<button class="menu"
-onclick="openPage('premium')">
-⭐<br>Premium
+<button class="blue" onclick="loadChapters(3,'HSLC')">
+🎓 HSLC
 </button>
 
 </div>
 </div>
+
 
 <div class="card">
-<h2>🔐 Security</h2>
-<p>
-আপোনাৰ ব্যক্তিগত Admin তথ্য আৰু API secret
-frontend HTML-ত সংৰক্ষণ কৰা নহয়।
-</p>
-</div>
-
-</section>
-
-
-<!-- CLASS 9 -->
-
-<section id="class9" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card">
-<h2>📘 নৱম শ্ৰেণী</h2>
-
-<div id="class9Content">
-
-<div class="item">
-<b>পাঠসমূহ</b>
-<p>
-Database সংযোগ কৰাৰ পিছত প্ৰতিটো পাঠৰ
-অতি চমু, চমু, ৰচনাধৰ্মী আৰু অতিৰিক্ত
-প্ৰশ্নোত্তৰ ইয়াত দেখা যাব।
-</p>
-</div>
-
-</div>
-</div>
-
-</section>
-
-
-<!-- CLASS 10 -->
-
-<section id="class10" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card">
-<h2>📕 দশম শ্ৰেণী</h2>
-
-<div id="class10Content">
-
-<div class="item">
-<b>পাঠসমূহ</b>
-<p>
-প্ৰতিটো পাঠৰ সম্পূৰ্ণ প্ৰশ্নোত্তৰ,
-সম্ভাব্য প্ৰশ্ন আৰু HSLC preparation
-ইয়াত database-ৰ পৰা আহিব।
-</p>
-</div>
-
-</div>
-</div>
-
-</section>
-
-
-<!-- HSLC -->
-
-<section id="hslc" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card">
-
-<h2>🎓 HSLC</h2>
-
-<div class="item">
-<b>Previous Question Papers</b>
-<p>Year-wise question papers</p>
-</div>
-
-<div class="item">
-<b>Answer Solutions</b>
-<p>অসমীয়া আৰু English</p>
-</div>
-
-<div class="item">
-<b>Important Questions</b>
-<p>সম্ভাব্য HSLC প্ৰশ্ন</p>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- GRAMMAR -->
-
-<section id="grammar" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card">
-
-<h2>📖 ব্যাকৰণ</h2>
-
-<div class="item">সন্ধি</div>
-<div class="item">সমাস</div>
-<div class="item">প্ৰত্যয়</div>
-<div class="item">উপসৰ্গ</div>
-<div class="item">অনুসৰ্গ</div>
-<div class="item">বিপৰীত শব্দ</div>
-<div class="item">সমাৰ্থক শব্দ</div>
-<div class="item">জতুৱা ঠাঁচ — বাক্য ৰচনা</div>
-<div class="item">এটা শব্দত প্ৰকাশ</div>
-<div class="item">বাক্য শুদ্ধকৈ লিখা</div>
-<div class="item">ছন্দ</div>
-<div class="item">ভাব সম্প্ৰসাৰণ</div>
-<div class="item">বাক্য পৰিৱৰ্তন</div>
-<div class="item">বিধি আৰু ষত্ব বিধি</div>
-<div class="item">ৰচনা</div>
-<div class="item">আবেদন</div>
-<div class="item">প্ৰতিবেদন</div>
-<div class="item">পৌৰাণিক → আধুনিক শব্দ</div>
-
-</div>
-
-</section>
-
-
-<!-- AI -->
-
-<section id="ai" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card">
-
 <h2>🤖 AI Study Assistant</h2>
 
-<textarea
-id="aiQuestion"
-rows="6"
-placeholder="আপোনাৰ প্ৰশ্ন লিখক...">
-</textarea>
+<input
+ id="aiQuestion"
+ style="width:100%;padding:13px;border:1px solid #ccc;border-radius:10px"
+ placeholder="আপোনাৰ প্ৰশ্ন লিখক">
 
-<button class="primary"
-onclick="callAI()">
-🤖 AI-লৈ পঠিয়াওক
+<button class="blue" onclick="askAI()">
+🤖 উত্তৰ বিচাৰক
 </button>
 
-<div id="aiAnswer"></div>
+<div id="aiResult"></div>
+</div>
+
+
+<div class="card refbox">
+<h2>🎁 Referral & Share</h2>
+
+<p>
+আপোনাৰ Referral Code বন্ধুক Share কৰক।
+</p>
+
+<div class="refcode" id="refCode">
+Loading...
+</div>
+
+<button class="orange" onclick="copyReferral()">
+📋 Referral Code Copy
+</button>
+
+<button class="blue" onclick="shareApp()">
+📤 App Share
+</button>
+
+<div id="shareResult"></div>
+</div>
 
 </div>
 
-</section>
+
+<!-- CHAPTER PAGE -->
+
+<div id="chapterPage" class="hidden">
+
+<button class="gray" onclick="goHome()">← Home</button>
+
+<div class="card">
+<h2 id="classTitle"></h2>
+
+<div id="chapterList">
+<p>⏳ Database-ৰ পৰা পাঠসমূহ Loading...</p>
+</div>
+</div>
+
+</div>
 
 
-<!-- TRANSLATION -->
+<!-- QUESTION PAGE -->
 
-<section id="translation" class="page">
+<div id="questionPage" class="hidden">
 
-<button class="primary back"
-onclick="openPage('home')">
-← Home
+<button class="gray" onclick="backToChapters()">
+← পাঠসমূহ
 </button>
 
 <div class="card">
+<h2 id="chapterTitle"></h2>
 
-<h2>🌐 Translation</h2>
-
-<select id="translationLanguage">
-
-<option value="as-en">
-অসমীয়া → English
-</option>
-
-<option value="en-as">
-English → অসমীয়া
-</option>
-
-</select>
-
-<textarea
-id="translationText"
-rows="7"
-placeholder="অনুবাদ কৰিবলগীয়া text লিখক">
-</textarea>
-
-<button class="primary"
-onclick="translateText()">
-Translate
-</button>
-
-<div id="translationResult"></div>
+<div id="questionList">
+<p>⏳ প্ৰশ্নোত্তৰ Loading...</p>
+</div>
+</div>
 
 </div>
 
-</section>
-
-
-<!-- QUESTIONS -->
-
-<section id="questions" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card">
-
-<h2>❓ ছাত্ৰ-ছাত্ৰীৰ সমস্যা</h2>
-
-<textarea
-id="studentQuestion"
-rows="6"
-placeholder="আপোনাৰ প্ৰশ্ন লিখক">
-</textarea>
-
-<button class="primary"
-onclick="submitQuestion()">
-Submit
-</button>
-
 </div>
 
-</section>
+
+<footer>
+অসমীয়া সহায়িকা • 9 • 10 • HSLC
+</footer>
 
 
-<!-- PREMIUM -->
+<!-- SUPABASE -->
 
-<section id="premium" class="page">
-
-<button class="primary back"
-onclick="openPage('home')">
-← Home
-</button>
-
-<div class="card premium">
-
-<h2>⭐ Premium</h2>
-
-<p>Premium charge: <b>₹29</b></p>
-
-<p>
-Premium content, special questions,
-study materials আদি।
-</p>
-
-<br>
-
-<p>
-UPI ID:
-<b>rajenburahgohain@okicici</b>
-</p>
-
-<br>
-
-<button class="primary"
-onclick="startPayment()">
-💳 Pay ₹29
-</button>
-
-<p>
-<br>
-Payment verification backend-ৰ
-জৰিয়তে হ'ব।
-</p>
-
-</div>
-
-</section>
-
-
-<!-- ADMIN -->
-
-<section id="admin" class="page">
-
-<div class="card admin">
-
-<h2>🔐 Admin Dashboard</h2>
-
-<p>
-এই অংশটো কেৱল authenticated admin user-ৰ
-বাবে backend-ৰ পৰা অনুমোদিত হ'ব।
-</p>
-
-<br>
-
-<button class="primary">
-➕ Add Content
-</button>
-
-<button class="primary">
-✏️ Edit Content
-</button>
-
-<button class="primary">
-🗑️ Delete Content
-</button>
-
-</div>
-
-</section>
-
-</main>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-/*
- SECURITY RULE:
+/* =====================================
+   SUPABASE CONNECTION
+   ===================================== */
 
- কোনো API key, password,
- service-role key বা payment secret
- এই JavaScript-ত নাৰাখিব।
+/*
+  ⚠️ নিজৰ Supabase URL আৰু Publishable key
+  ইয়াত বসাওক।
 */
 
+const SUPABASE_URL = "https://rlmxfzdbipksbrikgfbs.supabase.co/rest/v1/";
 
-function openPage(id){
-    document.querySelectorAll(".page").forEach(function(page){
-        page.classList.remove("active");
+const SUPABASE_KEY = "sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================
+   PAGE CONTROL
+   ===================================== */
+
+function showOnly(id){
+
+  document
+    .querySelectorAll(".container > div")
+    .forEach(x => {
+
+      if(
+        x.id === "home" ||
+        x.id === "chapterPage" ||
+        x.id === "questionPage"
+      ){
+        x.classList.add("hidden");
+      }
+
     });
 
-    const page = document.getElementById(id);
-    if(page){
-        page.classList.add("active");
-    }
+  document
+    .getElementById(id)
+    .classList.remove("hidden");
 
-    // নৱম বা দশম শ্ৰেণী খুলিলে ডাটাবেছৰ পৰা চ্যাপ্টাৰ ল'ড কৰিবলৈ
-    if(id === 'class9' || id === 'class10'){
-        loadChaptersFromDatabase();
-    }
-
-    window.scrollTo(0,0);
+  window.scrollTo(0,0);
 }
 
-async function search(event){
-    if(event.key !== "Enter"){
-        return;
-    }
 
-    const query = document.getElementById("searchBox").value.trim();
+function goHome(){
 
-    if(!query){
-        return;
-    }
+  showOnly("home");
 
-    alert(
-        "Search request backend Edge Function-লৈ যাব: \n\n" +
-        query +
-        "\n\nSearch API setup কৰাৰ পিছত ইয়াত ফলাফল দেখা যাব।"
-    );
 }
 
-async function callAI(){
-    const question = document.getElementById("aiQuestion").value.trim();
 
-    if(!question){
-        alert("প্ৰথম প্ৰশ্ন লিখক।");
-        return;
-    }
+function backToChapters(){
 
-    document.getElementById("aiAnswer").innerHTML = `
-        <div class="item">
-            🤖 AI request Edge Function-লৈ পঠিওৱা হৈছে...<br><br>
-            Backend সজ্জাটো কৰাৰ পিছত AI-ৰ উত্তৰ দেখা যাব।
-        </div>`;
+  showOnly("chapterPage");
+
 }
 
-async function translateText(){
-    const text = document.getElementById("translationText").value.trim();
 
-    if(!text){
-        alert("Text লিখক।");
-        return;
+/* =====================================
+   LOAD CHAPTERS
+   ===================================== */
+
+async function loadChapters(classId,className){
+
+  showOnly("chapterPage");
+
+  document.getElementById("classTitle").innerText =
+    "📚 " + className;
+
+  const list =
+    document.getElementById("chapterList");
+
+  list.innerHTML =
+    "<p>⏳ Database-ৰ পৰা পাঠসমূহ Loading...</p>";
+
+  try{
+
+    const {data,error} =
+      await supabaseClient
+      .from("chapters")
+      .select("id,title,description")
+      .eq("class_id",classId)
+      .order("id");
+
+    if(error){
+
+      console.error(error);
+
+      list.innerHTML =
+      "<div class='question'>❌ Database error হৈছে।</div>";
+
+      return;
     }
 
-    document.getElementById("translationResult").innerHTML = `
-        <div class="item">
-            🌐 Translation request secure Edge Function-লৈ যাব।
-        </div>`;
-}
 
-async function submitQuestion(){
-    const question = document.getElementById("studentQuestion").value.trim();
+    if(!data || data.length === 0){
 
-    if(!question){
-        alert("প্ৰশ্ন লিখক।");
-        return;
+      list.innerHTML =
+      "<div class='question'>📚 এই শ্ৰেণীৰ কোনো পাঠ এতিয়াও Database-ত যোগ কৰা হোৱা নাই।</div>";
+
+      return;
     }
 
-    alert(
-        "ছাত্ৰী authenticated database system-লৈ " +
-        "পঠিওৱাৰ পৰা architecture প্ৰস্তুত আছে।"
-    );
-}
 
-function startPayment(){
-    const upi = 
-        "upi://pay?pa=rajenburahgohain@okicici&" +
-        "pn=Assamese%20Sahayika&" +
-        "am=29&" +
-        "cu=INR";
+    list.innerHTML = data.map(chapter => `
 
-    window.location.href = upi;
-}
+      <button
+        class="chapter"
+        onclick="loadQuestions(${chapter.id},${escapeJS(chapter.title)})">
 
-// Supabase Connection
-const SUPABASE_URL = "https://rlmxfzdbipksbrikgfbs.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_YbXRYD3badwrl6iUh3IFjg_k_ef#jen";
+        <b>📖 ${escapeHTML(chapter.title)}</b>
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-);
+        <br>
 
-console.log("<script>");
+        <small>
+        ${escapeHTML(chapter.description || "")}
+        </small>
 
-async function loadChaptersFromDatabase() {
-    try {
-        const { data: chapters, error } = await supabaseClient
-            .from("chapters")
-            .select("id, class_id, title, description")
-            .order("id");
+      </button>
 
-        if (error) {
-            console.error("Chapter loading error:", error);
-            return;
-        }
-
-        const class9Box = document.getElementById('class9Content');
-        const class10Box = document.getElementById('class10Content');
-
-        if (!class9Box || !class10Box) return;
-
-        const class9 = chapters.filter(x => x.class_id === 1);
-        const class10 = chapters.filter(x => x.class_id === 2);
-
-        class9Box.innerHTML = class9.length ? class9.map(x => `
-            <button class="subMenu"
-                onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
-                📚 ${escHTML(x.title)}
-            </button>
-        `).join("") : '<div class="empty">এতিয়াও নৱম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>';
-
-        class10Box.innerHTML = class10.length ? class10.map(x => `
-            <button class="subMenu"
-                onclick="openDatabaseChapter(${x.id}, '${escAttr(x.title)}')">
-                🌸 ${escHTML(x.title)}
-            </button>
-        `).join("") : '<div class="empty">এতিয়াও দশম শ্ৰেণীৰ পাঠ যোগ কৰা হোৱা নাই।</div>';
-
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-async function openDatabaseChapter(chapterId, title) {
-    showSection("topic");
-
-    document.getElementById("topicTitle").textContent = title;
-
-    const body = document.getElementById("topicBody");
-
-    body.innerHTML = `
-        <div class="item">
-            ⏳ পাঠৰ তথ্যবোৰ Database-ৰ পৰা লোৱা হৈ আছে...
-        </div>`;
-
-    const { data: questions, error } = await supabaseClient
-        .from("questions")
-        .select("")
-        .eq("chapter_id", chapterId)
-        .order("id");
-
-    if (error) {
-        body.innerHTML = `
-            <div class="item">
-                ❌ প্ৰশ্নবোৰ ল'ড হোৱা নাই।
-            </div>`;
-        console.error(error);
-        return;
-    }
-
-    if (!questions || questions.length === 0) {
-        body.innerHTML = `
-            <div class="item">
-                📭 এই পাঠৰ প্ৰশ্নবোৰ এতিয়াও Database-ত যোগ কৰা হোৱা নাই।
-            </div>`;
-        return;
-    }
-
-    body.innerHTML = questions.map((q, i) => `
-        <div class="item">
-            <span class="tag">
-                ${escHTML(q.question_type || "সাধাৰণ")}
-            </span>
-            <h3>${i + 1}. ${escHTML(q.question)}</h3>
-            <p>
-                <b>উত্তৰ:</b><br>
-                ${escHTML(q.answer || "")}
-            </p>
-        </div>
     `).join("");
+
+  }
+
+  catch(err){
+
+    console.error(err);
+
+    list.innerHTML =
+    "<div class='question'>❌ Connection error হৈছে।</div>";
+
+  }
+
 }
 
-// পেজ ল'ড হোৱাৰ লগে লগে কাৰ্য্যকৰী হ'ব
-loadChaptersFromDatabase();
 
-</script><script>
-    function escHTML(str) {
-        return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
+/* =====================================
+   LOAD QUESTIONS
+   ===================================== */
+
+async function loadQuestions(chapterId,title){
+
+  showOnly("questionPage");
+
+  document.getElementById("chapterTitle").innerText =
+    "📖 " + title;
+
+  const list =
+    document.getElementById("questionList");
+
+  list.innerHTML =
+    "<p>⏳ প্ৰশ্নোত্তৰ Loading...</p>";
+
+
+  try{
+
+    const {data,error} =
+      await supabaseClient
+      .from("questions")
+      .select("*")
+      .eq("chapter_id",chapterId)
+      .order("id");
+
+
+    if(error){
+
+      console.error(error);
+
+      list.innerHTML =
+      "<div class='question'>❌ Questions Database error হৈছে।</div>";
+
+      return;
     }
 
-    function escAttr(str) {
-        return escHTML(str);
+
+    if(!data || data.length === 0){
+
+      list.innerHTML =
+      "<div class='question'>📝 এই পাঠৰ প্ৰশ্নোত্তৰ এতিয়াও Database-ত যোগ কৰা হোৱা নাই।</div>";
+
+      return;
     }
+
+
+    list.innerHTML = data.map((q,i) => `
+
+      <div class="question">
+
+        <span class="tag">
+        ${escapeHTML(q.question_type || "প্ৰশ্ন")}
+        </span>
+
+        <h3>
+        ${i+1}. ${escapeHTML(q.question || "")}
+        </h3>
+
+        <p style="margin-top:10px">
+
+        <b>উত্তৰ:</b><br>
+
+        ${escapeHTML(q.answer || "উত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।")}
+
+        </p>
+
+      </div>
+
+    `).join("");
+
+  }
+
+  catch(err){
+
+    console.error(err);
+
+    list.innerHTML =
+    "<div class='question'>❌ Connection error হৈছে।</div>";
+
+  }
+
+}
+
+
+/* =====================================
+   SEARCH
+   ===================================== */
+
+function searchContent(){
+
+  const text =
+    document
+    .getElementById("searchBox")
+    .value
+    .trim()
+    .toLowerCase();
+
+  if(!text){
+
+    document
+      .querySelectorAll(".question")
+      .forEach(x =>
+        x.style.display=""
+      );
+
+    return;
+  }
+
+  document
+    .querySelectorAll(".question")
+    .forEach(x => {
+
+      const value =
+        x.innerText.toLowerCase();
+
+      x.style.display =
+        value.includes(text)
+        ? ""
+        : "none";
+
+    });
+
+}
+
+
+/* =====================================
+   AI BASIC ASSISTANT
+   ===================================== */
+
+function askAI(){
+
+  const q =
+    document
+    .getElementById("aiQuestion")
+    .value
+    .trim()
+    .toLowerCase();
+
+  const result =
+    document.getElementById("aiResult");
+
+
+  if(!q){
+
+    result.innerHTML =
+    "<div class='question'>✏️ প্ৰথমে প্ৰশ্ন লিখক।</div>";
+
+    return;
+  }
+
+
+  let answer =
+  "এই প্ৰশ্নটোৰ AI উত্তৰ Backend AI সংযোগ কৰাৰ পিছত ইয়াত দেখা যাব।";
+
+
+  if(q.includes("সন্ধি")){
+
+    answer =
+    "সন্ধি হৈছে দুটা ধ্বনি বা শব্দৰ মিলনত হোৱা ধ্বনিগত পৰিৱৰ্তন।";
+
+  }
+
+  else if(q.includes("সমাৰ্থক")){
+
+    answer =
+    "সমাৰ্থক শব্দ হৈছে একে বা ওচৰা-ওচৰি অৰ্থ প্ৰকাশ কৰা শব্দ।";
+
+  }
+
+  else if(q.includes("বিপৰীত")){
+
+    answer =
+    "বিপৰীত শব্দে বিপৰীত অৰ্থ প্ৰকাশ কৰে।";
+
+  }
+
+
+  result.innerHTML = `
+
+  <div class="question">
+
+  <b>🤖 উত্তৰ:</b>
+
+  <p style="margin-top:8px">
+  ${escapeHTML(answer)}
+  </p>
+
+  </div>
+
+  `;
+
+}
+
+
+/* =====================================
+   REFERRAL CODE
+   ===================================== */
+
+function createReferralCode(){
+
+  let code =
+    localStorage.getItem("rbg_referral_code");
+
+
+  if(!code){
+
+    const random =
+      Math.random()
+      .toString(36)
+      .substring(2,8)
+      .toUpperCase();
+
+    code = "RBG-" + random;
+
+    localStorage.setItem(
+      "rbg_referral_code",
+      code
+    );
+
+  }
+
+
+  document
+    .getElementById("refCode")
+    .innerText = code;
+
+}
+
+
+function copyReferral(){
+
+  const code =
+    document
+    .getElementById("refCode")
+    .innerText;
+
+  navigator.clipboard
+    .writeText(code)
+    .then(() => {
+
+      document
+      .getElementById("shareResult")
+      .innerText =
+      "✅ Referral Code Copy হৈছে।";
+
+    });
+
+}
+
+
+/* =====================================
+   APP SHARE
+   ===================================== */
+
+async function shareApp(){
+
+  const code =
+    document
+    .getElementById("refCode")
+    .innerText;
+
+  const shareText =
+`📚 অসমীয়া সহায়িকা-9&10+HSLC
+
+নৱম • দশম • HSLC পৰীক্ষাৰ বাবে সহায়িকা।
+
+🎁 মোৰ Referral Code:
+${code}
+
+📱 App:
+${window.location.href}`;
+
+
+  if(navigator.share){
+
+    try{
+
+      await navigator.share({
+
+        title:
+        "অসমীয়া সহায়িকা-9&10+HSLC",
+
+        text:
+        shareText,
+
+        url:
+        window.location.href
+
+      });
+
+    }
+
+    catch(err){}
+
+  }
+
+  else{
+
+    await navigator.clipboard
+      .writeText(shareText);
+
+    document
+      .getElementById("shareResult")
+      .innerText =
+      "✅ Share message Copy হৈছে। WhatsApp-ত Paste কৰক।";
+
+  }
+
+}
+
+
+/* =====================================
+   SECURITY HELPERS
+   ===================================== */
+
+function escapeHTML(str){
+
+  return String(str ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJS(str){
+
+  return JSON.stringify(
+    String(str ?? "")
+  );
+
+}
+
+
+/* =====================================
+   START
+   ===================================== */
+
+createReferralCode();
+
+showOnly("home");
+
 </script>
+
 </body>
-</html> 
+</html>

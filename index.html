@@ -3,51 +3,180 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>অসমীয়া সহায়িকা-9&10+HSLC</title>
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap');
 *{box-sizing:border-box}body{margin:0;font-family:'Noto Sans Assamese',sans-serif;background:#f3f6fb;color:#172033}header{background:linear-gradient(135deg,#00695c,#1976d2);color:#fff;padding:22px 14px;text-align:center}header h1{margin:0;font-size:25px}header p{margin:7px 0}.container{max-width:900px;margin:auto;padding:16px}.search{width:100%;padding:15px 18px;border:2px solid #08766b;border-radius:30px;font-size:17px;background:#fff;margin-bottom:16px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}button{border:0;border-radius:12px;padding:11px 15px;font-family:inherit;font-size:15px;cursor:pointer}.tab{background:#e0f2ef;color:#075f57}.tab.active,.primary{background:#08766b;color:#fff}.card{background:#fff;border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 3px 14px #00000010}.chapter{display:block;width:100%;text-align:left;background:#fff;border-left:5px solid #08766b;border-radius:12px;margin:9px 0;padding:13px 14px;box-shadow:0 2px 8px #0000000c}.chapter b{display:block;font-size:17px}.chapter small{color:#667085}.qa{background:#f8fafc;border-radius:13px;padding:14px;margin:12px 0;border-left:4px solid #1976d2}.answer{margin-top:8px;line-height:1.8}.hidden{display:none!important}.back{background:#607d8b;color:#fff;margin-bottom:12px}.share{background:#1976d2;color:#fff}.ref{background:#8e44ad;color:#fff}.notice{background:#fff8e1;border-left:4px solid #f9a825;padding:12px;border-radius:10px}.badge{display:inline-block;background:#e8f5e9;color:#1b5e20;padding:4px 9px;border-radius:20px;font-size:12px;margin-bottom:7px}footer{text-align:center;padding:25px;color:#667085}
+.loader{text-align:center;padding:20px;color:#08766b;font-weight:600;}
 </style></head><body>
 <header><h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1><p>নৱম • দশম • HSLC • AI Study Assistant</p></header>
 <div class="container">
 <input id="searchBox" class="search" placeholder="🔎 বিষয় বা পাঠ Search কৰক" oninput="searchAll()">
 <div id="homePage"><div class="tabs">
 <button class="tab active" onclick="showClass(9,this)">নৱম শ্ৰেণী</button><button class="tab" onclick="showClass(10,this)">দশম শ্ৰেণী</button><button class="tab" onclick="showClass('HSLC',this)">HSLC</button><button class="tab" onclick="showGrammar()">অসমীয়া ব্যাকৰণ</button><button class="tab" onclick="showTools()">Share / Referral</button></div><div id="homeContent"></div></div>
-<div id="chapterPage" class="hidden"><button class="back" onclick="goHome()">← পাঠ্যসূচীলৈ উভতি যাওক</button><div class="card"><span class="badge" id="chapterClass"></span><h2 id="chapterTitle"></h2><div id="questionList"></div></div></div>
+<div id="chapterPage" class="hidden"><button class="back" onclick="goHome()">← পাঠ্যসূচীলৈ উভতি যাওক</button><div class="card"><span class="badge" id="chapterClass"></span><h2 id="chapterTitle"></h2><div id="loader" class="loader hidden">তথ্য ল'ড হৈ আছে...</div><div id="questionList"></div></div></div>
 <div id="grammarPage" class="hidden"><button class="back" onclick="goHome()">← Home</button><div class="card"><h2>📖 অসমীয়া ব্যাকৰণ</h2><div id="grammarList"></div></div></div>
 <div id="toolsPage" class="hidden"><button class="back" onclick="goHome()">← Home</button><div class="card"><h2>📤 App Share</h2><p>বন্ধু-বান্ধৱীক এই App-টো Share কৰক।</p><button class="share" onclick="shareApp()">📤 App Share</button></div><div class="card"><h2>🎁 Referral Code</h2><p>আপোনাৰ Referral Code:</p><h2 id="refCode"></h2><button class="ref" onclick="copyReferral()">📋 Copy Referral Code</button></div></div>
 <footer>অসমীয়া সহায়িকা • 9 • 10 • HSLC</footer></div>
-<script>// --- SUPABASE CONFIGURATION ---
-const SUPABASE_URL = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsbXhmemRiaXBrc2JyaWtnZmJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzIzMzcsImV4cCI6MjEwMjU0ODMzN30.21SD0RnJTW622wkddbzg8_ZWD-lW04U7CuNuopSxIjM'; 
-const SUPABASE_ANON_KEY = 'sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen'; 
+
+<script>
+// --- SUPABASE CONFIGURATION ---
+const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE'; // আপোনাৰ Supabase URL টো ইয়াত বহুৱাওক
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE'; // আপোনাৰ Supabase Anon Key টো ইয়াত বহুৱাওক
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const chapters={
 9:[["শিশুলীলা","পদ্যাংশ"],["মানৱ বন্দনা","পদ্যাংশ"],["গীত আৰু ছবি","পদ্যাংশ"],["প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক","পদ্যাংশ"],["মোৰ দেশ","পদ্যাংশ"],["অনন্যৰ প্ৰতি ব্যৱহাৰ","গদ্যাংশ"],["সময়","গদ্যাংশ"],["অন্ধবিশ্বাস আৰু কু-সংস্কাৰ","গদ্যাংশ"],["ভাৰতৰ বৈচিত্ৰ্য মাজত ঐক্য","গদ্যাংশ"],["পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন","গদ্যাংশ"],["যুঁজ","গদ্যাংশ"],["লোকসংস্কৃতি","গদ্যাংশ"],["হুনুমন্তৰ লঙ্কাদৰ্শন","পদ্যাংশ"],["সুখ","পদ্যাংশ"],["চোৰধৰা","গদ্যাংশ"],["সন্মান","গদ্যাংশ"]],
 10:[["বৰগীত — মাধৱদেৱ","পদ্যাংশ"],["ভক্তিৰস","পদ্যাংশ"],["প্ৰশান্তি","পদ্যাংশ"],["মই অসমীয়া","পদ্যাংশ"],["দুশ্চিন্তা","পদ্যাংশ"],["উদ্যোগী হওঁ আহা","গদ্যাংশ"],["ভাৰতীয় সংস্কৃতি","গদ্যাংশ"],["অসমৰ জনগোষ্ঠীৰ গাঁথনি আৰু সংস্কৃতি","গদ্যাংশ"],["ইণ্টাৰনেটৰ তিতা-মিঠা","গদ্যাংশ"],["অৰণ্যমণি সিংহা","গদ্যাংশ"],["অৰণ্যযাত্ৰা","গদ্যাংশ"],["পাৰ্বত্যত ভ্ৰমণ","গদ্যাংশ"],["কানাইৰ চাতুৰী","পদ্যাংশ"],["ধৰ ঝাড়ু ধৰ ভাই","পদ্যাংশ"],["বিয়াদ যোগ","গদ্যাংশ"],["প্ৰাচীন ভাৰতীয় শিক্ষা","গদ্যাংশ"]],
 HSLC:[["HSLC অসমীয়া — মডেল প্ৰশ্ন","HSLC"],["HSLC অসমীয়া — ব্যাকৰণ","HSLC"],["HSLC অসমীয়া — ৰচনা","HSLC"],["HSLC অসমীয়া — আবেদন","HSLC"],["HSLC অসমীয়া — প্ৰতিবেদন","HSLC"],["HSLC অসমীয়া — পূৰ্বৰ প্ৰশ্নৰ অনুশীলন","HSLC"]]};
-const qa={
-"বৰগীত — মাধৱদেৱ":[["বৰগীত কি?","বৰগীত হৈছে ভক্তিমূলক গীতৰ এক বিশেষ ধাৰা। ইয়াত ঈশ্বৰৰ প্ৰতি ভক্তি, আত্মসমৰ্পণ আৰু আধ্যাত্মিক অনুভূতি প্ৰকাশ পায়।"],["বৰগীতৰ মূল বৈশিষ্ট্য কি?","ভক্তিৰস, আধ্যাত্মিক ভাব, সুৰৰ মাধুৰ্য আৰু গভীৰ ভাষিক সৌন্দৰ্য ইয়াৰ উল্লেখযোগ্য বৈশিষ্ট্য।"]],
-"শিশুলীলা":[["‘শিশুলীলা’ পাঠটোৰ মূল ভাব কি?","শিশুৰ স্বাভাৱিক আনন্দ, কৌতূহল আৰু সৰল মনৰ বিভিন্ন প্ৰকাশ এই পাঠৰ মূল ভাবৰ সৈতে জড়িত।"],["শিশুৰ মনৰ এটা বৈশিষ্ট্য কি?","শিশুৰ মন সাধাৰণতে সৰল, কৌতূহলী আৰু নতুন কথা জানিবলৈ আগ্ৰহী।"]],
-"মোৰ দেশ":[["দেশপ্ৰেম বুলিলে কি বুজা?","নিজৰ দেশৰ প্ৰতি থকা সন্মান, ভালপোৱা, দায়িত্ববোধ আৰু দেশৰ কল্যাণৰ বাবে কাম কৰাৰ মনোভাৱক দেশপ্ৰেম বোলে।"],["দেশৰ উন্নতিত ছাত্ৰ-ছাত্ৰীৰ ভূমিকা কি?","ভালদৰে অধ্যয়ন কৰা, নিয়মানুবৰ্তিতা পালন কৰা, সমাজ আৰু পৰিৱেশৰ প্ৰতি দায়িত্বশীল হোৱা আৰু সততাৰে কাম কৰা।"]],
-"মানৱ বন্দনা":[["মানৱতাবাদ কি?","মানুহৰ মৰ্যাদা, সমতা, সহমৰ্মিতা আৰু কল্যাণক গুৰুত্ব দিয়া চিন্তাধাৰাক মানৱতাবাদ বোলা হয়।"],["মানৱ বন্দনাৰ মূল শিক্ষা কি?","মানুহক জাতি-ধৰ্ম-বৰ্ণৰ ভেদাভেদ নকৰাকৈ সন্মান আৰু ভালপোৱা উচিত।"]],
-"সন্ধি":[["সন্ধি কি?","দুটা বা ততোধিক ধ্বনি বা বৰ্ণ ওচৰা-ওচৰিকৈ আহি পৰিৱৰ্তিত ৰূপ লোৱাকে সন্ধি বোলে।"],["সন্ধিৰ প্ৰধান ভাগ কেইটা?","স্বৰসন্ধি, ব্যঞ্জনসন্ধি আৰু বিসৰ্গসন্ধি আদি ভাগৰ কথা কোৱা হয়।"]],
-"সমাস":[["সমাস কি?","দুটা বা ততোধিক পদ একেলগ হৈ সংক্ষিপ্ত ৰূপত এটা পদত পৰিণত হোৱা প্ৰক্ৰিয়াক সমাস বোলে।"],["সমাসৰ এটা উদাহৰণ দিয়া।","ৰাজপুত্ৰ = ৰজাৰ পুত্ৰ।"]],
-"উপসৰ্গ":[["উপসৰ্গ কি?","মূল শব্দৰ আগত বহি শব্দৰ অৰ্থত পৰিৱৰ্তন বা বিশেষত্ব আনে যি অংশ, তাক উপসৰ্গ বোলে।"],["উপসৰ্গৰ কাম কি?","উপসৰ্গে মূল শব্দৰ অৰ্থ সলনি, বিস্তাৰ বা বিশেষ ৰূপ দিব পাৰে।"]],
-"প্ৰত্যয়":[["প্ৰত্যয় কি?","শব্দ বা ধাতুৰ পিছত যোগ হৈ নতুন শব্দ গঠন কৰা বৰ্ণ বা বৰ্ণসমষ্টিক প্ৰত্যয় বোলে।"],["প্ৰত্যয়ৰ কাম কি?","প্ৰত্যয়ৰ সহায়ত নতুন শব্দ বা নতুন পদ সৃষ্টি কৰা হয়।"]]};
+
 const grammar=[["সন্ধি","সন্ধিৰ নিয়ম, উদাহৰণ আৰু সন্ধি-বিচ্ছেদ"],["সমাস","সমাসৰ প্ৰকাৰ আৰু উদাহৰণ"],["উপসৰ্গ","উপসৰ্গৰ পৰিচয় আৰু প্ৰয়োগ"],["প্ৰত্যয়","প্ৰত্যয়ৰ পৰিচয় আৰু উদাহৰণ"],["সমাৰ্থক শব্দ","একে বা ওচৰ অৰ্থ প্ৰকাশ কৰা শব্দ"],["বিপৰীত শব্দ","পৰস্পৰ বিপৰীত অৰ্থৰ শব্দ"],["জতুৱা ঠাঁচ","জতুৱা ঠাঁচৰ অৰ্থ আৰু প্ৰয়োগ"],["বাক্য পৰিৱৰ্তন","বাক্যৰ বিভিন্ন ৰূপলৈ পৰিৱৰ্তন"],["যতি চিহ্ন","যতি চিহ্নৰ ব্যৱহাৰ"],["ৰচনা আৰু লিখন","ৰচনা, আবেদন আৰু প্ৰতিবেদনৰ অনুশীলন"]];
+
 let currentClass=9;
-function showOnly(id){["homePage","chapterPage","grammarPage","toolsPage"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));window.scrollTo(0,0)}
-function goHome(){showOnly("homePage");renderChapters(currentClass)}
-function showClass(cls,btn){currentClass=cls;document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");showOnly("homePage");renderChapters(cls)}
-function renderChapters(cls){let box=document.getElementById("homeContent"),list=chapters[cls]||[];box.innerHTML='<div class="card"><h2>📚 '+(cls==="HSLC"?"HSLC":cls+" শ্ৰেণী")+'</h2><div class="notice">পাঠৰ নামত টিপিলে প্ৰশ্নোত্তৰ খোলিব।</div>'+list.map((c,i)=>`<button class="chapter" onclick="openChapter(${JSON.stringify(cls)},${i})"><b>📖 ${esc(c[0])}</b><small>${esc(c[1])} • টিপি খোলক</small></button>`).join("")+'</div>'}
-function openChapter(cls,index){let c=chapters[cls][index];document.getElementById("chapterClass").textContent=cls==="HSLC"?"HSLC":cls+" শ্ৰেণী";document.getElementById("chapterTitle").textContent=c[0];let list=qa[c[0]]||[["এই পাঠৰ প্ৰশ্নোত্তৰ","এই অধ্যায়ৰ প্ৰশ্নোত্তৰ যোগ কৰিবলৈ Supabase-ৰ questions table-ত chapter_id অনুসৰি প্ৰশ্ন আৰু answer সংৰক্ষণ কৰিব পাৰিব।"],["পাঠটো কেনেকৈ পঢ়িব?","প্ৰথমে পাঠটো ভালদৰে পঢ়ি মূল ভাব বুজক। তাৰ পিছত প্ৰশ্নোত্তৰ অনুশীলন কৰক।"]];document.getElementById("questionList").innerHTML=list.map((q,i)=>`<div class="qa"><b>${i+1}. ${esc(q[0])}</b><div class="answer"><b>উত্তৰ:</b> ${esc(q[1])}</div></div>`).join("");showOnly("chapterPage")}
-function showGrammar(){showOnly("grammarPage");document.getElementById("grammarList").innerHTML=grammar.map((g,i)=>`<button class="chapter" onclick="openGrammar(${i})"><b>📘 ${esc(g[0])}</b><small>${esc(g[1])}</small></button>`).join("")}
-function openGrammar(i){let g=grammar[i],list=qa[g[0]]||[["বিষয়টো কি?","এই ব্যাকৰণ বিষয়টো নিয়ম আৰু উদাহৰণসহ অধ্যয়ন কৰক।"]];document.getElementById("chapterClass").textContent="অসমীয়া ব্যাকৰণ";document.getElementById("chapterTitle").textContent=g[0];document.getElementById("questionList").innerHTML=list.map((q,n)=>`<div class="qa"><b>${n+1}. ${esc(q[0])}</b><div class="answer"><b>উত্তৰ:</b> ${esc(q[1])}</div></div>`).join("");showOnly("chapterPage")}
-function showTools(){showOnly("toolsPage")}
-function searchAll(){let q=document.getElementById("searchBox").value.trim().toLowerCase();if(!q){renderChapters(currentClass);return}let found=[];Object.keys(chapters).forEach(cls=>chapters[cls].forEach((c,i)=>{if(c[0].toLowerCase().includes(q))found.push([cls,i,c[0],c[1]])}));grammar.forEach((g,i)=>{if(g[0].toLowerCase().includes(q))found.push(["grammar",i,g[0],"ব্যাকৰণ"])});document.getElementById("homeContent").innerHTML='<div class="card"><h2>🔎 Search ফলাফল</h2>'+(found.length?found.map(x=>x[0]==="grammar"?`<button class="chapter" onclick="openGrammar(${x[1]})"><b>📘 ${esc(x[2])}</b><small>ব্যাকৰণ</small></button>`:`<button class="chapter" onclick="openChapter(${JSON.stringify(x[0])},${x[1]})"><b>📖 ${esc(x[2])}</b><small>${esc(x[3])}</small></button>`).join(""):'<p>কোনো ফলাফল পোৱা নগ’ল।</p>')+'</div>'}
-async function shareApp(){let data={title:"অসমীয়া সহায়িকা-9&10+HSLC",text:"নৱম, দশম আৰু HSLC অসমীয়া পঢ়াৰ সহায়িকা",url:location.href};if(navigator.share){try{await navigator.share(data)}catch(e){}}else{try{await navigator.clipboard.writeText(location.href);alert("App link copy হৈছে।")}catch(e){alert(location.href)}}}
-function getReferral(){let r=localStorage.getItem("referralCode");if(!r){r="ASAM-"+Math.random().toString(36).substring(2,8).toUpperCase();localStorage.setItem("referralCode",r)}return r}function copyReferral(){navigator.clipboard.writeText(getReferral()).then(()=>alert("Referral Code copy হৈছে: "+getReferral()))}
-document.getElementById("refCode").textContent=getReferral();function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;")}
+
+function showOnly(id){
+    ["homePage","chapterPage","grammarPage","toolsPage"].forEach(x=>{
+        let el = document.getElementById(x);
+        if(el) el.classList.toggle("hidden", x!==id);
+    });
+    window.scrollTo(0,0);
+}
+
+function goHome(){
+    showOnly("homePage");
+    renderChapters(currentClass);
+}
+
+function showClass(cls, btn){
+    currentClass = cls;
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+    showOnly("homePage");
+    renderChapters(cls);
+}
+
+function renderChapters(cls){
+    let box = document.getElementById("homeContent");
+    if(!box) return;
+    let list = chapters[cls] || [];
+    box.innerHTML = `<div class="card"><h2>📚 ${cls==="HSLC"?"HSLC":cls+" শ্ৰেণী"}</h2><div class="notice">পাঠৰ নামত টিপিলে ডাটাবেচৰ পৰা প্ৰশ্নোত্তৰ খোলিব।</div>`+
+    list.map((c,i)=>`<button class="chapter" onclick="openChapter('${cls}', '${esc(c[0])}')"><b>📖 ${esc(c[0])}</b><small>${esc(c[1])} • টিপি খোলক</small></button>`).join("")+'</div>';
+}
+
+async function openChapter(cls, chapterName) {
+    document.getElementById("chapterClass").textContent = cls==="HSLC"?"HSLC":cls+" শ্ৰেণী";
+    document.getElementById("chapterTitle").textContent = chapterName;
+    document.getElementById("questionList").innerHTML = "";
+    document.getElementById("loader").classList.remove("hidden");
+    showOnly("chapterPage");
+
+    try {
+        let classNameStr = String(cls);
+        let { data, error } = await supabase
+            .from('questions')
+            .select('question, answer')
+            .eq('class_name', classNameStr)
+            .eq('chapter_name', chapterName);
+
+        document.getElementById("loader").classList.add("hidden");
+
+        if (error) {
+            console.error(error);
+            document.getElementById("questionList").innerHTML = `<p style="color:red;">ডাটাবেচৰ পৰা তথ্য অনাত সমস্যা হৈছে।</p>`;
+            return;
+        }
+
+        if (data && data.length > 0) {
+            document.getElementById("questionList").innerHTML = data.map((q, i) => 
+                `<div class="qa"><b>${i+1}. ${esc(q.question)}</b><div class="answer"><b>উত্তৰ:</b> ${esc(q.answer)}</div></div>`
+            ).join("");
+        } else {
+            document.getElementById("questionList").innerHTML = `<div class="notice">এই পাঠটোৰ প্ৰশ্নোত্তৰসমূহ এতিয়াও ডাটাবেচত যোগ কৰা হোৱা নাই।</div>`;
+        }
+    } catch (err) {
+        document.getElementById("loader").classList.add("hidden");
+        document.getElementById("questionList").innerHTML = `<p style="color:red;">কিবা কাৰিকৰী ত্ৰুটি ঘটিছে।</p>`;
+    }
+}
+
+function showGrammar(){
+    showOnly("grammarPage");
+    let gList = document.getElementById("grammarList");
+    if(gList) {
+        gList.innerHTML = grammar.map((g,i)=>`<button class="chapter" onclick="openGrammar('${esc(g[0])}')"><b>📘 ${esc(g[0])}</b><small>${esc(g[1])}</small></button>`).join("");
+    }
+}
+
+async function openGrammar(grammarName) {
+    document.getElementById("chapterClass").textContent = "অসমীয়া ব্যাকৰণ";
+    document.getElementById("chapterTitle").textContent = grammarName;
+    document.getElementById("questionList").innerHTML = "";
+    document.getElementById("loader").classList.remove("hidden");
+    showOnly("chapterPage");
+
+    try {
+        let { data, error } = await supabase
+            .from('questions')
+            .select('question, answer')
+            .eq('class_name', 'Grammar')
+            .eq('chapter_name', grammarName);
+
+        document.getElementById("loader").classList.add("hidden");
+
+        if (error) {
+            document.getElementById("questionList").innerHTML = `<p style="color:red;">তথ্য অনাত সমস্যা হৈছে।</p>`;
+            return;
+        }
+
+        if (data && data.length > 0) {
+            document.getElementById("questionList").innerHTML = data.map((q, i) => 
+                `<div class="qa"><b>${i+1}. ${esc(q.question)}</b><div class="answer"><b>উত্তৰ:</b> ${esc(q.answer)}</div></div>`
+            ).join("");
+        } else {
+            document.getElementById("questionList").innerHTML = `<div class="notice">এই ব্যাকৰণ বিষয়ৰ প্ৰশ্নোত্তৰসমূহ এতিয়াও যোগ কৰা হোৱা নাই।</div>`;
+        }
+    } catch (err) {
+        document.getElementById("loader").classList.add("hidden");
+    }
+}
+
+function showTools(){ showOnly("toolsPage"); }
+
+function searchAll(){
+    let q = document.getElementById("searchBox").value.trim().toLowerCase();
+    if(!q){ renderChapters(currentClass); return; }
+    let found = [];
+    Object.keys(chapters).forEach(cls => chapters[cls].forEach((c)=>{ if(c[0].toLowerCase().includes(q)) found.push([cls,c[0],c[1]]); }));
+    grammar.forEach((g)=>{ if(g[0].toLowerCase().includes(q)) found.push(["Grammar",g[0],"ব্যাকৰণ"]); });
+    
+    let box = document.getElementById("homeContent");
+    if(box) {
+        box.innerHTML = '<div class="card"><h2>🔎 Search ফলাফল</h2>'+
+            (found.length ? found.map(x=>`<button class="chapter" onclick="openChapter('${x[0]}','${esc(x[1])}')"><b>📖 ${esc(x[1])}</b><small>${esc(x[2])}</small></button>`).join("") : '<p>কোনো ফলাফল পোৱা নগ’ল।</p>')+'</div>';
+    }
+}
+
+async function shareApp(){
+    let data = {title:"অসমীয়া সহায়িকা-9&10+HSLC", text:"নৱম, দশম আৰু HSLC অসমীয়া পঢ়াৰ সহায়িকা", url:location.href};
+    if(navigator.share){ try{ await navigator.share(data); }catch(e){} }
+    else{ try{ await navigator.clipboard.writeText(location.href); alert("App link copy হৈছে।"); }catch(e){ alert(location.href); } }
+}
+
+function getReferral(){
+    let r = localStorage.getItem("referralCode");
+    if(!r){ r = "ASAM-" + Math.random().toString(36).substring(2,8).toUpperCase(); localStorage.setItem("referralCode", r); }
+    return r;
+}
+function copyReferral(){ navigator.clipboard.writeText(getReferral()).then(()=>alert("Referral Code copy হৈছে: "+getReferral())); }
+
+let refElem = document.getElementById("refCode");
+if(refElem) refElem.textContent = getReferral();
+
+function esc(s){
+    return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+// Initial render
 renderChapters(9);
 </script></body></html>
-

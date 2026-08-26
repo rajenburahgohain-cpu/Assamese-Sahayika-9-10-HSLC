@@ -1,39 +1,122 @@
 <!DOCTYPE html>
 <html lang="as">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>অসমীয়া সহায়িকা-9&10+HSLC</title>
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap');
-*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans Assamese',sans-serif;background:#f3f6fb;color:#172033}header{background:linear-gradient(135deg,#00695c,#1976d2);color:#fff;padding:22px 14px;text-align:center}header h1{margin:0;font-size:25px}header p{margin:7px 0}.container{max-width:900px;margin:auto;padding:16px}.search{width:100%;padding:15px 18px;border:2px solid #08766b;border-radius:30px;font-size:17px;background:#fff;margin-bottom:16px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}button{border:0;border-radius:12px;padding:11px 15px;font-family:inherit;font-size:15px;cursor:pointer}.tab{background:#e0f2ef;color:#075f57}.tab.active,.primary{background:#08766b;color:#fff}.card{background:#fff;border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 3px 14px #00000010}.chapter{display:block;width:100%;text-align:left;background:#fff;border-left:5px solid #08766b;border-radius:12px;margin:9px 0;padding:13px 14px;box-shadow:0 2px 8px #0000000c}.chapter b{display:block;font-size:17px}.chapter small{color:#667085}.qa{background:#f8fafc;border-radius:13px;padding:14px;margin:12px 0;border-left:4px solid #1976d2}.answer{margin-top:8px;line-height:1.8}.hidden{display:none!important}.back{background:#607d8b;color:#fff;margin-bottom:12px}.share{background:#1976d2;color:#fff}.ref{background:#8e44ad;color:#fff}.notice{background:#fff8e1;border-left:4px solid #f9a825;padding:12px;border-radius:10px}.badge{display:inline-block;background:#e8f5e9;color:#1b5e20;padding:4px 9px;border-radius:20px;font-size:12px;margin-bottom:7px}footer{text-align:center;padding:25px;color:#667085}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Noto Sans Assamese',sans-serif;background:#f3f6fb;color:#172033}
+header{background:linear-gradient(135deg,#00695c,#1976d2);color:#fff;padding:22px 14px;text-align:center}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0}
+.container{max-width:900px;margin:auto;padding:16px}
+.search{width:100%;padding:15px 18px;border:2px solid #08766b;border-radius:30px;font-size:17px;background:#fff;margin-bottom:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+button{border:0;border-radius:12px;padding:11px 15px;font-family:inherit;font-size:15px;cursor:pointer}
+.tab{background:#e0f2ef;color:#075f57}
+.tab.active,.primary{background:#08766b;color:#fff}
+.card{background:#fff;border-radius:18px;padding:17px;margin:12px 0;box-shadow:0 3px 14px #00000010}
+.chapter{display:block;width:100%;text-align:left;background:#fff;border-left:5px solid #08766b;border-radius:12px;margin:9px 0;padding:13px 14px;box-shadow:0 2px 8px #0000000c}
+.chapter b{display:block;font-size:17px}
+.chapter small{color:#667085}
+.qa{background:#f8fafc;border-radius:13px;padding:14px;margin:12px 0;border-left:4px solid #1976d2}
+.answer{margin-top:8px;line-height:1.8}
+.hidden{display:none!important}
+.back{background:#607d8b;color:#fff;margin-bottom:12px}
+.share{background:#1976d2;color:#fff}
+.ref{background:#8e44ad;color:#fff}
+.notice{background:#fff8e1;border-left:4px solid #f9a825;padding:12px;border-radius:10px}
+.badge{display:inline-block;background:#e8f5e9;color:#1b5e20;padding:4px 9px;border-radius:20px;font-size:12px;margin-bottom:7px}
+footer{text-align:center;padding:25px;color:#667085}
 .loader{text-align:center;padding:20px;color:#08766b;font-weight:600;}
-</style></head><body>
-<header><h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1><p>নৱম • দশম • HSLC • AI Study Assistant</p></header>
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1>
+  <p>নৱম • দশম • HSLC • AI Study Assistant</p>
+</header>
+
 <div class="container">
-<input id="searchBox" class="search" placeholder="🔎 বিষয় বা পাঠ Search কৰক" oninput="searchAll()">
-<div id="homePage"><div class="tabs">
-<button class="tab active" onclick="showClass(9,this)">নৱম শ্ৰেণী</button><button class="tab" onclick="showClass(10,this)">দশম শ্ৰেণী</button><button class="tab" onclick="showClass('HSLC',this)">HSLC</button><button class="tab" onclick="showGrammar()">অসমীয়া ব্যাকৰণ</button><button class="tab" onclick="showTools()">Share / Referral</button></div><div id="homeContent"></div></div>
-<div id="chapterPage" class="hidden"><button class="back" onclick="goHome()">← পাঠ্যসূচীলৈ উভতি যাওক</button><div class="card"><span class="badge" id="chapterClass"></span><h2 id="chapterTitle"></h2><div id="loader" class="loader hidden">তথ্য ল'ড হৈ আছে...</div><div id="questionList"></div></div></div>
-<div id="grammarPage" class="hidden"><button class="back" onclick="goHome()">← Home</button><div class="card"><h2>📖 অসমীয়া ব্যাকৰণ</h2><div id="grammarList"></div></div></div>
-<div id="toolsPage" class="hidden"><button class="back" onclick="goHome()">← Home</button><div class="card"><h2>📤 App Share</h2><p>বন্ধু-বান্ধৱীক এই App-টো Share কৰক।</p><button class="share" onclick="shareApp()">📤 App Share</button></div><div class="card"><h2>🎁 Referral Code</h2><p>আপোনাৰ Referral Code:</p><h2 id="refCode"></h2><button class="ref" onclick="copyReferral()">📋 Copy Referral Code</button></div></div>
-<footer>অসমীয়া সহায়িকা • 9 • 10 • HSLC</footer></div>
+  <input id="searchBox" class="search" placeholder="🔎 বিষয় বা পাঠ Search কৰক" oninput="searchAll()">
+  
+  <div id="homePage">
+    <div class="tabs">
+      <button class="tab active" onclick="showClass(9,this)">নৱম শ্ৰেণী</button>
+      <button class="tab" onclick="showClass(10,this)">দশম শ্ৰেণী</button>
+      <button class="tab" onclick="showClass('HSLC',this)">HSLC</button>
+      <button class="tab" onclick="showGrammar()">অসমীয়া ব্যাকৰণ</button>
+      <button class="tab" onclick="showTools()">Share / Referral</button>
+    </div>
+    <div id="homeContent"></div>
+  </div>
+
+  <div id="chapterPage" class="hidden">
+    <button class="back" onclick="goHome()">← পাঠ্যসূচীলৈ উভতি যাওক</button>
+    <div class="card">
+      <span class="badge" id="chapterClass"></span>
+      <h2 id="chapterTitle"></h2>
+      <div id="loader" class="loader hidden">তথ্য ল'ড হৈ আছে...</div>
+      <div id="questionList"></div>
+    </div>
+  </div>
+
+  <div id="grammarPage" class="hidden">
+    <button class="back" onclick="goHome()">← Home</button>
+    <div class="card">
+      <h2>📖 অসমীয়া ব্যাকৰণ</h2>
+      <div id="grammarList"></div>
+    </div>
+  </div>
+
+  <div id="toolsPage" class="hidden">
+    <button class="back" onclick="goHome()">← Home</button>
+    <div class="card">
+      <h2>📤 App Share</h2>
+      <p>বন্ধু-বান্ধৱীক এই App-টো Share কৰক।</p>
+      <button class="share" onclick="shareApp()">📤 App Share</button>
+    </div>
+    <div class="card">
+      <h2>🎁 Referral Code</h2>
+      <p>আপোনাৰ Referral Code:</p>
+      <h2 id="refCode"></h2>
+      <button class="ref" onclick="copyReferral()">📋 Copy Referral Code</button>
+    </div>
+  </div>
+
+  <footer>অসমীয়া সহায়িকা • 9 • 10 • HSLC</footer>
+</div>
 
 <script>
 // --- SUPABASE CONFIGURATION ---
-const SUPABASE_URL = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsbXhmemRiaXBrc2JyaWtnZmJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzIzMzcsImV4cCI6MjEwMjU0ODMzN30.21SD0RnJTW622wkddbzg8_ZWD-lW04U7CuNuopSxIjM'; // আপোনাৰ Supabase URL টো ইয়াত বহুৱাওক
-const SUPABASE_ANON_KEY = 'sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen'; // আপোনাৰ Supabase Anon Key টো ইয়াত বহুৱাওক
+const SUPABASE_URL = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsbXhmemRiaXBrc2JyaWtnZmJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzIzMzcsImV4cCI6MjEwMjU0ODMzN30.21SD0RnJTW622wkddbzg8_ZWD-lW04U7CuNuopSxIjM';
+const SUPABASE_ANON_KEY = 'sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const chapters={
-9:[["শিশুলীলা","পদ্যাংশ"],["মানৱ বন্দনা","পদ্যাংশ"],["গীত আৰু ছবি","পদ্যাংশ"],["প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক","পদ্যাংশ"],["মোৰ দেশ","পদ্যাংশ"],["অনন্যৰ প্ৰতি ব্যৱহাৰ","গদ্যাংশ"],["সময়","গদ্যাংশ"],["অন্ধবিশ্বাস আৰু কু-সংস্কাৰ","গদ্যাংশ"],["ভাৰতৰ বৈচিত্ৰ্য মাজত ঐক্য","গদ্যাংশ"],["পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন","গদ্যাংশ"],["যুঁজ","গদ্যাংশ"],["লোকসংস্কৃতি","গদ্যাংশ"],["হুনুমন্তৰ লঙ্কাদৰ্শন","পদ্যাংশ"],["সুখ","পদ্যাংশ"],["চোৰধৰা","গদ্যাংশ"],["সন্মান","গদ্যাংশ"]],
-10:[["বৰগীত — মাধৱদেৱ","পদ্যাংশ"],["ভক্তিৰস","পদ্যাংশ"],["প্ৰশান্তি","পদ্যাংশ"],["মই অসমীয়া","পদ্যাংশ"],["দুশ্চিন্তা","পদ্যাংশ"],["উদ্যোগী হওঁ আহা","গদ্যাংশ"],["ভাৰতীয় সংস্কৃতি","গদ্যাংশ"],["অসমৰ জনগোষ্ঠীৰ গাঁথনি আৰু সংস্কৃতি","গদ্যাংশ"],["ইণ্টাৰনেটৰ তিতা-মিঠা","গদ্যাংশ"],["অৰণ্যমণি সিংহা","গদ্যাংশ"],["অৰণ্যযাত্ৰা","গদ্যাংশ"],["পাৰ্বত্যত ভ্ৰমণ","গদ্যাংশ"],["কানাইৰ চাতুৰী","পদ্যাংশ"],["ধৰ ঝাড়ু ধৰ ভাই","পদ্যাংশ"],["বিয়াদ যোগ","গদ্যাংশ"],["প্ৰাচীন ভাৰতীয় শিক্ষা","গদ্যাংশ"]],
-HSLC:[["HSLC অসমীয়া — মডেল প্ৰশ্ন","HSLC"],["HSLC অসমীয়া — ব্যাকৰণ","HSLC"],["HSLC অসমীয়া — ৰচনা","HSLC"],["HSLC অসমীয়া — আবেদন","HSLC"],["HSLC অসমীয়া — প্ৰতিবেদন","HSLC"],["HSLC অসমীয়া — পূৰ্বৰ প্ৰশ্নৰ অনুশীলন","HSLC"]]};
+const chapters = {
+  9: [["শিশুলীলা","পদ্যাংশ"],["মানৱ বন্দনা","পদ্যাংশ"],["গীত আৰু ছবি","পদ্যাংশ"],["প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক","পদ্যাংশ"],["মোৰ দেশ","পদ্যাংশ"],["অনন্যৰ প্ৰতি ব্যৱহাৰ","গদ্যাংশ"],["সময়","গদ্যাংশ"],["অন্ধবিশ্বাস আৰু কু-সংস্কাৰ","গদ্যাংশ"],["ভাৰতৰ বৈচিত্ৰ্য মাজত ঐক্য","গদ্যাংশ"],["পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন","গদ্যাংশ"],["যুঁজ","গদ্যাংশ"],["লোকসংস্কৃতি","গদ্যাংশ"],["হুনুমন্তৰ লঙ্কাদৰ্শন","পদ্যাংশ"],["সুখ","পদ্যাংশ"],["চোৰধৰা","গদ্যাংশ"],["সন্মান","গদ্যাংশ"]],
+  10: [["বৰগীত — মাধৱদেৱ","পদ্যাংশ"],["ভক্তিৰস","পদ্যাংশ"],["প্ৰশান্তি","পদ্যাংশ"],["মই অসমীয়া","পদ্যাংশ"],["দুশ্চিন্তা","পদ্যাংশ"],["উদ্যোগী হওঁ আহা","গদ্যাংশ"],["ভাৰতীয় সংস্কৃতি","গদ্যাংশ"],["অসমৰ জনগোষ্ঠীৰ গাঁথনি আৰু সংস্কৃতি","গদ্যাংশ"],["ইণ্টাৰনেটৰ তিতা-মিঠা","গদ্যাংশ"],["অৰণ্যমণি সিংহা","গদ্যাংশ"],["অৰণ্যযাত্ৰা","গদ্যাংশ"],["পাৰ্বত্যত ভ্ৰমণ","গদ্যাংশ"],["কানাইৰ চাতুৰী","পদ্যাংশ"],["ধৰ ঝাড়ু ধৰ ভাই","পদ্যাংশ"],["বিয়াদ যোগ","গদ্যাংশ"],["প্ৰাচীন ভাৰতীয় শিক্ষা","গদ্যাংশ"]],
+  HSLC: [["HSLC অসমীয়া — মডেল প্ৰশ্ন","HSLC"],["HSLC অসমীয়া — ব্যাকৰণ","HSLC"],["HSLC অসমীয়া — ৰচনা","HSLC"],["HSLC অসমীয়া — আবেদন","HSLC"],["HSLC অসমীয়া — প্ৰতিবেদন","HSLC"],["HSLC অসমীয়া — পূৰ্বৰ প্ৰশ্নৰ অনুশীলন","HSLC"]]
+};
 
-const grammar=[["সন্ধি","সন্ধিৰ নিয়ম, উদাহৰণ আৰু সন্ধি-বিচ্ছেদ"],["সমাস","সমাসৰ প্ৰকাৰ আৰু উদাহৰণ"],["উপসৰ্গ","উপসৰ্গৰ পৰিচয় আৰু প্ৰয়োগ"],["প্ৰত্যয়","প্ৰত্যয়ৰ পৰিচয় আৰু উদাহৰণ"],["সমাৰ্থক শব্দ","একে বা ওচৰ অৰ্থ প্ৰকাশ কৰা শব্দ"],["বিপৰীত শব্দ","পৰস্পৰ বিপৰীত অৰ্থৰ শব্দ"],["জতুৱা ঠাঁচ","জতুৱা ঠাঁচৰ অৰ্থ আৰু প্ৰয়োগ"],["বাক্য পৰিৱৰ্তন","বাক্যৰ বিভিন্ন ৰূপলৈ পৰিৱৰ্তন"],["যতি চিহ্ন","যতি চিহ্নৰ ব্যৱহাৰ"],["ৰচনা আৰু লিখন","ৰচনা, আবেদন আৰু প্ৰতিবেদনৰ অনুশীলন"]];
+const grammar = [
+  ["সন্ধি","সন্ধিৰ নিয়ম, উদাহৰণ আৰু সন্ধি-বিচ্ছেদ"],
+  ["সমাস","সমাসৰ প্ৰকাৰ আৰু উদাহৰণ"],
+  ["উপসৰ্গ","উপসৰ্গৰ পৰিচয় আৰু প্ৰয়োগ"],
+  ["প্ৰত্যয়","প্ৰত্যয়ৰ পৰিচয় আৰু উদাহৰণ"],
+  ["সমাৰ্থক শব্দ","একে বা ওচৰ অৰ্থ প্ৰকাশ কৰা শব্দ"],
+  ["বিপৰীত শব্দ","পৰস্পৰ বিপৰীত অৰ্থৰ শব্দ"],
+  ["জতুৱা ঠাঁচ","জতুৱা ঠাঁচৰ অৰ্থ আৰু প্ৰয়োগ"],
+  ["বাক্য পৰিৱৰ্তন","বাক্যৰ বিভিন্ন ৰূপলৈ পৰিৱৰ্তন"],
+  ["যতি চিহ্ন","যতি চিহ্নৰ ব্যৱহাৰ"],
+  ["ৰচনা আৰু লিখন","ৰচনা, আবেদন আৰু প্ৰতিবেদনৰ অনুশীলন"]
+];
 
-let currentClass=9;
+let currentClass = 9;
 
 function showOnly(id){
     ["homePage","chapterPage","grammarPage","toolsPage"].forEach(x=>{
@@ -177,6 +260,7 @@ function esc(s){
     return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
 }
 
-// Initial render
 renderChapters(9);
-</script></body></html>
+</script>
+</body>
+</html>

@@ -1,1 +1,406 @@
+<!DOCTYPE html>
+<html lang="as">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="অসমীয়া সহায়িকা — দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ সহায়িকা">
+<title>অসমীয়া সহায়িকা — 10 & HSLC</title>
 
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans Assamese","Nirmala UI",sans-serif;background:#f3f6fb;color:#172033}
+header{background:linear-gradient(135deg,#0b5d3b,#176b9b);color:#fff;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0 0;font-size:14px}
+.container{max-width:900px;margin:auto;padding:14px}
+.search{width:100%;padding:13px;border:1px solid #ccd5df;border-radius:12px;font-size:16px;background:#fff}
+.tabs{display:flex;gap:8px;overflow:auto;margin:13px 0}
+.tab{border:0;border-radius:10px;padding:11px 16px;background:#e4ebf3;white-space:nowrap;font-weight:700}
+.tab.active{background:#176b9b;color:#fff}
+.card{background:#fff;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px #00000010}
+.card h2,.card h3{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.btn,.chapter{width:100%;border:0;border-radius:11px;padding:13px;background:#eef4f8;text-align:left;font-size:15px;font-weight:700;cursor:pointer}
+.btn.primary{background:#176b9b;color:#fff;text-align:center}
+.btn.premium{background:#f3a712;color:#172033;text-align:center}
+.back{margin-bottom:10px}
+.hidden{display:none!important}
+.notice{padding:12px;border-radius:10px;background:#fff7df;margin:10px 0}
+.question{padding:13px;border-left:4px solid #176b9b;background:#f7faff;border-radius:8px;margin:9px 0}
+.answer{margin-top:7px}
+footer{text-align:center;padding:25px 10px;color:#667085;font-size:13px}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}
+.modalbox{background:#fff;border-radius:16px;max-width:430px;width:100%;padding:20px}
+.modalbox input{width:100%;padding:12px;margin:10px 0;border:1px solid #ccd5df;border-radius:9px;font-size:18px}
+.small{font-size:13px;color:#667085}
+a{color:#176b9b}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>অসমীয়া সহায়িকা — 10 & HSLC</h1>
+  <p>দশম শ্ৰেণী • HSLC পৰীক্ষা • পাঠ, প্ৰশ্নোত্তৰ আৰু অধ্যয়ন সহায়িকা</p>
+</header>
+
+<div class="container">
+  <input id="searchBox" class="search" placeholder="🔎 বিষয় বা পাঠ Search কৰক" oninput="searchAll()">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showClass('10',this)">দশম শ্ৰেণী</button>
+    <button class="tab" onclick="showClass('HSLC',this)">HSLC</button>
+    <button class="tab" onclick="showGrammar()">ব্যাকৰণ</button>
+    <button class="tab" onclick="showPrivacy()">Privacy</button>
+    <button class="tab" onclick="showTools()">অন্যান্য</button>
+  </div>
+
+  <section id="homePage">
+    <div class="card">
+      <h2 id="homeTitle">দশম শ্ৰেণী</h2>
+      <div class="notice">দশম শ্ৰেণীৰ পাঠ আৰু HSLC পৰীক্ষাৰ প্ৰস্তুতিৰ বাবে অধ্যায় বাছি লওক।</div>
+      <div id="homeContent" class="grid"></div>
+    </div>
+
+    <div class="card">
+      <h2>⭐ Premium</h2>
+      <p>Premium সুবিধা Google Play Billing-ৰ জৰিয়তে উপলব্ধ হ'ব। এই HTML-ত UPI ID বা UPI payment code নাই।</p>
+      <button class="btn premium" onclick="startPremium()">Premium কিনক</button>
+    </div>
+  </section>
+
+  <section id="chapterPage" class="hidden">
+    <button class="btn back" onclick="goHome()">← Home</button>
+    <div class="card">
+      <h2 id="chapterClass"></h2>
+      <h3 id="chapterTitle"></h3>
+      <div id="loader" class="notice hidden">প্ৰশ্নোত্তৰ লোড হৈ আছে...</div>
+      <div id="questionList"></div>
+    </div>
+  </section>
+
+  <section id="grammarPage" class="hidden">
+    <button class="btn back" onclick="goHome()">← Home</button>
+    <div class="card">
+      <h2>অসমীয়া ব্যাকৰণ</h2>
+      <div id="grammarList" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="privacyPage" class="hidden">
+    <button class="btn back" onclick="goHome()">← Home</button>
+    <div class="card">
+      <h2>Privacy Policy</h2>
+      <p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> শিক্ষামূলক এপ্লিকেচন।</p>
+      <h3>আমি কি তথ্য লওঁ?</h3>
+      <p>অ্যাপৰ প্ৰশ্নোত্তৰ দেখাৰ বাবে সাধাৰণতে ব্যক্তিগত তথ্যৰ প্ৰয়োজন নাই। যদি Authentication চালু থাকে, লগ-ইনৰ বাবে ব্যৱহাৰ কৰা তথ্য Supabase Authentication-এ সংৰক্ষণ কৰিব পাৰে।</p>
+      <h3>প্ৰশ্নোত্তৰ তথ্য</h3>
+      <p>অধ্যায়, প্ৰশ্ন আৰু উত্তৰ Supabase database-ৰ পৰা লোড হ'ব পাৰে।</p>
+      <h3>Payment</h3>
+      <p>Premium ক্ৰয় Google Play Billing-ৰ জৰিয়তে Android app-ত সম্পন্ন কৰিব লাগে। এই HTML-ত কোনো UPI ID, UPI collect বা manual UPI payment ব্যৱস্থা নাই।</p>
+      <h3>শিশু/অভিভাৱক সুৰক্ষা</h3>
+      <p>Premium ক্ৰয় আৰম্ভ কৰাৰ আগতে parental gate দেখুওৱা হয়। ক্ৰয় নিশ্চিতকৰণ Google Play-ৰ billing flow-ৰ ভিতৰত সম্পন্ন কৰিব লাগে।</p>
+      <h3>যোগাযোগ</h3>
+      <p>Privacy Policy বা app-সম্পৰ্কীয় প্ৰশ্নৰ বাবে app-ৰ প্ৰকাশিত support contact ব্যৱহাৰ কৰক।</p>
+      <p class="small">শেষ আপডেট: 29 August 2026</p>
+    </div>
+  </section>
+
+  <section id="toolsPage" class="hidden">
+    <button class="btn back" onclick="goHome()">← Home</button>
+    <div class="card">
+      <h2>অন্যান্য</h2>
+      <button class="btn" onclick="shareApp()">📤 App Share কৰক</button><br><br>
+      <button class="btn" onclick="showAbout()">ℹ️ App সম্পৰ্কে</button>
+    </div>
+  </section>
+</div>
+
+<div id="gateModal" class="modal hidden">
+  <div class="modalbox">
+    <h2>👨‍👩‍👧 Parental Gate</h2>
+    <p>Premium ক্ৰয়ৰ আগতে এটা সহজ অভিভাৱক যাচাইকৰণ সম্পূৰ্ণ কৰক।</p>
+    <p id="gateQuestion"></p>
+    <input id="gateAnswer" type="number" inputmode="numeric" placeholder="উত্তৰ লিখক">
+    <button class="btn primary" onclick="checkGate()">আগবাঢ়ক</button>
+    <br><br>
+    <button class="btn" onclick="closeGate()">Cancel</button>
+  </div>
+</div>
+
+<footer>
+  © 2026 অসমীয়া সহায়িকা — 10 & HSLC<br>
+  শিক্ষামূলক ব্যৱহাৰৰ বাবে
+</footer>
+
+<script>
+/* =========================================================
+   SUPABASE CONFIG
+   আপোনাৰ আগৰ Supabase URL আৰু publishable/anon key ইয়াত বহুৱাব।
+   UPI ID ইচ্ছাকৃতভাৱে ইয়াত নাই।
+   ========================================================= */
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+let supabase = null;
+if(
+  SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
+  SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
+){
+  supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+}
+
+/* দশম শ্ৰেণী — কেৱল Class 10 */
+const class10Chapters = [
+  "অসমীয়া সাহিত্য",
+  "গদ্য",
+  "পদ্য",
+  "ব্যাকৰণ",
+  "ৰচনা",
+  "ভাৱ-সম্প্ৰসাৰণ",
+  "দৰ্খাস্ত",
+  "প্ৰতিবেদন",
+  "জতুৱা ঠাঁচ",
+  "পূৰ্বৰ HSLC প্ৰশ্ন"
+];
+
+/* HSLC — বিষয়সমূহ */
+const hslcSubjects = [
+  "অসমীয়া",
+  "ইংৰাজী",
+  "গণিত",
+  "সাধাৰণ বিজ্ঞান",
+  "সমাজ বিজ্ঞান",
+  "ঐচ্ছিক / MIL"
+];
+
+const grammar = [
+  "সন্ধি","সমাস","উপসৰ্গ","প্ৰত্যয়","অনুসৰ্গ",
+  "সমাৰ্থক শব্দ","বিপৰীত শব্দ","জতুৱা ঠাঁচ",
+  "বাক্য","লিংগ","বচন","যতি চিহ্ন"
+];
+
+let currentClass = "10";
+let currentChapter = "";
+
+function hideAll(){
+  ["homePage","chapterPage","grammarPage","privacyPage","toolsPage"]
+    .forEach(id=>document.getElementById(id).classList.add("hidden"));
+}
+
+function showClass(cls,btn){
+  currentClass = cls;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  hideAll();
+  document.getElementById("homePage").classList.remove("hidden");
+  document.getElementById("homeTitle").textContent =
+    cls === "HSLC" ? "HSLC বিষয়সমূহ" : "দশম শ্ৰেণী";
+  renderHome();
+}
+
+function renderHome(){
+  const box=document.getElementById("homeContent");
+  const list=currentClass==="HSLC" ? hslcSubjects : class10Chapters;
+  box.innerHTML=list.map(x =>
+    `<button class="chapter" onclick="openChapter(${JSON.stringify(currentClass)},${JSON.stringify(x)})">📘 ${esc(x)}</button>`
+  ).join("");
+}
+
+function goHome(){
+  hideAll();
+  document.getElementById("homePage").classList.remove("hidden");
+  renderHome();
+}
+
+async function openChapter(cls,name){
+  currentChapter=name;
+  document.getElementById("chapterClass").textContent =
+    cls==="HSLC" ? "HSLC" : "দশম শ্ৰেণী";
+  document.getElementById("chapterTitle").textContent=name;
+  document.getElementById("questionList").innerHTML="";
+  document.getElementById("loader").classList.remove("hidden");
+  hideAll();
+  document.getElementById("chapterPage").classList.remove("hidden");
+
+  if(!supabase){
+    document.getElementById("loader").classList.add("hidden");
+    document.getElementById("questionList").innerHTML =
+      `<div class="notice">Supabase সংযোগ এতিয়াও দিয়া হোৱা নাই। এই HTML-ত আপোনাৰ Supabase URL আৰু publishable/anon key বহুৱালে database-ৰ প্ৰশ্নোত্তৰ লোড হ'ব।</div>`;
+    return;
+  }
+
+  try{
+    const {data,error}=await supabase
+      .from("questions")
+      .select("question,answer")
+      .eq("class_name",String(cls))
+      .eq("chapter_name",name);
+
+    document.getElementById("loader").classList.add("hidden");
+
+    if(error){
+      document.getElementById("questionList").innerHTML =
+        `<p style="color:red">তথ্য লোড কৰোঁতে সমস্যা হৈছে।</p>`;
+      console.error(error);
+      return;
+    }
+
+    if(data && data.length){
+      document.getElementById("questionList").innerHTML=data.map((q,i)=>
+        `<div class="question"><b>${i+1}. ${esc(q.question)}</b>
+         <div class="answer"><b>উত্তৰ:</b> ${esc(q.answer)}</div></div>`
+      ).join("");
+    }else{
+      document.getElementById("questionList").innerHTML =
+        `<div class="notice">এই অধ্যায়ৰ প্ৰশ্নোত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।</div>`;
+    }
+  }catch(e){
+    document.getElementById("loader").classList.add("hidden");
+    document.getElementById("questionList").innerHTML =
+      `<p style="color:red">Database সংযোগত সমস্যা হৈছে।</p>`;
+  }
+}
+
+function showGrammar(){
+  hideAll();
+  document.getElementById("grammarPage").classList.remove("hidden");
+  document.getElementById("grammarList").innerHTML=grammar.map(x=>
+    `<button class="chapter" onclick="openGrammar(${JSON.stringify(x)})">📚 ${esc(x)}</button>`
+  ).join("");
+}
+
+async function openGrammar(name){
+  currentChapter=name;
+  document.getElementById("chapterClass").textContent="অসমীয়া ব্যাকৰণ";
+  document.getElementById("chapterTitle").textContent=name;
+  document.getElementById("questionList").innerHTML="";
+  document.getElementById("loader").classList.remove("hidden");
+  hideAll();
+  document.getElementById("chapterPage").classList.remove("hidden");
+
+  if(!supabase){
+    document.getElementById("loader").classList.add("hidden");
+    document.getElementById("questionList").innerHTML =
+      `<div class="notice">Supabase সংযোগ দিয়া হোৱা নাই।</div>`;
+    return;
+  }
+
+  const {data,error}=await supabase
+    .from("questions")
+    .select("question,answer")
+    .eq("class_name","Grammar")
+    .eq("chapter_name",name);
+
+  document.getElementById("loader").classList.add("hidden");
+
+  if(error){
+    document.getElementById("questionList").innerHTML="<p style='color:red'>তথ্য লোড হোৱা নাই।</p>";
+    return;
+  }
+
+  document.getElementById("questionList").innerHTML =
+    data && data.length
+    ? data.map((q,i)=>`<div class="question"><b>${i+1}. ${esc(q.question)}</b><div class="answer"><b>উত্তৰ:</b> ${esc(q.answer)}</div></div>`).join("")
+    : `<div class="notice">এই বিষয়ৰ প্ৰশ্নোত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।</div>`;
+}
+
+function showPrivacy(){
+  hideAll();
+  document.getElementById("privacyPage").classList.remove("hidden");
+}
+
+function showTools(){
+  hideAll();
+  document.getElementById("toolsPage").classList.remove("hidden");
+}
+
+function searchAll(){
+  const q=document.getElementById("searchBox").value.trim().toLowerCase();
+  if(!q){renderHome();return;}
+  const source=currentClass==="HSLC"?hslcSubjects:class10Chapters;
+  const found=source.filter(x=>x.toLowerCase().includes(q));
+  const box=document.getElementById("homeContent");
+  box.innerHTML=found.length
+    ? found.map(x=>`<button class="chapter" onclick="openChapter(${JSON.stringify(currentClass)},${JSON.stringify(x)})">🔎 ${esc(x)}</button>`).join("")
+    : `<div class="notice">কোনো মিল থকা বিষয়/পাঠ পোৱা নগ'ল।</div>`;
+}
+
+function startPremium(){
+  makeParentalGate();
+}
+
+let gateA=0,gateB=0;
+
+function makeParentalGate(){
+  gateA=Math.floor(Math.random()*8)+2;
+  gateB=Math.floor(Math.random()*8)+2;
+  document.getElementById("gateQuestion").textContent=`অনুগ্ৰহ কৰি ${gateA} + ${gateB} = ? গণনা কৰক।`;
+  document.getElementById("gateAnswer").value="";
+  document.getElementById("gateModal").classList.remove("hidden");
+}
+
+function closeGate(){
+  document.getElementById("gateModal").classList.add("hidden");
+}
+
+function checkGate(){
+  const ans=Number(document.getElementById("gateAnswer").value);
+  if(ans !== gateA+gateB){
+    alert("উত্তৰটো শুদ্ধ নহয়।");
+    return;
+  }
+  closeGate();
+  startGooglePlayBilling();
+}
+
+/*
+  Google Play Billing:
+  HTML/JavaScript-এ নিজে Google Play Billing চলাব নোৱাৰে।
+  Android WebView wrapper-ত native bridge যোগ কৰিব লাগে।
+
+  Android side-ত Java/Kotlin bridge-ৰ method:
+      startBilling("premium_monthly")
+  বা আপোনাৰ Play Console-ৰ product ID অনুসৰি নাম সলনি কৰক।
+*/
+function startGooglePlayBilling(){
+  if(window.AndroidBilling && typeof window.AndroidBilling.startBilling==="function"){
+    window.AndroidBilling.startBilling("premium_monthly");
+  }else{
+    alert(
+      "Parental Gate সফল হৈছে।\n\n" +
+      "Google Play Billing আৰম্ভ কৰিবলৈ এই HTML-টো Android app/WebView-ৰ native billing bridge-ৰ সৈতে connect কৰিব লাগিব।\n" +
+      "GitHub Pages-ত খোলা HTML-এ নিজে Play Billing purchase সম্পন্ন কৰিব নোৱাৰে।"
+    );
+  }
+}
+
+async function shareApp(){
+  const data={title:"অসমীয়া সহায়িকা — 10 & HSLC",text:"দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ সহায়িকা",url:location.href};
+  try{
+    if(navigator.share) await navigator.share(data);
+    else{
+      await navigator.clipboard.writeText(location.href);
+      alert("App link copy হৈছে।");
+    }
+  }catch(e){}
+}
+
+function showAbout(){
+  alert("অসমীয়া সহায়িকা — কেৱল দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে।");
+}
+
+function esc(v){
+  return String(v ?? "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+/* Initial screen */
+renderHome();
+</script>
+</body>
+</html>

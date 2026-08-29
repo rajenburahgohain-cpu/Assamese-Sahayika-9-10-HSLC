@@ -75,7 +75,7 @@ footer{
 <body>
 
 <header>
-  <h1>📚 অসমীয়া সহায়িকা-9&10+HSLC</h1>
+  <h1>📚 অসমীয়া সহায়িকা-10+HSLC</h1>
   <p>নৱম • দশম • HSLC • AI Study Assistant</p>
 </header>
 
@@ -174,7 +174,7 @@ footer{
 </section>
 
 <footer>
-অসমীয়া সহায়িকা • 9 • 10 • HSLC
+অসমীয়া সহায়িকা • 10 • HSLC
 </footer>
 
 </div>
@@ -209,28 +209,6 @@ window.supabase.createClient(
 
 const chapters = {
 
-"9":[
-
-"শিশুলীলা",
-"মানৱ বন্দনা",
-"গীত আৰু ছবি",
-"প্ৰচণ্ড ধুমুহাই প্ৰশ্ন কৰিলে মোক",
-"মোৰ দেশ",
-
-"অনন্য প্ৰতি ব্যৱহাৰ",
-"সময়",
-"অন্ধবিশ্বাস আৰু কু-সংস্কাৰ",
-"ভাৰতৰ বৈচিত্ৰ্য মাজত ঐক্য",
-"পোহৰৰ বাটেৰে আগবঢ়া গাঁওখন",
-"যুঁজ",
-"লোকসংস্কৃতি",
-
-"হনুমন্তৰ লংকাশমন",
-"সুখ",
-"চোৰধৰা",
-"সন্মান"
-
-],
 
 "10":[
 
@@ -292,7 +270,7 @@ const grammar = [
    PAGE CONTROL
 ===================================================== */
 
-let currentClass = "9";
+let currentClass = "10";
 
 function showOnly(id){
 
@@ -361,7 +339,7 @@ function renderChapters(cls){
       <h2>📚 ${
         cls === "HSLC"
         ? "HSLC"
-        : cls + " নম্বৰ শ্ৰেণী"
+        : 
       }</h2>
 
       <p>তলৰ পাঠটোত Click কৰক।</p>
@@ -408,7 +386,7 @@ async function openChapter(cls,chapterName){
     .textContent =
       cls === "HSLC"
       ? "HSLC"
-      : cls + " নম্বৰ শ্ৰেণী";
+      : cls + "দশম শ্ৰেণী
 
   document.getElementById("chapterTitle")
     .textContent = chapterName;
@@ -667,10 +645,10 @@ async function shareApp(){
 
   const shareData = {
 
-    title:"অসমীয়া সহায়িকা-9&10+HSLC",
+    title:"অসমীয়া সহায়িকা-10+HSLC",
 
     text:
-      "নৱম, দশম আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা App",
+      "দশম শ্ৰেণীৰ HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা App",
 
     url:window.location.href
 

@@ -725,7 +725,8 @@ function esc(value){
    DATABASE SEARCH
    =====================================================
 
- async function dbSearch(term, limit = 10){
+ async function 
+ dbSearch(term, limit = 10){
 
   if(!supabaseClient){
     return {
@@ -768,122 +769,6 @@ function esc(value){
     error: null
   };
 }
-  /*
-    আপোনাৰ questions table-ৰ
-    existing columns অনুসৰি search।
-  */
-
-  const columns = [
-
-    "question",
-    "answer",
-    "question_type",
-    "class_name",
-    "subject",
-    "chapter_name"
-
-  ];
-
-
-  const allRows = [];
-
-
-  for(const column of columns){
-
-    try{
-
-      const result =
-        await supabaseClient
-        .from("questions")
-        .select(`
-          id,
-          chapter_id,
-          question,
-          answer,
-          question_type,
-          language,
-          created_at,
-          updated_at,
-          option_a,
-          option_b,
-          option_c,
-          option_d,
-          correct_answer,
-          class_name,
-          subject,
-          chapter_name,
-          source,
-          source_url,
-          is_ai_generated
-        `)
-        .ilike(
-          column,
-          `%${clean}%`
-        )
-        .limit(limit);
-
-
-      if(result.error){
-
-        console.error(
-          column,
-          result.error
-        );
-
-        continue;
-      }
-
-
-      if(result.data){
-
-        allRows.push(
-          ...result.data
-        );
-      }
-
-    }catch(error){
-
-      console.error(
-        "Search error:",
-        error
-      );
-    }
-
-  }
-
-
-  /*
-    Duplicate আঁতৰোৱা
-  */
-
-  const unique =
-    new Map();
-
-  allRows.forEach(row=>{
-
-    if(row && row.id != null){
-
-      unique.set(
-        row.id,
-        row
-      );
-
-    }
-
-  });
-
-
-  return {
-
-    data:
-      Array.from(unique.values())
-      .slice(0,limit),
-
-    error:null
-  };
-
-}
-
 
 /* =====================================================
    RENDER SEARCH RESULTS

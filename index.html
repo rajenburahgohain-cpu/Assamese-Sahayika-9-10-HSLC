@@ -723,32 +723,51 @@ function esc(value){
 
 /* =====================================================
    DATABASE SEARCH
-   ===================================================== */
+   =====================================================
 
-async function dbSearch(term,limit=10){
+ async function dbSearch(term, limit = 10){
 
   if(!supabaseClient){
-
     return {
-      data:[],
-      error:new Error(
-        "Supabase connection হোৱা নাই।"
-      )
+      data: [],
+      error: new Error("Supabase connection হোৱা নাই।")
     };
   }
 
-  const clean =
-    String(term).trim();
+  const clean = String(term).trim();
 
   if(!clean){
-
     return {
-      data:[],
-      error:null
+      data: [],
+      error: null
     };
   }
 
+  const result = await supabaseClient
+    .from("questions")
+    .select(`
+      id,
+      chapter_id,
+      question,
+      answer
+    `)
+    .ilike("question", `%${clean}%`)
+    .limit(limit);
 
+  if(result.error){
+    console.error("Supabase search error:", result.error);
+
+    return {
+      data: [],
+      error: result.error
+    };
+  }
+
+  return {
+    data: result.data || [],
+    error: null
+  };
+}
   /*
     আপোনাৰ questions table-ৰ
     existing columns অনুসৰি search।

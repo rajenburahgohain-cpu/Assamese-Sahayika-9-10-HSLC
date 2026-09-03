@@ -3,117 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<meta name="description"
-content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-
+<meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
 <title>অসমীয়া সহায়িকা — 10 & HSLC</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- Supabase browser library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
   margin:0;
-  font-family:"Noto Sans Assamese",sans-serif;
+  font-family:"Noto Sans Assamese","Noto Sans",sans-serif;
   background:#f4f7fb;
   color:#172033;
 }
-
 header{
   background:linear-gradient(135deg,#075985,#2563eb);
-  color:white;
+  color:#fff;
   text-align:center;
   padding:20px 12px;
 }
-
-header h1{
-  margin:0;
-  font-size:23px;
-  font-weight:700;
-}
-
-header p{
-  margin:5px 0 0;
-  font-size:12px;
-}
-
+header h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;font-size:13px}
 nav{
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:20;
   display:flex;
   gap:6px;
   overflow-x:auto;
-  background:white;
-  padding:7px;
+  background:#fff;
+  padding:8px;
   border-bottom:1px solid #ddd;
 }
-
 nav button{
   white-space:nowrap;
   border:0;
   border-radius:9px;
-  padding:8px 12px;
+  padding:9px 12px;
   background:#075985;
-  color:white;
+  color:#fff;
   font-family:inherit;
-  font-size:12px;
-  cursor:pointer;
 }
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:14px;
-}
-
+.container{max-width:900px;margin:auto;padding:14px}
 .card{
-  background:white;
+  background:#fff;
   border:1px solid #e3e7ee;
   border-radius:15px;
   padding:16px;
   margin-bottom:14px;
   box-shadow:0 3px 12px rgba(0,0,0,.05);
 }
-
-h2,h3{
-  margin-top:0;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
-}
-
-button{
-  font-family:inherit;
-  cursor:pointer;
-}
-
+h2,h3{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+button{font-family:inherit;cursor:pointer}
 .main-btn{
   width:100%;
   border:0;
   border-radius:11px;
   padding:12px;
   background:#075985;
-  color:white;
+  color:#fff;
   font-size:14px;
 }
-
 .secondary{
   width:100%;
   background:#eef6ff;
@@ -121,9 +78,7 @@ button{
   border:1px solid #cfe4ff;
   border-radius:10px;
   padding:11px;
-  font-size:14px;
 }
-
 input,textarea{
   width:100%;
   padding:12px;
@@ -131,28 +86,10 @@ input,textarea{
   border-radius:10px;
   font-family:inherit;
   font-size:15px;
-  outline:none;
 }
-
-input:focus,
-textarea:focus{
-  border-color:#2563eb;
-}
-
-textarea{
-  min-height:110px;
-  resize:vertical;
-}
-
-.hidden{
-  display:none!important;
-}
-
-.small{
-  font-size:12px;
-  color:#667085;
-}
-
+textarea{min-height:110px;resize:vertical}
+.hidden{display:none!important}
+.small{font-size:12px;color:#667085}
 .tag{
   display:inline-block;
   padding:3px 8px;
@@ -161,98 +98,36 @@ textarea{
   color:#075985;
   font-size:11px;
 }
-
 .result{
   border-left:4px solid #2563eb;
   padding-left:11px;
   margin-top:11px;
 }
-
-.answer{
-  white-space:pre-wrap;
-  line-height:1.8;
-}
-
+.answer{white-space:pre-wrap;line-height:1.8}
 .notice{
   background:#fff8df;
   border:1px solid #f1d47a;
   padding:11px;
   border-radius:11px;
 }
-
-.success{
-  color:#087f5b;
-}
-
-.error{
-  color:#c62828;
-}
-
-.loading{
-  color:#075985;
-}
-
-.empty{
-  text-align:center;
-  padding:20px;
-  color:#667085;
-}
-
-footer{
-  text-align:center;
-  padding:25px;
-  color:#667085;
-  font-size:12px;
-}
-
-.status-box{
-  margin-top:10px;
-  padding:9px;
-  border-radius:8px;
-  background:#f5f7fa;
-  font-size:12px;
-}
-
-.back{
-  margin-bottom:10px;
-  background:#64748b;
-}
-
+.success{color:#087f5b}
+.error{color:#c62828}
+.loading{color:#075985}
+footer{text-align:center;padding:24px;color:#667085;font-size:12px}
 @media(max-width:600px){
-
-  .grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  header h1{
-    font-size:20px;
-  }
-
-  .container{
-    padding:10px;
-  }
-
-  .card{
-    padding:13px;
-  }
-
-  nav button{
-    padding:8px 10px;
-  }
+  .grid{grid-template-columns:1fr}
+  header h1{font-size:20px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header>
   <h1>অসমীয়া সহায়িকা — 10 & HSLC</h1>
   <p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয়</p>
 </header>
 
-
-<!-- NAVIGATION -->
 <nav>
   <button onclick="showPage('home')">🏠 Home</button>
   <button onclick="showPage('chapters')">📚 পাঠ</button>
@@ -262,1068 +137,420 @@ footer{
   <button onclick="showPage('privacy')">🔒 Privacy</button>
 </nav>
 
-
 <main class="container">
 
-
-<!-- ================= HOME ================= -->
-
 <section id="home">
-
   <div class="card">
-
     <h2>স্বাগতম 👋</h2>
-
-    <p>
-      এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b>
-      পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।
-    </p>
-
+    <p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p>
     <div class="grid">
-
-      <button class="main-btn"
-      onclick="showPage('chapters')">
-        📚 দশম শ্ৰেণীৰ পাঠ
-      </button>
-
-      <button class="main-btn"
-      onclick="showPage('grammar')">
-        📝 অসমীয়া ব্যাকৰণ
-      </button>
-
-      <button class="main-btn"
-      onclick="showPage('hslc')">
-        🎯 HSLC প্ৰস্তুতি
-      </button>
-
-      <button class="main-btn"
-      onclick="showPage('questions')">
-        ❓ প্ৰশ্নোত্তৰ
-      </button>
-
+      <button class="main-btn" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button>
+      <button class="main-btn" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button>
+      <button class="main-btn" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button>
+      <button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button>
     </div>
-
   </div>
-
-
-  <!-- SEARCH -->
 
   <div class="card">
-
     <h3>🔎 প্ৰশ্ন / শব্দ বিচাৰক</h3>
-
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="যেনে: সমাস, সন্ধি, HSLC..."
-    >
-
-    <button
-      class="main-btn"
-      style="margin-top:10px"
-      onclick="searchQuestions()">
-      🔍 Search
-    </button>
-
-    <div id="searchStatus"></div>
-
+    <input id="searchInput" placeholder="যেনে: সমাস, সন্ধি, HSLC...">
+    <button class="main-btn" style="margin-top:10px" onclick="searchQuestions()">🔍 Search</button>
+    <div id="searchStatus" class="small"></div>
     <div id="searchResult"></div>
-
   </div>
-
 </section>
-
-
-
-<!-- ================= CHAPTERS ================= -->
 
 <section id="chapters" class="hidden">
-
   <div class="card">
-
-    <button
-      class="main-btn back"
-      onclick="showPage('home')">
-      ← Home
-    </button>
-
-    <h2>📚 দশম শ্ৰেণী – অসমীয়া পাঠসমূহ</h2>
-
-    <p class="small">
-      SEBA/ASSEB দশম শ্ৰেণীৰ অসমীয়া পাঠ্যপুথিৰ পাঠসমূহ
-    </p>
-
-    <!-- ========== পদ্যাংশ ========== -->
-
-    <h3>📖 পদ্যাংশ</h3>
-
+    <h2>📚 দশম শ্ৰেণী — অসমীয়া</h2>
+    <p class="small">Database-ত থকা content বিচাৰিবলৈ তলৰ option বাছক।</p>
     <div class="grid">
-
-      <button class="secondary"
-        onclick="searchByWord('বৰগীত')">
-        🎵 ১। বৰগীত
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('জিকিৰ')">
-        🎵 ২। জিকিৰ
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('প্ৰশস্তি')">
-        📜 ৩। প্ৰশস্তি
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('মই অসমীয়া')">
-        🌿 ৪। মই অসমীয়া
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('দৃশ্যান্তৰ')">
-        📖 ৫। দৃশ্যান্তৰ
-      </button>
-
+      <button class="secondary" onclick="searchByWord('পাঠ')">📖 সকলো পাঠ</button>
+      <button class="secondary" onclick="searchByWord('কবিতা')">📜 কবিতা</button>
+      <button class="secondary" onclick="searchByWord('গদ্য')">📘 গদ্য</button>
+      <button class="secondary" onclick="searchByWord('ব্যাকৰণ')">📚 ব্যাকৰণ</button>
     </div>
-
-
-    <!-- ========== গদ্যাংশ ========== -->
-
-    <h3>📚 গদ্যাংশ</h3>
-
-    <div class="grid">
-
-      <button class="secondary"
-        onclick="searchByWord('উদ্যোগী হওঁ আহাঁ')">
-        📘 ৬। উদ্যোগী হওঁ আহাঁ
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('ভাৰতীয় সংস্কৃতি')">
-        📘 ৭। ভাৰতীয় সংস্কৃতি
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি')">
-        📘 ৮। অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('ইণ্টাৰনেটৰ তিতা-মিঠা')">
-        🌐 ৯। ইণ্টাৰনেটৰ তিতা-মিঠা
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('অৰণিমা সিনহা')">
-        📘 ১০। অৰুণিমা সিনহা
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('অৰণ্যযাত্ৰা')">
-        📘 ১১। অৰণ্যযাত্ৰা
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('পাৰস্যত এভুমুকি')">
-        📘 ১২। পাৰস্যত এভুমুকি
-      </button>
-
-    </div>
-
-
-    <!-- ========== বৈকল্পিক ========== -->
-
-    <h3>📕 বৈকল্পিক পাঠ</h3>
-
-    <div class="grid">
-
-      <button class="secondary"
-        onclick="searchByWord('কানাইৰ চাতুৰী')">
-        📗 ১৩। কানাইৰ চাতুৰী
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('ধৰ ঝাড়ু ধৰ ভাই')">
-        📗 ১৪। ধৰ ঝাড়ু ধৰ ভাই
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('বিষাদ যোগ')">
-        📗 ১৫। বিষাদ যোগ
-      </button>
-
-      <button class="secondary"
-        onclick="searchByWord('প্ৰাচীন ভাৰতীয় শিক্ষা')">
-        📗 ১৬। প্ৰাচীন ভাৰতীয় শিক্ষা
-      </button>
-
-    </div>
-
-    <div id="chapterResult"></div>
-
   </div>
-
 </section>
-
-
-
-<!-- ================= GRAMMAR ================= -->
 
 <section id="grammar" class="hidden">
-
   <div class="card">
-
-    <button
-      class="main-btn back"
-      onclick="showPage('home')">
-      ← Home
-    </button>
-
     <h2>📝 অসমীয়া ব্যাকৰণ</h2>
-
     <div class="grid">
-
-      <button class="secondary"
-      onclick="searchByWord('সন্ধি')">
-        সন্ধি
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('সমাস')">
-        সমাস
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('উপসৰ্গ')">
-        উপসৰ্গ
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('প্ৰত্যয়')">
-        প্ৰত্যয়
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('সমাৰ্থক শব্দ')">
-        সমাৰ্থক শব্দ
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('বিপৰীত শব্দ')">
-        বিপৰীত শব্দ
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('জতুৱা ঠাঁচ')">
-        জতুৱা ঠাঁচ
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('বাক্য')">
-        বাক্য
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('ভাব সম্প্ৰসাৰণ')">
-        ভাব সম্প্ৰসাৰণ
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('ৰচনা')">
-        ৰচনা
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('দৰ্খাস্ত')">
-        দৰ্খাস্ত
-      </button>
-
-      <button class="secondary"
-      onclick="searchByWord('প্ৰতিবেদন')">
-        প্ৰতিবেদন
-      </button>
-
+      <button class="secondary" onclick="localAnswer('সন্ধি')">সন্ধি</button>
+      <button class="secondary" onclick="localAnswer('সমাস')">সমাস</button>
+      <button class="secondary" onclick="localAnswer('উপসৰ্গ')">উপসৰ্গ</button>
+      <button class="secondary" onclick="localAnswer('প্ৰত্যয়')">প্ৰত্যয়</button>
+      <button class="secondary" onclick="localAnswer('সমাৰ্থক শব্দ')">সমাৰ্থক শব্দ</button>
+      <button class="secondary" onclick="localAnswer('বিপৰীত শব্দ')">বিপৰীত শব্দ</button>
+      <button class="secondary" onclick="localAnswer('জতুৱা ঠাঁচ')">জতুৱা ঠাঁচ</button>
+      <button class="secondary" onclick="localAnswer('বাক্য')">বাক্য</button>
+      <button class="secondary" onclick="localAnswer('ভাব সম্প্ৰসাৰণ')">ভাব সম্প্ৰসাৰণ</button>
+      <button class="secondary" onclick="localAnswer('ৰচনা')">ৰচনা</button>
+      <button class="secondary" onclick="localAnswer('দৰ্খাস্ত')">দৰ্খাস্ত</button>
+      <button class="secondary" onclick="localAnswer('প্ৰতিবেদন')">প্ৰতিবেদন</button>
     </div>
-
     <div id="grammarResult"></div>
-
   </div>
-
 </section>
-
-
-
-<!-- ================= HSLC ================= -->
 
 <section id="hslc" class="hidden">
-
   <div class="card">
-
-    <button
-      class="main-btn back"
-      onclick="showPage('home')">
-      ← Home
-    </button>
-
     <h2>🎯 HSLC — অসমীয়া</h2>
-
-    <p>
-      HSLC-সম্পৰ্কীয় content database-ৰ পৰা বিচাৰিব পাৰিব।
-    </p>
-
+    <p>HSLC-সম্পৰ্কীয় content database-ৰ পৰা বিচাৰিব পাৰিব।</p>
     <div class="grid">
-
-      <button class="main-btn"
-      onclick="searchByWord('HSLC')">
-        🎯 HSLC প্ৰশ্ন
-      </button>
-
-      <button class="main-btn"
-      onclick="searchByWord('MCQ')">
-        ☑️ MCQ
-      </button>
-
-      <button class="main-btn"
-      onclick="searchByWord('ৰচনা')">
-        ✍️ ৰচনা
-      </button>
-
-      <button class="main-btn"
-      onclick="searchByWord('ব্যাকৰণ')">
-        📝 ব্যাকৰণ
-      </button>
-
+      <button class="main-btn" onclick="searchByWord('HSLC')">🎯 HSLC প্ৰশ্ন</button>
+      <button class="main-btn" onclick="searchByWord('MCQ')">☑️ MCQ</button>
+      <button class="main-btn" onclick="searchByWord('ৰচনা')">✍️ ৰচনা</button>
+      <button class="main-btn" onclick="searchByWord('ব্যাকৰণ')">📝 ব্যাকৰণ</button>
     </div>
-
   </div>
-
 </section>
-
-
-
-<!-- ================= QUESTIONS ================= -->
 
 <section id="questions" class="hidden">
-
   <div class="card">
-
-    <button
-      class="main-btn back"
-      onclick="showPage('home')">
-      ← Home
-    </button>
-
     <h2>❓ প্ৰশ্নোত্তৰ সহায়িকা</h2>
-
     <div class="notice">
-
-      <b>📚 Database Search</b>
-
-      <br>
-
-      আপোনাৰ Supabase
-      <b>questions</b>
-      table-ৰ পৰা প্ৰশ্ন আৰু উত্তৰ বিচৰা হ'ব।
-
+      <b>Database Mode</b><br>
+      Supabase-ৰ <b>questions</b> table-ৰ পৰা প্ৰশ্ন আৰু উত্তৰ বিচৰা হ'ব।
     </div>
-
     <br>
-
-    <textarea
-      id="questionInput"
-      placeholder="আপোনাৰ প্ৰশ্ন লিখক...
-উদাহৰণ: সমাস কাক বোলে?"
-    ></textarea>
-
+    <textarea id="questionInput" placeholder="আপোনাৰ প্ৰশ্ন লিখক..."></textarea>
     <br><br>
-
-    <button
-      class="main-btn"
-      onclick="askQuestion()">
-      🔍 উত্তৰ বিচাৰক
-    </button>
-
+    <button class="main-btn" onclick="askQuestion()">উত্তৰ বিচাৰক</button>
     <div id="questionResult"></div>
-
   </div>
-
 </section>
-
-
-
-<!-- ================= PRIVACY ================= -->
 
 <section id="privacy" class="hidden">
-
   <div class="card">
-
-    <button
-      class="main-btn back"
-      onclick="showPage('home')">
-      ← Home
-    </button>
-
     <h2>🔒 Privacy Policy</h2>
-
-    <p>
-      <b>অসমীয়া সহায়িকা — 10 & HSLC</b>
-      এটা শিক্ষামূলক application।
-    </p>
-
+    <p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p>
     <h3>তথ্য ব্যৱহাৰ</h3>
-
-    <p>
-      প্ৰশ্নোত্তৰ search কৰিবলৈ
-      Supabase database ব্যৱহাৰ কৰা হয়।
-    </p>
-
+    <p>প্ৰশ্নোত্তৰ search কৰিবলৈ Supabase database ব্যৱহাৰ কৰা হয়।</p>
     <h3>ব্যক্তিগত তথ্য</h3>
-
-    <p>
-      এই HTML-ত কোনো Supabase
-      service-role বা secret key ব্যৱহাৰ কৰা হোৱা নাই।
-    </p>
-
-    <p class="small">
-      Last updated: 2026
-    </p>
-
+    <p>এই HTML-ত Supabase secret/service-role key ব্যৱহাৰ কৰা হোৱা নাই।</p>
+    <p class="small">Last updated: 2026</p>
   </div>
-
 </section>
-
 
 </main>
 
-
 <footer>
-  © 2026 Assamese Sahayika
-  <br>
+  © 2026 Assamese Sahayika<br>
   Class 10 & HSLC — Assamese
 </footer>
 
-
-
 <script>
+"use strict";
 
-/* =====================================================
-   SUPABASE CONFIGURATION
-   ===================================================== */
-
-const SUPABASE_URL =
-"https://rlmxfzdbipksbrikgfbs.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
+/* YOUR SUPABASE PROJECT */
+const SUPABASE_URL = "https://rlmxfzdbipksbrikgfbs.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
 
 let supabaseClient = null;
 
-
-/* =====================================================
-   INITIALIZE SUPABASE
-   ===================================================== */
-
 function initSupabase(){
-
   try{
-
-    if(!window.supabase){
-
-      console.error("Supabase library load হোৱা নাই।");
-
+    if(!window.supabase || typeof window.supabase.createClient !== "function"){
       return false;
     }
-
-    supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-      );
-
-    console.log("Supabase connected.");
-
-    return true;
-
-  }catch(error){
-
-    console.error(
-      "Supabase initialization error:",
-      error
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
     );
-
+    return true;
+  }catch(err){
+    console.error("Supabase init error:",err);
     return false;
   }
 }
 
-
-/* =====================================================
-   PAGE NAVIGATION
-   ===================================================== */
-
 function showPage(id){
-
-  document
-    .querySelectorAll("main section")
-    .forEach(section=>{
-      section.classList.add("hidden");
-    });
-
-  const page =
-    document.getElementById(id);
-
-  if(page){
-
-    page.classList.remove("hidden");
-
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
-  }
+  document.querySelectorAll("main section").forEach(function(s){
+    s.classList.add("hidden");
+  });
+  const page = document.getElementById(id);
+  if(page) page.classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-
-
-/* =====================================================
-   HTML ESCAPE
-   ===================================================== */
 
 function esc(value){
-
-  return String(value ?? "")
-    .replace(/[&<>"']/g, function(match){
-
-      return {
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-
-      }[match];
-
-    });
+  return String(value ?? "").replace(/[&<>"']/g,function(m){
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[m];
+  });
 }
 
+/* Local backup answers: app can answer these even if database is unavailable */
+const localAnswers = [
+  {key:["সন্ধি"],answer:"দুটা ধ্বনি বা শব্দৰ মিলনৰ ফলত হোৱা ধ্বনি-পৰিৱৰ্তনক সন্ধি বোলে।"},
+  {key:["সমাস"],answer:"একাধিক পদ একত্ৰিত হৈ এটা সংক্ষিপ্ত পদ গঠন কৰা প্ৰক্ৰিয়াক সমাস বোলে।"},
+  {key:["উপসৰ্গ"],answer:"শব্দৰ আগত যোগ হৈ শব্দৰ অৰ্থত পৰিৱৰ্তন অনা অংশক উপসৰ্গ বোলে।"},
+  {key:["প্ৰত্যয়"],answer:"শব্দ বা ধাতুৰ পিছত যোগ হৈ নতুন শব্দ গঠন কৰা অংশক প্ৰত্যয় বোলে।"},
+  {key:["সমাৰ্থক"],answer:"যিবোৰ শব্দৰ অৰ্থ একে বা প্ৰায় একে, সেইবোৰক সমাৰ্থক শব্দ বোলে।"},
+  {key:["বিপৰীত"],answer:"যিবোৰ শব্দৰ অৰ্থ পৰস্পৰৰ বিপৰীত, সেইবোৰক বিপৰীত শব্দ বোলে।"},
+  {key:["জতুৱা ঠাঁচ"],answer:"বিশেষ অৰ্থ প্ৰকাশ কৰা প্ৰচলিত শব্দগুচ্ছক জতুৱা ঠাঁচ বোলে।"},
+  {key:["ভাব সম্প্ৰসাৰণ"],answer:"সংক্ষিপ্ত ভাব বা উক্তিৰ অন্তৰ্নিহিত অৰ্থ বিস্তৃতভাৱে ব্যাখ্যা কৰাকে ভাব সম্প্ৰসাৰণ বোলে।"},
+  {key:["ৰচনা"],answer:"ৰচনাত সাধাৰণতে ভূমিকা, মূল আলোচনা আৰু উপসংহাৰ সুসংগঠিতভাৱে লিখা হয়।"}
+];
 
-/* =====================================================
-   DATABASE SEARCH
-   =====================================================
+function findLocalAnswer(text){
+  const q = String(text).toLowerCase();
+  return localAnswers.find(function(item){
+    return item.key.some(function(k){
+      return q.includes(k.toLowerCase());
+    });
+  });
+}
 
- async function 
- dbSearch(term, limit = 10){
+/*
+  Exact columns from the current questions table:
+  id, chapter_id, question, answer, question_type, language,
+  created_at, updated_at, option_a, option_b, option_c, option_d,
+  correct_answer, class_name, subject, chapter_name, source,
+  source_url, is_ai_generated
+*/
+async function dbSearch(term,limit){
+  limit = limit || 10;
 
   if(!supabaseClient){
-    return {
-      data: [],
-      error: new Error("Supabase connection হোৱা নাই।")
-    };
+    return {data:[],error:new Error("Supabase connection নাই")};
   }
 
   const clean = String(term).trim();
-
   if(!clean){
-    return {
-      data: [],
-      error: null
-    };
+    return {data:[],error:null};
   }
 
-  const result = await supabaseClient
-    .from("questions")
-    .select(`
-      id,
-      chapter_id,
-      question,
-      answer
-    `)
-    .ilike("question", `%${clean}%`)
-    .limit(limit);
-
-  if(result.error){
-    console.error("Supabase search error:", result.error);
-
-    return {
-      data: [],
-      error: result.error
-    };
-  }
-
-  return {
-    data: result.data || [],
-    error: null
-  };
-}
-
-/* =====================================================
-   RENDER SEARCH RESULTS
-   ===================================================== */
-
-function renderResults(rows){
-
-  if(!rows || !rows.length){
-
-    return `
-      <div class="card empty">
-        কোনো ফলাফল পোৱা নগ'ল।
-      </div>
-    `;
-  }
-
-
-  return rows.map(row=>{
-
-    let html = `
-
-      <div class="card result">
-
-        <span class="tag">
-          ${esc(row.question_type || "Q&A")}
-        </span>
-
-        <h3>
-          ${esc(row.question || "প্ৰশ্ন নাই")}
-        </h3>
-
-    `;
-
-
-    /*
-      MCQ হলে options দেখুৱাব
-    */
-
-    if(
-      row.option_a ||
-      row.option_b ||
-      row.option_c ||
-      row.option_d
-    ){
-
-      html += `
-
-        <div class="answer">
-
-          ${
-            row.option_a
-            ? "A. "+esc(row.option_a)+"\n"
-            : ""
-          }
-
-          ${
-            row.option_b
-            ? "B. "+esc(row.option_b)+"\n"
-            : ""
-          }
-
-          ${
-            row.option_c
-            ? "C. "+esc(row.option_c)+"\n"
-            : ""
-          }
-
-          ${
-            row.option_d
-            ? "D. "+esc(row.option_d)
-            : ""
-          }
-
-        </div>
-
-      `;
-
-    }
-
-
-    /*
-      Answer
-    */
-
-    html += `
-
-        <div class="answer">
-
-          <b>উত্তৰ:</b>
-
-          ${esc(
-            row.answer || "উত্তৰ নাই।"
-          )}
-
-        </div>
-
-    `;
-
-
-    /*
-      Metadata
-    */
-
-    const meta = [];
-
-    if(row.class_name)
-      meta.push(row.class_name);
-
-    if(row.subject)
-      meta.push(row.subject);
-
-    if(row.chapter_name)
-      meta.push(row.chapter_name);
-
-
-    if(meta.length){
-
-      html += `
-
-        <p class="small">
-          ${esc(meta.join(" • "))}
-        </p>
-
-      `;
-
-    }
-
-
-    html += `
-      </div>
-    `;
-
-
-    return html;
-
-  }).join("");
-
-}
-
-
-/* =====================================================
-   HOME SEARCH
-   ===================================================== */
-
-async function searchQuestions(){
-
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
-
-  const status =
-    document.getElementById(
-      "searchStatus"
-    );
-
-  const output =
-    document.getElementById(
-      "searchResult"
-    );
-
-
-  const query =
-    input.value.trim();
-
-
-  if(!query){
-
-    status.innerHTML =
-      `<p class="error">
-        প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।
-      </p>`;
-
-    output.innerHTML="";
-
-    return;
-  }
-
-
-  status.innerHTML =
-    `<p class="loading">
-      ⏳ Database-ত বিচাৰি থকা হৈছে...
-    </p>`;
-
-  output.innerHTML="";
-
-
-  const result =
-    await dbSearch(query,10);
-
-
-  if(result.data.length){
-
-    status.innerHTML =
-      `<p class="success">
-        ✅ ${result.data.length}
-        টা ফলাফল পোৱা গ'ল।
-      </p>`;
-
-    output.innerHTML =
-      renderResults(result.data);
-
-    return;
-  }
-
-
-  status.innerHTML =
-    `<p class="error">
-      ⚠️ কোনো ফলাফল পোৱা নগ'ল।
-    </p>`;
-
-}
-
-
-/* =====================================================
-   QUESTION PAGE SEARCH
-   ===================================================== */
-
-async function askQuestion(){
-
-  const input = document.getElementById("questionInput");
-  const output = document.getElementById("questionResult");
-
-  const query = input.value.trim();
-
-  if(!query){
-    output.innerHTML = `
-      <div class="card result">
-        <h3>⚠️ প্ৰশ্ন লিখক</h3>
-        <p>অনুগ্ৰহ কৰি এটা প্ৰশ্ন লিখি Search কৰক।</p>
-      </div>
-    `;
-    return;
-  }
-
-  output.innerHTML = `
-    <div class="card result">
-      <h3>🔎 বিচাৰি থকা হৈছে...</h3>
-      <p>আপোনাৰ Database আৰু মুক্ত Internet source-ত বিচৰা হৈছে।</p>
-    </div>
-  `;
+  const columns =
+    "id,chapter_id,question,answer,question_type,language," +
+    "option_a,option_b,option_c,option_d,correct_answer," +
+    "class_name,subject,chapter_name,source,source_url,is_ai_generated";
 
   try{
+    /* Search question */
+    const q1 = await supabaseClient
+      .from("questions")
+      .select(columns)
+      .ilike("question","%" + clean + "%")
+      .limit(limit);
 
-    /* =========================
-       1. SUPABASE DATABASE SEARCH
-       ========================= */
-
-    const result = await dbSearch(query,10);
-
-    if(result && result.data && result.data.length){
-
-      output.innerHTML = `
-        <div class="card result">
-          <h3>📚 Database-ৰ উত্তৰ</h3>
-        </div>
-      `;
-
-      renderResults(result.data);
-
-      return;
+    if(q1.error){
+      return {data:[],error:q1.error};
     }
 
+    /* Search answer */
+    const q2 = await supabaseClient
+      .from("questions")
+      .select(columns)
+      .ilike("answer","%" + clean + "%")
+      .limit(limit);
 
-    /* =========================
-       2. FREE INTERNET SOURCE
-       Wikimedia API
-       ========================= */
-
-    const url =
-      "https://as.wikipedia.org/w/api.php" +
-      "?action=query" +
-      "&generator=search" +
-      "&gsrsearch=" + encodeURIComponent(query) +
-      "&gsrnamespace=0" +
-      "&gsrlimit=3" +
-      "&prop=extracts" +
-      "&exintro=1" +
-      "&explaintext=1" +
-      "&format=json" +
-      "&origin=*";
-
-    const response = await fetch(url);
-
-    if(!response.ok){
-      throw new Error("Internet search failed");
+    if(q2.error){
+      return {data:q1.data || [],error:q2.error};
     }
 
-    const data = await response.json();
+    const map = new Map();
 
-    if(data.query && data.query.pages){
+    (q1.data || []).forEach(function(row){
+      map.set(row.id,row);
+    });
 
-      const pages = Object.values(data.query.pages);
+    (q2.data || []).forEach(function(row){
+      map.set(row.id,row);
+    });
 
-      output.innerHTML = `
-        <div class="card result">
+    return {
+      data:Array.from(map.values()).slice(0,limit),
+      error:null
+    };
 
-          <h3>🌐 Internet-ৰ পৰা পোৱা তথ্য</h3>
-
-          ${pages.map(page => `
-            <div class="card">
-
-              <h3>${page.title || ""}</h3>
-
-              <p>
-                ${page.extract || "তথ্য পোৱা নগ'ল।"}
-              </p>
-
-              <a
-                href="https://as.wikipedia.org/wiki/${encodeURIComponent(
-                  page.title.replace(/ /g,"_")
-                )}"
-                target="_blank"
-                rel="noopener"
-              >
-                📖 সম্পূৰ্ণ তথ্য চাওক
-              </a>
-
-            </div>
-          `).join("")}
-
-        </div>
-      `;
-
-      return;
-    }
-
-
-    /* =========================
-       3. GOOGLE SEARCH FALLBACK
-       ========================= */
-
-    output.innerHTML = `
-      <div class="card result">
-
-        <h3>🔍 Database-ত উত্তৰ পোৱা নগ'ল</h3>
-
-        <p>
-          এই প্ৰশ্নটোৰ বাবে Internet-ত অধিক তথ্য বিচাৰিব পাৰে।
-        </p>
-
-        <a
-          class="main-btn"
-          href="https://www.google.com/search?q=${encodeURIComponent(query)}"
-          target="_blank"
-          rel="noopener"
-        >
-          🌐 Google-ত বিচাৰক
-        </a>
-
-      </div>
-    `;
-
-  }catch(error){
-
-    console.error(error);
-
-    output.innerHTML = `
-      <div class="card result">
-
-        <h3>⚠️ তথ্য বিচৰাত সমস্যা হৈছে</h3>
-
-        <p>
-          Internet সংযোগ পৰীক্ষা কৰক আৰু পুনৰ চেষ্টা কৰক।
-        </p>
-
-        <a
-          class="main-btn"
-          href="https://www.google.com/search?q=${encodeURIComponent(query)}"
-          target="_blank"
-          rel="noopener"
-        >
-          🔎 Google Search
-        </a>
-
-      </div>
-    `;
+  }catch(err){
+    return {data:[],error:err};
   }
 }
 
+function renderResults(rows){
+  if(!rows || !rows.length) return "";
 
-/* =====================================================
-   CATEGORY SEARCH
-   ===================================================== */
+  return rows.map(function(r){
+    let answer = r.answer || "";
+
+    /* For MCQ rows, show options/correct answer when answer is empty */
+    if(!answer && r.correct_answer){
+      answer = "সঠিক উত্তৰ: " + r.correct_answer;
+    }
+
+    let options = "";
+    if(r.option_a || r.option_b || r.option_c || r.option_d){
+      options =
+        "<div class='small'>" +
+        (r.option_a ? "A. " + esc(r.option_a) + "<br>" : "") +
+        (r.option_b ? "B. " + esc(r.option_b) + "<br>" : "") +
+        (r.option_c ? "C. " + esc(r.option_c) + "<br>" : "") +
+        (r.option_d ? "D. " + esc(r.option_d) + "<br>" : "") +
+        "</div>";
+    }
+
+    return `
+      <div class="card result">
+        <span class="tag">${esc(r.question_type || "Q&A")}</span>
+        <h3>${esc(r.question || "প্ৰশ্ন")}</h3>
+        ${options}
+        <div class="answer">${esc(answer || "উত্তৰ নাই।")}</div>
+        <p class="small">
+          ${esc(r.class_name || "")}
+          ${r.subject ? " • " + esc(r.subject) : ""}
+          ${r.chapter_name ? " • " + esc(r.chapter_name) : ""}
+        </p>
+      </div>
+    `;
+  }).join("");
+}
+
+async function searchQuestions(){
+  const input = document.getElementById("searchInput");
+  const out = document.getElementById("searchResult");
+  const status = document.getElementById("searchStatus");
+
+  const q = input.value.trim();
+
+  if(!q){
+    status.innerHTML = '<span class="error">প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।</span>';
+    out.innerHTML = "";
+    return;
+  }
+
+  status.innerHTML = '<span class="loading">⏳ Search চলি আছে...</span>';
+  out.innerHTML = "";
+
+  const result = await dbSearch(q,10);
+
+  if(result.data && result.data.length){
+    status.innerHTML = '<span class="success">✅ Search সম্পূৰ্ণ</span>';
+    out.innerHTML = renderResults(result.data);
+    return;
+  }
+
+  const local = findLocalAnswer(q);
+
+  if(local){
+    status.innerHTML =
+      '<span class="success">✅ Local answer</span>' +
+      (result.error ? ' <span class="small">(Database সংযোগ হোৱা নাই)</span>' : '');
+
+    out.innerHTML = `
+      <div class="card result">
+        <h3>উত্তৰ</h3>
+        <div class="answer">${esc(local.answer)}</div>
+      </div>
+    `;
+    return;
+  }
+
+  if(result.error){
+    status.innerHTML =
+      '<span class="error">⚠️ Database search-ত সমস্যা হৈছে।</span>';
+    out.innerHTML = `
+      <div class="card result">
+        <p>Supabase connection/RLS settings পৰীক্ষা কৰক।</p>
+        <p class="small">${esc(result.error.message || result.error)}</p>
+      </div>
+    `;
+  }else{
+    status.innerHTML =
+      '<span class="error">⚠️ কোনো ফলাফল পোৱা নগ'ল।</span>';
+  }
+}
+
+async function askQuestion(){
+  const q = document.getElementById("questionInput").value.trim();
+  const out = document.getElementById("questionResult");
+
+  if(!q){
+    out.innerHTML = '<p class="error">প্ৰশ্ন লিখক।</p>';
+    return;
+  }
+
+  out.innerHTML =
+    '<p class="loading">⏳ উত্তৰ বিচাৰি থকা হৈছে...</p>';
+
+  const result = await dbSearch(q,5);
+
+  if(result.data && result.data.length){
+    out.innerHTML = renderResults(result.data);
+    return;
+  }
+
+  const local = findLocalAnswer(q);
+
+  if(local){
+    out.innerHTML = `
+      <div class="card result">
+        <h3>উত্তৰ</h3>
+        <div class="answer">${esc(local.answer)}</div>
+      </div>
+    `;
+    return;
+  }
+
+  out.innerHTML = `
+    <div class="card result">
+      <p>এই প্ৰশ্নৰ উত্তৰ database-ত এতিয়াও যোগ কৰা হোৱা নাই।</p>
+      ${result.error ? "<p class='small'>Database error: " + esc(result.error.message || result.error) + "</p>" : ""}
+    </div>
+  `;
+}
 
 function searchByWord(word){
-
   showPage("home");
-
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
-
+  const input = document.getElementById("searchInput");
   input.value = word;
-
   searchQuestions();
-
 }
 
+function localAnswer(topic){
+  const result = findLocalAnswer(topic);
+  const out = document.getElementById("grammarResult");
 
-/* =====================================================
-   ENTER KEY SEARCH
-   ===================================================== */
+  out.innerHTML = `
+    <div class="card result">
+      <h3>${esc(topic)}</h3>
+      <div class="answer">${
+        esc(result ? result.answer : "এই বিষয়ৰ content এতিয়াও যোগ কৰা হোৱা নাই।")
+      }</div>
+    </div>
+  `;
+}
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
+document.addEventListener("DOMContentLoaded",function(){
+  showPage("home");
 
-    initSupabase();
+  const connected = initSupabase();
 
-    showPage("home");
-
-
-    const searchInput =
-      document.getElementById(
-        "searchInput"
-      );
-
-
-    if(searchInput){
-
-      searchInput.addEventListener(
-        "keydown",
-        function(event){
-
-          if(event.key === "Enter"){
-
-            event.preventDefault();
-
-            searchQuestions();
-
-          }
-
-        }
-      );
-
-    }
-
-
-    const questionInput =
-      document.getElementById(
-        "questionInput"
-      );
-
-
-    if(questionInput){
-
-      questionInput.addEventListener(
-        "keydown",
-        function(event){
-
-          if(
-            event.key === "Enter" &&
-            !event.shiftKey
-          ){
-
-            event.preventDefault();
-
-            askQuestion();
-
-          }
-
-        }
-      );
-
-    }
-
+  if(!connected){
+    console.warn("Supabase library/client not available.");
   }
-);
 
+  const searchInput = document.getElementById("searchInput");
+  const questionInput = document.getElementById("questionInput");
+
+  searchInput.addEventListener("keydown",function(e){
+    if(e.key === "Enter") searchQuestions();
+  });
+
+  questionInput.addEventListener("keydown",function(e){
+    if(e.key === "Enter" && (e.ctrlKey || e.metaKey)){
+      askQuestion();
+    }
+  });
+});
 </script>
 
 </body>

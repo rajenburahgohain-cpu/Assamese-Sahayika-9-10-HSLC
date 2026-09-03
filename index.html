@@ -17,258 +17,238 @@ content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ �
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+*{box-sizing:border-box}
 
-*{
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
-  margin:0;
-  font-family:"Noto Sans Assamese",sans-serif;
-  background:#f4f7fb;
-  color:#172033;
+ margin:0;
+ font-family:"Noto Sans Assamese",sans-serif;
+ background:#f4f7fb;
+ color:#172033;
 }
 
 header{
-  background:linear-gradient(135deg,#075985,#2563eb);
-  color:white;
-  text-align:center;
-  padding:20px 12px;
+ background:linear-gradient(135deg,#075985,#2563eb);
+ color:white;
+ text-align:center;
+ padding:20px 12px;
 }
 
 header h1{
-  margin:0;
-  font-size:23px;
-  font-weight:700;
+ margin:0;
+ font-size:23px;
+ font-weight:700;
 }
 
 header p{
-  margin:5px 0 0;
-  font-size:12px;
+ margin:5px 0 0;
+ font-size:12px;
 }
 
 nav{
-  position:sticky;
-  top:0;
-  z-index:100;
-  display:flex;
-  gap:6px;
-  overflow-x:auto;
-  background:white;
-  padding:7px;
-  border-bottom:1px solid #ddd;
+ position:sticky;
+ top:0;
+ z-index:100;
+ display:flex;
+ gap:6px;
+ overflow-x:auto;
+ background:white;
+ padding:7px;
+ border-bottom:1px solid #ddd;
 }
 
 nav button{
-  white-space:nowrap;
-  border:0;
-  border-radius:9px;
-  padding:8px 12px;
-  background:#075985;
-  color:white;
-  font-family:inherit;
-  font-size:12px;
-  cursor:pointer;
+ white-space:nowrap;
+ border:0;
+ border-radius:9px;
+ padding:8px 12px;
+ background:#075985;
+ color:white;
+ font-family:inherit;
+ font-size:12px;
+ cursor:pointer;
 }
 
 .container{
-  max-width:900px;
-  margin:auto;
-  padding:14px;
+ max-width:900px;
+ margin:auto;
+ padding:14px;
 }
 
 .card{
-  background:white;
-  border:1px solid #e3e7ee;
-  border-radius:15px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 3px 12px rgba(0,0,0,.05);
+ background:white;
+ border:1px solid #e3e7ee;
+ border-radius:15px;
+ padding:16px;
+ margin-bottom:14px;
+ box-shadow:0 3px 12px rgba(0,0,0,.05);
 }
 
-h2,h3{
-  margin-top:0;
-}
+h2,h3{margin-top:0}
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:9px;
 }
 
 button{
-  font-family:inherit;
-  cursor:pointer;
+ font-family:inherit;
+ cursor:pointer;
 }
 
 .main-btn{
-  width:100%;
-  border:0;
-  border-radius:11px;
-  padding:12px;
-  background:#075985;
-  color:white;
-  font-size:14px;
+ width:100%;
+ border:0;
+ border-radius:11px;
+ padding:12px;
+ background:#075985;
+ color:white;
+ font-size:14px;
 }
 
 .secondary{
-  width:100%;
-  background:#eef6ff;
-  color:#075985;
-  border:1px solid #cfe4ff;
-  border-radius:10px;
-  padding:11px;
-  font-size:14px;
+ width:100%;
+ background:#eef6ff;
+ color:#075985;
+ border:1px solid #cfe4ff;
+ border-radius:10px;
+ padding:11px;
+ font-size:14px;
 }
 
-input,
-textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid #ccd3dd;
-  border-radius:10px;
-  font-family:inherit;
-  font-size:15px;
-  outline:none;
+input,textarea{
+ width:100%;
+ padding:12px;
+ border:1px solid #ccd3dd;
+ border-radius:10px;
+ font-family:inherit;
+ font-size:15px;
+ outline:none;
 }
 
-input:focus,
-textarea:focus{
-  border-color:#2563eb;
+input:focus,textarea:focus{
+ border-color:#2563eb;
 }
 
 textarea{
-  min-height:110px;
-  resize:vertical;
+ min-height:110px;
+ resize:vertical;
 }
 
 .hidden{
-  display:none!important;
+ display:none!important;
 }
 
 .small{
-  font-size:12px;
-  color:#667085;
+ font-size:12px;
+ color:#667085;
 }
 
 .tag{
-  display:inline-block;
-  padding:3px 8px;
-  border-radius:20px;
-  background:#eaf4ff;
-  color:#075985;
-  font-size:11px;
+ display:inline-block;
+ padding:3px 8px;
+ border-radius:20px;
+ background:#eaf4ff;
+ color:#075985;
+ font-size:11px;
 }
 
 .result{
-  border-left:4px solid #2563eb;
-  padding-left:11px;
-  margin-top:11px;
+ border-left:4px solid #2563eb;
+ padding-left:11px;
+ margin-top:11px;
 }
 
 .answer{
-  white-space:pre-wrap;
-  line-height:1.8;
+ white-space:pre-wrap;
+ line-height:1.8;
 }
 
 .notice{
-  background:#fff8df;
-  border:1px solid #f1d47a;
-  padding:11px;
-  border-radius:11px;
+ background:#fff8df;
+ border:1px solid #f1d47a;
+ padding:11px;
+ border-radius:11px;
 }
 
-.success{
-  color:#087f5b;
-}
-
-.error{
-  color:#c62828;
-}
-
-.loading{
-  color:#075985;
-}
+.success{color:#087f5b}
+.error{color:#c62828}
+.loading{color:#075985}
 
 .empty{
-  text-align:center;
-  padding:20px;
-  color:#667085;
+ text-align:center;
+ padding:20px;
+ color:#667085;
 }
 
 footer{
-  text-align:center;
-  padding:25px;
-  color:#667085;
-  font-size:12px;
+ text-align:center;
+ padding:25px;
+ color:#667085;
+ font-size:12px;
 }
 
 .back{
-  margin-bottom:10px;
-  background:#64748b;
+ margin-bottom:10px;
+ background:#64748b;
 }
 
 .voice-btn{
-  background:#7c3aed;
+ background:#7c3aed;
 }
 
 .voice-btn.listening{
-  background:#dc2626;
+ background:#dc2626;
 }
 
 .speak-btn{
-  background:#059669;
-  border:0;
-  color:white;
-  padding:8px 12px;
-  border-radius:8px;
-  font-family:inherit;
+ background:#059669;
+ border:0;
+ color:white;
+ padding:8px 12px;
+ border-radius:8px;
+ font-family:inherit;
 }
 
 .share-btn{
-  background:#16a34a;
+ background:#16a34a;
 }
 
 .ai-note{
-  background:#eef6ff;
-  border:1px solid #cfe4ff;
-  border-radius:10px;
-  padding:11px;
-  font-size:13px;
+ background:#eef6ff;
+ border:1px solid #cfe4ff;
+ border-radius:10px;
+ padding:11px;
+ font-size:13px;
 }
 
 @media(max-width:600px){
+ .grid{
+  grid-template-columns:1fr 1fr;
+ }
 
-  .grid{
-    grid-template-columns:1fr 1fr;
-  }
+ header h1{
+  font-size:20px;
+ }
 
-  header h1{
-    font-size:20px;
-  }
+ .container{
+  padding:10px;
+ }
 
-  .container{
-    padding:10px;
-  }
+ .card{
+  padding:13px;
+ }
 
-  .card{
-    padding:13px;
-  }
-
-  nav button{
-    padding:8px 10px;
-  }
+ nav button{
+  padding:8px 10px;
+ }
 }
-
 </style>
 </head>
 
 <body>
-
 
 <!-- HEADER -->
 
@@ -309,8 +289,7 @@ footer{
 ❓ প্ৰশ্নোত্তৰ
 </button>
 
-<button class="share-btn"
-onclick="shareApp()">
+<button class="share-btn" onclick="shareApp()">
 📤 Share
 </button>
 
@@ -339,38 +318,26 @@ onclick="shareApp()">
 পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।
 </p>
 
-
 <div class="grid">
 
 <button class="main-btn"
 onclick="showPage('chapters')">
-
 📚 দশম শ্ৰেণীৰ পাঠ
-
 </button>
-
 
 <button class="main-btn"
 onclick="showPage('grammar')">
-
 📝 অসমীয়া ব্যাকৰণ
-
 </button>
-
 
 <button class="main-btn"
 onclick="showPage('hslc')">
-
 🎯 HSLC প্ৰস্তুতি
-
 </button>
-
 
 <button class="main-btn"
 onclick="showPage('questions')">
-
 ❓ প্ৰশ্নোত্তৰ
-
 </button>
 
 </div>
@@ -386,37 +353,28 @@ onclick="showPage('questions')">
 🔎 প্ৰশ্ন / শব্দ বিচাৰক
 </h3>
 
-
 <input
 id="searchInput"
 type="text"
 placeholder="যেনে: সমাস, সন্ধি, বৰগীত..."
 >
 
-
-<div class="grid"
-style="margin-top:10px">
+<div class="grid" style="margin-top:10px">
 
 <button
 class="main-btn"
 onclick="searchQuestions()">
-
 🔍 Search
-
 </button>
-
 
 <button
 class="main-btn voice-btn"
 id="voiceButton"
 onclick="startVoiceSearch()">
-
 🎙️ Voice
-
 </button>
 
 </div>
-
 
 <div id="searchStatus"></div>
 
@@ -436,10 +394,22 @@ onclick="startVoiceSearch()">
 <div class="ai-note">
 
 AI সুবিধাটো এতিয়া বন্ধ ৰখা হৈছে।
+
 <br><br>
+
 পিছত Free AI API / Supabase Edge Function
 সংযোগ কৰি এই এপৰ ভিতৰতে
-অসমীয়াত প্ৰশ্নোত্তৰ কৰাৰ সুবিধা যোগ কৰিব পাৰি।
+অসমীয়াত প্ৰশ্নোত্তৰ কৰাৰ সুবিধা যোগ কৰা হ'ব।
+
+<br><br>
+
+<b>ভৱিষ্যৎ ব্যৱস্থা:</b><br>
+
+Database-ত উত্তৰ নাথাকিলে
+AI/Web-ৰ পৰা উত্তৰ →
+উত্তৰ দেখুওৱা →
+প্ৰয়োজন হলে
+<b>questions</b> table-ত সংৰক্ষণ।
 
 </div>
 
@@ -458,16 +428,12 @@ AI সুবিধাটো এতিয়া বন্ধ ৰখা হৈছ�
 <button
 class="main-btn back"
 onclick="showPage('home')">
-
 ← Home
-
 </button>
-
 
 <h2>
 📚 দশম শ্ৰেণী – অসমীয়া পাঠসমূহ
 </h2>
-
 
 <p class="small">
 SEBA/ASSEB দশম শ্ৰেণীৰ অসমীয়া পাঠ্যপুথিৰ পাঠসমূহ
@@ -478,160 +444,107 @@ SEBA/ASSEB দশম শ্ৰেণীৰ অসমীয়া পাঠ্য
 📖 পদ্যাংশ
 </h3>
 
-
 <div class="grid">
 
 <button class="secondary"
 onclick="searchByWord('বৰগীত')">
-
 🎵 ১। বৰগীত
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('জিকিৰ')">
-
 🎵 ২। জিকিৰ
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('প্ৰশস্তি')">
-
 📜 ৩। প্ৰশস্তি
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('মই অসমীয়া')">
-
 🌿 ৪। মই অসমীয়া
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('দৃশ্যান্তৰ')">
-
 📖 ৫। দৃশ্যান্তৰ
-
 </button>
 
 </div>
-
 
 
 <h3>
 📚 গদ্যাংশ
 </h3>
 
-
 <div class="grid">
 
 <button class="secondary"
 onclick="searchByWord('উদ্যোগী হওঁ আহাঁ')">
-
 📘 ৬। উদ্যোগী হওঁ আহাঁ
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('ভাৰতীয় সংস্কৃতি')">
-
 📘 ৭। ভাৰতীয় সংস্কৃতি
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি')">
-
 📘 ৮। অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('ইণ্টাৰনেটৰ তিতা-মিঠা')">
-
 🌐 ৯। ইণ্টাৰনেটৰ তিতা-মিঠা
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('অৰুণিমা সিনহা')">
-
 📘 ১০। অৰুণিমা সিনহা
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('অৰণ্যযাত্ৰা')">
-
 📘 ১১। অৰণ্যযাত্ৰা
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('পাৰস্যত এভুমুকি')">
-
 📘 ১২। পাৰস্যত এভুমুকি
-
 </button>
 
 </div>
-
 
 
 <h3>
 📕 বৈকল্পিক পাঠ
 </h3>
 
-
 <div class="grid">
 
 <button class="secondary"
 onclick="searchByWord('কানাইৰ চাতুৰী')">
-
 📗 ১৩। কানাইৰ চাতুৰী
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('ধৰ ঝাড়ু ধৰ ভাই')">
-
 📗 ১৪। ধৰ ঝাড়ু ধৰ ভাই
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('বিষাদ যোগ')">
-
 📗 ১৫। বিষাদ যোগ
-
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('প্ৰাচীন ভাৰতীয় শিক্ষা')">
-
 📗 ১৬। প্ৰাচীন ভাৰতীয় শিক্ষা
-
 </button>
 
 </div>
-
-
-<div id="chapterResult"></div>
 
 </div>
 
@@ -648,85 +561,69 @@ onclick="searchByWord('প্ৰাচীন ভাৰতীয় শিক্�
 <button
 class="main-btn back"
 onclick="showPage('home')">
-
 ← Home
-
 </button>
-
 
 <h2>
 📝 অসমীয়া ব্যাকৰণ
 </h2>
 
-
 <div class="grid">
-
 
 <button class="secondary"
 onclick="searchByWord('সন্ধি')">
 সন্ধি
 </button>
 
-
 <button class="secondary"
 onclick="searchByWord('সমাস')">
 সমাস
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('উপসৰ্গ')">
 উপসৰ্গ
 </button>
 
-
 <button class="secondary"
 onclick="searchByWord('প্ৰত্যয়')">
 প্ৰত্যয়
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('সমাৰ্থক শব্দ')">
 সমাৰ্থক শব্দ
 </button>
 
-
 <button class="secondary"
 onclick="searchByWord('বিপৰীত শব্দ')">
 বিপৰীত শব্দ
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('জতুৱা ঠাঁচ')">
 জতুৱা ঠাঁচ
 </button>
 
-
 <button class="secondary"
 onclick="searchByWord('বাক্য')">
 বাক্য
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('ভাব সম্প্ৰসাৰণ')">
 ভাব সম্প্ৰসাৰণ
 </button>
 
-
 <button class="secondary"
 onclick="searchByWord('ৰচনা')">
 ৰচনা
 </button>
 
-
 <button class="secondary"
 onclick="searchByWord('দৰ্খাস্ত')">
 দৰ্খাস্ত
 </button>
-
 
 <button class="secondary"
 onclick="searchByWord('প্ৰতিবেদন')">
@@ -734,9 +631,6 @@ onclick="searchByWord('প্ৰতিবেদন')">
 </button>
 
 </div>
-
-
-<div id="grammarResult"></div>
 
 </div>
 
@@ -753,54 +647,37 @@ onclick="searchByWord('প্ৰতিবেদন')">
 <button
 class="main-btn back"
 onclick="showPage('home')">
-
 ← Home
-
 </button>
-
 
 <h2>
 🎯 HSLC — অসমীয়া
 </h2>
 
-
 <p>
 HSLC-সম্পৰ্কীয় content database-ৰ পৰা বিচাৰিব পাৰিব।
 </p>
 
-
 <div class="grid">
-
 
 <button class="main-btn"
 onclick="searchByWord('HSLC')">
-
 🎯 HSLC প্ৰশ্ন
-
 </button>
-
 
 <button class="main-btn"
 onclick="searchByWord('MCQ')">
-
 ☑️ MCQ
-
 </button>
-
 
 <button class="main-btn"
 onclick="searchByWord('ৰচনা')">
-
 ✍️ ৰচনা
-
 </button>
-
 
 <button class="main-btn"
 onclick="searchByWord('ব্যাকৰণ')">
-
 📝 ব্যাকৰণ
-
 </button>
 
 </div>
@@ -820,16 +697,12 @@ onclick="searchByWord('ব্যাকৰণ')">
 <button
 class="main-btn back"
 onclick="showPage('home')">
-
 ← Home
-
 </button>
-
 
 <h2>
 ❓ প্ৰশ্নোত্তৰ সহায়িকা
 </h2>
-
 
 <div class="notice">
 
@@ -845,14 +718,12 @@ table-ত থকা
 <br><br>
 
 আপুনি/Admin-এ database-ত
-নিজে যোগ কৰা উত্তৰো
+যোগ কৰা উত্তৰো
 ইয়াত দেখুওৱা হ'ব।
 
 </div>
 
-
 <br>
-
 
 <textarea
 id="questionInput"
@@ -860,32 +731,24 @@ placeholder="আপোনাৰ প্ৰশ্ন লিখক...
 উদাহৰণ: সমাস কাক বোলে?"
 ></textarea>
 
-
 <br><br>
-
 
 <div class="grid">
 
 <button
 class="main-btn"
 onclick="askQuestion()">
-
 🔍 উত্তৰ বিচাৰক
-
 </button>
-
 
 <button
 class="main-btn voice-btn"
 id="questionVoiceButton"
 onclick="startQuestionVoice()">
-
 🎙️ Voice
-
 </button>
 
 </div>
-
 
 <div id="questionResult"></div>
 
@@ -904,45 +767,36 @@ onclick="startQuestionVoice()">
 <button
 class="main-btn back"
 onclick="showPage('home')">
-
 ← Home
-
 </button>
-
 
 <h2>
 🔒 Privacy Policy
 </h2>
-
 
 <p>
 <b>অসমীয়া সহায়িকা — 10 & HSLC</b>
 এটা শিক্ষামূলক application।
 </p>
 
-
 <h3>
 তথ্য ব্যৱহাৰ
 </h3>
-
 
 <p>
 প্ৰশ্নোত্তৰ search কৰিবলৈ
 Supabase database ব্যৱহাৰ কৰা হয়।
 </p>
 
-
 <h3>
 ব্যক্তিগত তথ্য
 </h3>
-
 
 <p>
 এই HTML-ত কোনো
 Supabase service-role বা
 secret key ব্যৱহাৰ কৰা হোৱা নাই।
 </p>
-
 
 <p class="small">
 Last updated: 2026
@@ -952,9 +806,7 @@ Last updated: 2026
 
 </section>
 
-
 </main>
-
 
 
 <footer>
@@ -971,7 +823,6 @@ Class 10 & HSLC — Assamese
 
 <script>
 
-
 /* =====================================================
    SUPABASE CONFIGURATION
    ===================================================== */
@@ -979,13 +830,10 @@ Class 10 & HSLC — Assamese
 const SUPABASE_URL =
 "https://rlmxfzdbipksbrikgfbs.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
 "sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
 
-
 let supabaseClient = null;
-
 
 
 /* =====================================================
@@ -994,43 +842,39 @@ let supabaseClient = null;
 
 function initSupabase(){
 
-  try{
+ try{
 
-    if(!window.supabase){
+  if(!window.supabase){
 
-      console.error(
-        "Supabase library load হোৱা নাই।"
-      );
+   console.error(
+    "Supabase library load হোৱা নাই।"
+   );
 
-      return false;
-    }
-
-
-    supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-      );
-
-
-    console.log(
-      "Supabase connected."
-    );
-
-
-    return true;
-
-  }catch(error){
-
-    console.error(
-      "Supabase initialization error:",
-      error
-    );
-
-    return false;
+   return false;
   }
-}
 
+  supabaseClient =
+   window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+   );
+
+  console.log(
+   "Supabase connected."
+  );
+
+  return true;
+
+ }catch(error){
+
+  console.error(
+   "Supabase initialization error:",
+   error
+  );
+
+  return false;
+ }
+}
 
 
 /* =====================================================
@@ -1039,37 +883,32 @@ function initSupabase(){
 
 function showPage(id){
 
-  document
-    .querySelectorAll("main section")
-    .forEach(section => {
+ document
+  .querySelectorAll("main section")
+  .forEach(section => {
 
-      section.classList.add(
-        "hidden"
-      );
+   section.classList.add(
+    "hidden"
+   );
 
-    });
+  });
 
+ const page =
+  document.getElementById(id);
 
-  const page =
-    document.getElementById(id);
+ if(page){
 
+  page.classList.remove(
+   "hidden"
+  );
 
-  if(page){
+  window.scrollTo({
+   top:0,
+   behavior:"smooth"
+  });
 
-    page.classList.remove(
-      "hidden"
-    );
-
-
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
-
-  }
-
+ }
 }
-
 
 
 /* =====================================================
@@ -1078,26 +917,25 @@ function showPage(id){
 
 function esc(value){
 
-  return String(value ?? "")
-    .replace(
-      /[&<>"']/g,
-      function(match){
+ return String(value ?? "")
+  .replace(
+   /[&<>"']/g,
+   function(match){
 
-        return {
+    return {
 
-          "&":"&amp;",
-          "<":"&lt;",
-          ">":"&gt;",
-          '"':"&quot;",
-          "'":"&#039;"
+     "&":"&amp;",
+     "<":"&lt;",
+     ">":"&gt;",
+     '"':"&quot;",
+     "'":"&#039;"
 
-        }[match];
+    }[match];
 
-      }
-    );
+   }
+  );
 
 }
-
 
 
 /* =====================================================
@@ -1105,90 +943,68 @@ function esc(value){
    ===================================================== */
 
 async function dbSearch(
-  term,
-  limit = 10
+ term,
+ limit = 10
 ){
 
-  if(!supabaseClient){
-
-    return {
-
-      data:[],
-
-      error:
-        new Error(
-          "Supabase connection হোৱা নাই।"
-        )
-
-    };
-
-  }
-
-
-  const clean =
-    String(term).trim();
-
-
-  if(!clean){
-
-    return {
-
-      data:[],
-      error:null
-
-    };
-
-  }
-
-
-  /*
-   Question আৰু Answer দুয়োটাতে
-   search কৰা হৈছে।
-  */
-
-  const result =
-    await supabaseClient
-      .from("questions")
-      .select("*")
-      .or(
-        "question.ilike.%" +
-        clean +
-        "%,answer.ilike.%" +
-        clean +
-        "%"
-      )
-      .limit(limit);
-
-
-  if(result.error){
-
-    console.error(
-      "Supabase search error:",
-      result.error
-    );
-
-
-    return {
-
-      data:[],
-      error:result.error
-
-    };
-
-  }
-
+ if(!supabaseClient){
 
   return {
-
-    data:
-      result.data || [],
-
-    error:null
-
+   data:[],
+   error:new Error(
+    "Supabase connection হোৱা নাই।"
+   )
   };
 
-}
+ }
 
+ const clean =
+  String(term).trim();
+
+ if(!clean){
+
+  return {
+   data:[],
+   error:null
+  };
+
+ }
+
+
+ /*
+  Question + Answer + Chapter
+  + Subject-ত search কৰা হৈছে
+ */
+
+ const result =
+  await supabaseClient
+   .from("questions")
+   .select("*")
+   .or(
+    "question.ilike.%" +
+    clean +
+    "%,answer.ilike.%" +
+    clean +
+    "%,chapter_name.ilike.%" +
+    clean +
+    "%,subject.ilike.%" +
+    clean +
+    "%"
+   )
+   .limit(limit);
+
+
+ return {
+
+  data:
+   result.data || [],
+
+  error:
+   result.error || null
+
+ };
+
+}
 
 
 /* =====================================================
@@ -1197,196 +1013,178 @@ async function dbSearch(
 
 function renderResults(rows){
 
-  if(
-    !rows ||
-    !rows.length
-  ){
+ if(
+  !rows ||
+  !rows.length
+ ){
 
-    return `
+  return `
+   <div class="card empty">
+    কোনো ফলাফল পোৱা নগ'ল।
+   </div>
+  `;
 
-      <div class="card empty">
+ }
 
-        কোনো ফলাফল পোৱা নগ'ল।
 
-      </div>
+ return rows.map(
+  function(row){
+
+   let html = `
+
+    <div class="card result">
+
+     <span class="tag">
+      ${esc(
+       row.question_type ||
+       "Q&A"
+      )}
+     </span>
+
+     <h3>
+      ${esc(
+       row.question ||
+       "প্ৰশ্ন নাই"
+      )}
+     </h3>
+
+   `;
+
+
+   /* MCQ OPTIONS */
+
+   if(
+    row.option_a ||
+    row.option_b ||
+    row.option_c ||
+    row.option_d
+   ){
+
+    html += `
+
+     <div class="answer">
+
+      ${
+       row.option_a
+       ? "A. " +
+         esc(row.option_a) +
+         "\n"
+       : ""
+      }
+
+      ${
+       row.option_b
+       ? "B. " +
+         esc(row.option_b) +
+         "\n"
+       : ""
+      }
+
+      ${
+       row.option_c
+       ? "C. " +
+         esc(row.option_c) +
+         "\n"
+       : ""
+      }
+
+      ${
+       row.option_d
+       ? "D. " +
+         esc(row.option_d)
+       : ""
+      }
+
+     </div>
 
     `;
 
+   }
+
+
+   /* ANSWER */
+
+   const answer =
+    row.answer ||
+    "উত্তৰ নাই।";
+
+
+   html += `
+
+    <div class="answer">
+
+     <b>উত্তৰ:</b>
+
+     ${esc(answer)}
+
+    </div>
+
+
+    <button
+     class="speak-btn"
+     onclick="speakText(this.dataset.text)"
+     data-text="${esc(answer)}">
+
+     🔊 উত্তৰ শুনক
+
+    </button>
+
+   `;
+
+
+   /* META */
+
+   const meta = [];
+
+
+   if(row.class_name)
+    meta.push(
+     row.class_name
+    );
+
+
+   if(row.subject)
+    meta.push(
+     row.subject
+    );
+
+
+   if(row.chapter_name)
+    meta.push(
+     row.chapter_name
+    );
+
+
+   if(meta.length){
+
+    html += `
+
+     <p class="small">
+
+      ${esc(
+       meta.join(" • ")
+      )}
+
+     </p>
+
+    `;
+
+   }
+
+
+   html += `
+
+    </div>
+
+   `;
+
+
+   return html;
+
   }
-
-
-  return rows.map(
-    function(row){
-
-      let html = `
-
-        <div class="card result">
-
-          <span class="tag">
-
-            ${esc(
-              row.question_type ||
-              "Q&A"
-            )}
-
-          </span>
-
-
-          <h3>
-
-            ${esc(
-              row.question ||
-              "প্ৰশ্ন নাই"
-            )}
-
-          </h3>
-
-      `;
-
-
-      /*
-       MCQ OPTIONS
-      */
-
-      if(
-        row.option_a ||
-        row.option_b ||
-        row.option_c ||
-        row.option_d
-      ){
-
-        html += `
-
-          <div class="answer">
-
-            ${
-              row.option_a
-              ? "A. " +
-                esc(row.option_a) +
-                "\n"
-              : ""
-            }
-
-            ${
-              row.option_b
-              ? "B. " +
-                esc(row.option_b) +
-                "\n"
-              : ""
-            }
-
-            ${
-              row.option_c
-              ? "C. " +
-                esc(row.option_c) +
-                "\n"
-              : ""
-            }
-
-            ${
-              row.option_d
-              ? "D. " +
-                esc(row.option_d)
-              : ""
-            }
-
-          </div>
-
-        `;
-
-      }
-
-
-
-      /*
-       ANSWER
-      */
-
-      const answer =
-        row.answer ||
-        "উত্তৰ নাই।";
-
-
-      html += `
-
-        <div class="answer">
-
-          <b>উত্তৰ:</b>
-
-          ${esc(answer)}
-
-        </div>
-
-
-        <button
-          class="speak-btn"
-          onclick="speakText(this.dataset.text)"
-          data-text="${esc(answer)}">
-
-          🔊 উত্তৰ শুনক
-
-        </button>
-
-      `;
-
-
-
-      /*
-       METADATA
-      */
-
-      const meta = [];
-
-
-      if(row.class_name)
-        meta.push(
-          row.class_name
-        );
-
-
-      if(row.subject)
-        meta.push(
-          row.subject
-        );
-
-
-      if(row.chapter_name)
-        meta.push(
-          row.chapter_name
-        );
-
-
-      if(meta.length){
-
-        html += `
-
-          <p class="small">
-
-            ${esc(
-              meta.join(" • ")
-            )}
-
-          </p>
-
-        `;
-
-      }
-
-
-      html += `
-
-        </div>
-
-      `;
-
-
-      return html;
-
-    }
-  ).join("");
+ ).join("");
 
 }
-
 
 
 /* =====================================================
@@ -1395,302 +1193,278 @@ function renderResults(rows){
 
 async function searchQuestions(){
 
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
+ const input =
+  document.getElementById(
+   "searchInput"
+  );
+
+ const status =
+  document.getElementById(
+   "searchStatus"
+  );
+
+ const output =
+  document.getElementById(
+   "searchResult"
+  );
+
+ const query =
+  input.value.trim();
 
 
-  const status =
-    document.getElementById(
-      "searchStatus"
-    );
-
-
-  const output =
-    document.getElementById(
-      "searchResult"
-    );
-
-
-  const query =
-    input.value.trim();
-
-
-  if(!query){
-
-    status.innerHTML = `
-
-      <p class="error">
-
-        প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।
-
-      </p>
-
-    `;
-
-
-    output.innerHTML = "";
-
-    return;
-
-  }
-
+ if(!query){
 
   status.innerHTML = `
 
-    <p class="loading">
-
-      ⏳ Database-ত বিচাৰি থকা হৈছে...
-
-    </p>
+   <p class="error">
+    প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।
+   </p>
 
   `;
 
-
   output.innerHTML = "";
 
-
-  const result =
-    await dbSearch(
-      query,
-      10
-    );
+  return;
+ }
 
 
-  if(
-    result.data &&
-    result.data.length
-  ){
+ status.innerHTML = `
 
-    status.innerHTML = `
+  <p class="loading">
+   ⏳ Database-ত বিচাৰি থকা হৈছে...
+  </p>
 
-      <p class="success">
+ `;
 
-        ✅ ${result.data.length}
-        টা ফলাফল পোৱা গ'ল।
-
-      </p>
-
-    `;
+ output.innerHTML = "";
 
 
-    output.innerHTML =
-      renderResults(
-        result.data
-      );
+ const result =
+  await dbSearch(
+   query,
+   10
+  );
 
 
-  }else{
+ if(result.error){
 
-    status.innerHTML = `
+  status.innerHTML = `
 
-      <p class="error">
+   <p class="error">
 
-        ⚠️ কোনো ফলাফল পোৱা নগ'ল।
+    ⚠️ Database Error:
+    ${esc(result.error.message)}
 
-      </p>
+   </p>
 
-    `;
+  `;
+
+  return;
+ }
 
 
-    output.innerHTML = `
+ if(
+  result.data &&
+  result.data.length
+ ){
 
-      <div class="card empty">
+  status.innerHTML = `
 
-        এই প্ৰশ্নটোৰ উত্তৰ
-        এতিয়াও Database-ত নাই।
+   <p class="success">
 
-        <br><br>
+    ✅ ${result.data.length}
+    টা ফলাফল পোৱা গ'ল।
 
-        পিছত AI সুবিধা চালু কৰিলে
-        Database-ত উত্তৰ নথকাৰ ক্ষেত্ৰত
-        AI-ৰ পৰা উত্তৰ ল'ব পৰা যাব।
+   </p>
 
-      </div>
+  `;
 
-    `;
+  output.innerHTML =
+   renderResults(
+    result.data
+   );
 
-  }
+ }else{
+
+  status.innerHTML = `
+
+   <p class="error">
+
+    ⚠️ কোনো ফলাফল পোৱা নগ'ল।
+
+   </p>
+
+  `;
+
+  output.innerHTML = `
+
+   <div class="card empty">
+
+    এই প্ৰশ্নটোৰ উত্তৰ
+    এতিয়াও Database-ত নাই।
+
+    <br><br>
+
+    🤖 পিছত AI চালু কৰিলে
+    Database-ত নথকা প্ৰশ্নৰ
+    উত্তৰ AI-ৰ পৰা ল'ব পাৰিব।
+
+   </div>
+
+  `;
+
+ }
 
 }
 
 
-
 /* =====================================================
-   QUESTION PAGE SEARCH
+   QUESTION PAGE
    ===================================================== */
 
 async function askQuestion(){
 
-  const input =
-    document.getElementById(
-      "questionInput"
-    );
+ const input =
+  document.getElementById(
+   "questionInput"
+  );
+
+ const output =
+  document.getElementById(
+   "questionResult"
+  );
+
+ const query =
+  input.value.trim();
 
 
-  const output =
-    document.getElementById(
-      "questionResult"
-    );
-
-
-  const query =
-    input.value.trim();
-
-
-  if(!query){
-
-    output.innerHTML = `
-
-      <div class="card result">
-
-        <h3>
-          ⚠️ প্ৰশ্ন লিখক
-        </h3>
-
-
-        <p>
-
-          অনুগ্ৰহ কৰি প্ৰশ্ন লিখি
-          Search কৰক।
-
-        </p>
-
-      </div>
-
-    `;
-
-
-    return;
-
-  }
-
+ if(!query){
 
   output.innerHTML = `
 
-    <div class="card result">
+   <div class="card result">
 
-      <h3>
+    <h3>
+     ⚠️ প্ৰশ্ন লিখক
+    </h3>
 
-        🔎 বিচাৰি থকা হৈছে...
+    <p>
+     অনুগ্ৰহ কৰি প্ৰশ্ন লিখি
+     Search কৰক।
+    </p>
 
-      </h3>
-
-
-      <p>
-
-        আপোনাৰ Database-ত
-        উত্তৰ বিচৰা হৈছে।
-
-      </p>
-
-    </div>
+   </div>
 
   `;
 
-
-  try{
-
-    const result =
-      await dbSearch(
-        query,
-        10
-      );
+  return;
+ }
 
 
-    if(
-      result.data &&
-      result.data.length
-    ){
+ output.innerHTML = `
 
-      output.innerHTML = `
+  <div class="card result">
 
-        <div class="card result">
+   <h3>
+    🔎 বিচাৰি থকা হৈছে...
+   </h3>
 
-          <h3>
-            📚 Database-ৰ উত্তৰ
-          </h3>
+   <p>
+    Database-ত উত্তৰ বিচৰা হৈছে।
+   </p>
 
-        </div>
+  </div>
 
-        ${renderResults(
-          result.data
-        )}
-
-      `;
+ `;
 
 
-      return;
-
-    }
-
-
-    output.innerHTML = `
-
-      <div class="card result">
-
-        <h3>
-
-          ⚠️ উত্তৰ পোৱা নগ'ল
-
-        </h3>
+ const result =
+  await dbSearch(
+   query,
+   10
+  );
 
 
-        <p>
+ if(result.error){
 
-          এই প্ৰশ্নটোৰ উত্তৰ
-          এতিয়াও Database-ত
-          যোগ কৰা হোৱা নাই।
+  output.innerHTML = `
 
-        </p>
+   <div class="card result">
 
+    <h3>
+     ⚠️ Database সংযোগত সমস্যা
+    </h3>
 
-        <div class="ai-note">
+    <p>
+     ${esc(result.error.message)}
+    </p>
 
-          🤖 AI সুবিধাটো পিছত
-          চালু কৰা হ'ব।
+   </div>
 
-        </div>
+  `;
 
-      </div>
-
-    `;
-
-
-  }catch(error){
-
-    console.error(error);
+  return;
+ }
 
 
-    output.innerHTML = `
+ if(
+  result.data &&
+  result.data.length
+ ){
 
-      <div class="card result">
+  output.innerHTML = `
 
-        <h3>
+   <div class="card result">
 
-          ⚠️ Database-ত সংযোগ
-          কৰোঁতে সমস্যা হৈছে।
+    <h3>
+     📚 Database-ৰ উত্তৰ
+    </h3>
 
-        </h3>
+   </div>
+
+   ${renderResults(
+    result.data
+   )}
+
+  `;
+
+  return;
+ }
 
 
-        <p>
+ output.innerHTML = `
 
-          Internet connection
-          আৰু Supabase settings
-          পৰীক্ষা কৰক।
+  <div class="card result">
 
-        </p>
+   <h3>
+    ⚠️ উত্তৰ পোৱা নগ'ল
+   </h3>
 
-      </div>
+   <p>
+    এই প্ৰশ্নটোৰ উত্তৰ
+    এতিয়াও Database-ত
+    যোগ কৰা হোৱা নাই।
+   </p>
 
-    `;
+   <div class="ai-note">
 
-  }
+    🤖 AI সুবিধাটো পিছত
+    চালু কৰা হ'ব।
+
+    <br><br>
+
+    AI-ৰ পৰা উত্তৰ পালে
+    পিছত সেই উত্তৰ
+    questions table-ত
+    সংৰক্ষণ কৰিব পৰা যাব।
+
+   </div>
+
+  </div>
+
+ `;
 
 }
-
 
 
 /* =====================================================
@@ -1699,38 +1473,275 @@ async function askQuestion(){
 
 function searchByWord(word){
 
-  showPage("home");
+ showPage("home");
 
+ const input =
+  document.getElementById(
+   "searchInput"
+  );
 
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
+ input.value = word;
 
-
-  input.value = word;
-
-
-  searchQuestions();
+ searchQuestions();
 
 }
 
 
-
 /* =====================================================
-   VOICE SEARCH
+   SPEECH RECOGNITION
    ===================================================== */
 
 function getSpeechRecognition(){
 
-  return (
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition ||
-    null
-  );
+ return (
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition ||
+  null
+ );
 
 }
 
+
+/*
+  Voice recognition কেতিয়াবা
+  browser-এ নিজে বন্ধ কৰে।
+  সেইবাবে result নোপোৱালৈ
+  পুনৰ start কৰাৰ ব্যৱস্থা।
+*/
+
+function runVoice(
+ targetId,
+ buttonId,
+ afterResult
+){
+
+ const SpeechRecognition =
+  getSpeechRecognition();
+
+ const button =
+  document.getElementById(
+   buttonId
+  );
+
+
+ if(!SpeechRecognition){
+
+  alert(
+   "এই browser-ত Voice Search support নাই। Chrome browser ব্যৱহাৰ কৰক।"
+  );
+
+  return;
+ }
+
+
+ let stopped = false;
+ let recognition = null;
+ let restartTimer = null;
+ let finalText = "";
+
+
+ function createRecognition(){
+
+  recognition =
+   new SpeechRecognition();
+
+  recognition.lang =
+   "as-IN";
+
+  recognition.interimResults =
+   true;
+
+  recognition.continuous =
+   false;
+
+
+  recognition.onstart =
+   function(){
+
+    button.classList.add(
+     "listening"
+    );
+
+    button.innerText =
+     "🔴 শুনি আছে...";
+
+   };
+
+
+  recognition.onresult =
+   function(event){
+
+    let text = "";
+
+    for(
+     let i =
+      event.resultIndex;
+
+     i <
+      event.results.length;
+
+     i++
+    ){
+
+     text +=
+      event.results[i][0]
+       .transcript +
+      " ";
+
+    }
+
+    text =
+     text.trim();
+
+    if(text){
+
+     finalText =
+      text;
+
+    }
+
+   };
+
+
+  recognition.onerror =
+   function(event){
+
+    console.log(
+     "Voice error:",
+     event.error
+    );
+
+
+    if(
+     event.error ===
+     "not-allowed" ||
+     event.error ===
+     "service-not-allowed"
+    ){
+
+     stopped = true;
+
+     button.classList.remove(
+      "listening"
+     );
+
+     button.innerText =
+      "🎙️ Voice";
+
+     alert(
+      "Microphone permission অনুমতি দিয়ক আৰু পুনৰ চেষ্টা কৰক।"
+     );
+
+    }
+
+   };
+
+
+  recognition.onend =
+   function(){
+
+    if(stopped)
+     return;
+
+
+    /*
+     যদি text পোৱা গৈছে,
+     search কৰা হ'ব
+    */
+
+    if(finalText){
+
+     stopped = true;
+
+     button.classList.remove(
+      "listening"
+     );
+
+     button.innerText =
+      "🎙️ Voice";
+
+
+     document.getElementById(
+      targetId
+     ).value =
+      finalText;
+
+
+     afterResult();
+
+     return;
+
+    }
+
+
+    /*
+     15 sec-ৰ আগতেই browser
+     বন্ধ কৰিলে পুনৰ শুনিব
+    */
+
+    button.innerText =
+     "🔄 পুনৰ শুনি আছে...";
+
+
+    clearTimeout(
+     restartTimer
+    );
+
+
+    restartTimer =
+     setTimeout(
+      function(){
+
+       if(!stopped){
+
+        try{
+
+         createRecognition();
+
+         recognition.start();
+
+        }catch(error){
+
+         console.log(
+          "Restart error:",
+          error
+         );
+
+        }
+
+       }
+
+      },
+      350
+     );
+
+   };
+
+ }
+
+
+ try{
+
+  createRecognition();
+
+  recognition.start();
+
+ }catch(error){
+
+  button.classList.remove(
+   "listening"
+  );
+
+  button.innerText =
+   "🎙️ Voice";
+
+  alert(
+   "Voice আৰম্ভ কৰিব পৰা নগ'ল। পুনৰ চেষ্টা কৰক।"
+  );
+
+ }
+
+}
 
 
 /* =====================================================
@@ -1739,115 +1750,17 @@ function getSpeechRecognition(){
 
 function startVoiceSearch(){
 
-  const SpeechRecognition =
-    getSpeechRecognition();
+ runVoice(
+  "searchInput",
+  "voiceButton",
+  function(){
 
-
-  if(!SpeechRecognition){
-
-    alert(
-      "এই browser-ত Voice Search support নাই। Chrome browser ব্যৱহাৰ কৰি চেষ্টা কৰক।"
-    );
-
-    return;
+   searchQuestions();
 
   }
-
-
-  const recognition =
-    new SpeechRecognition();
-
-
-  recognition.lang =
-    "as-IN";
-
-
-  recognition.interimResults =
-    false;
-
-
-  recognition.continuous =
-    false;
-
-
-  const button =
-    document.getElementById(
-      "voiceButton"
-    );
-
-
-  button.classList.add(
-    "listening"
-  );
-
-
-  button.innerText =
-    "🔴 শুনি আছে...";
-
-
-  recognition.start();
-
-
-  recognition.onresult =
-    function(event){
-
-      const text =
-        event.results[0][0].transcript;
-
-
-      document.getElementById(
-        "searchInput"
-      ).value = text;
-
-
-      button.classList.remove(
-        "listening"
-      );
-
-
-      button.innerText =
-        "🎙️ Voice";
-
-
-      searchQuestions();
-
-    };
-
-
-  recognition.onerror =
-    function(){
-
-      button.classList.remove(
-        "listening"
-      );
-
-
-      button.innerText =
-        "🎙️ Voice";
-
-
-      alert(
-        "Voice-ৰে প্ৰশ্ন ল'ব পৰা নগ'ল। পুনৰ চেষ্টা কৰক।"
-      );
-
-    };
-
-
-  recognition.onend =
-    function(){
-
-      button.classList.remove(
-        "listening"
-      );
-
-
-      button.innerText =
-        "🎙️ Voice";
-
-    };
+ );
 
 }
-
 
 
 /* =====================================================
@@ -1856,115 +1769,17 @@ function startVoiceSearch(){
 
 function startQuestionVoice(){
 
-  const SpeechRecognition =
-    getSpeechRecognition();
+ runVoice(
+  "questionInput",
+  "questionVoiceButton",
+  function(){
 
-
-  if(!SpeechRecognition){
-
-    alert(
-      "এই browser-ত Voice Search support নাই। Chrome browser ব্যৱহাৰ কৰি চেষ্টা কৰক।"
-    );
-
-    return;
+   askQuestion();
 
   }
-
-
-  const recognition =
-    new SpeechRecognition();
-
-
-  recognition.lang =
-    "as-IN";
-
-
-  recognition.interimResults =
-    false;
-
-
-  recognition.continuous =
-    false;
-
-
-  const button =
-    document.getElementById(
-      "questionVoiceButton"
-    );
-
-
-  button.classList.add(
-    "listening"
-  );
-
-
-  button.innerText =
-    "🔴 শুনি আছে...";
-
-
-  recognition.start();
-
-
-  recognition.onresult =
-    function(event){
-
-      const text =
-        event.results[0][0].transcript;
-
-
-      document.getElementById(
-        "questionInput"
-      ).value = text;
-
-
-      button.classList.remove(
-        "listening"
-      );
-
-
-      button.innerText =
-        "🎙️ Voice";
-
-
-      askQuestion();
-
-    };
-
-
-  recognition.onerror =
-    function(){
-
-      button.classList.remove(
-        "listening"
-      );
-
-
-      button.innerText =
-        "🎙️ Voice";
-
-
-      alert(
-        "Voice-ৰে প্ৰশ্ন ল'ব পৰা নগ'ল।"
-      );
-
-    };
-
-
-  recognition.onend =
-    function(){
-
-      button.classList.remove(
-        "listening"
-      );
-
-
-      button.innerText =
-        "🎙️ Voice";
-
-    };
+ );
 
 }
-
 
 
 /* =====================================================
@@ -1973,46 +1788,42 @@ function startQuestionVoice(){
 
 function speakText(text){
 
-  if(
-    !("speechSynthesis" in window)
-  ){
+ if(
+  !("speechSynthesis" in window)
+ ){
 
-    alert(
-      "এই browser-ত Voice Answer support নাই।"
-    );
-
-    return;
-
-  }
-
-
-  window.speechSynthesis.cancel();
-
-
-  const speech =
-    new SpeechSynthesisUtterance(
-      text
-    );
-
-
-  speech.lang =
-    "as-IN";
-
-
-  speech.rate =
-    0.9;
-
-
-  speech.pitch =
-    1;
-
-
-  window.speechSynthesis.speak(
-    speech
+  alert(
+   "এই browser-ত Voice Answer support নাই।"
   );
 
-}
+  return;
+ }
 
+
+ window.speechSynthesis.cancel();
+
+
+ const speech =
+  new SpeechSynthesisUtterance(
+   text
+  );
+
+
+ speech.lang =
+  "as-IN";
+
+ speech.rate =
+  0.9;
+
+ speech.pitch =
+  1;
+
+
+ window.speechSynthesis.speak(
+  speech
+ );
+
+}
 
 
 /* =====================================================
@@ -2021,146 +1832,214 @@ function speakText(text){
 
 async function shareApp(){
 
-  const shareData = {
+ const shareData = {
 
-    title:
-      "অসমীয়া সহায়িকা — 10 & HSLC",
+  title:
+   "অসমীয়া সহায়িকা — 10 & HSLC",
 
-    text:
-      "দশম শ্ৰেণী আৰু HSLC অসমীয়া বিষয়ৰ সহায়িকা।",
+  text:
+   "দশম শ্ৰেণী আৰু HSLC অসমীয়া বিষয়ৰ সহায়িকা।",
 
-    url:
-      window.location.href
+  url:
+   window.location.href
 
-  };
-
-
-  try{
-
-    if(
-      navigator.share
-    ){
-
-      await navigator.share(
-        shareData
-      );
-
-    }else{
-
-      if(
-        navigator.clipboard
-      ){
-
-        await navigator.clipboard.writeText(
-          window.location.href
-        );
+ };
 
 
-        alert(
-          "App-ৰ link copy হৈছে। এতিয়া WhatsApp বা আন app-ত paste কৰিব পাৰিব।"
-        );
+ try{
 
-      }else{
+  if(
+   navigator.share
+  ){
 
-        alert(
-          "Share সুবিধা এই browser-ত support নাই।"
-        );
+   await navigator.share(
+    shareData
+   );
 
-      }
+  }else{
 
-    }
+   if(
+    navigator.clipboard
+   ){
 
-  }catch(error){
-
-    console.log(
-      "Share cancelled:",
-      error
+    await navigator.clipboard.writeText(
+     window.location.href
     );
 
+    alert(
+     "App-ৰ link copy হৈছে। WhatsApp বা আন app-ত paste কৰিব পাৰিব।"
+    );
+
+   }else{
+
+    prompt(
+     "App-ৰ link copy কৰক:",
+     window.location.href
+    );
+
+   }
+
   }
+
+ }catch(error){
+
+  console.log(
+   "Share cancelled:",
+   error
+  );
+
+ }
 
 }
 
 
+/* =====================================================
+   FUTURE AI → DATABASE SAVE
+   =====================================================
+
+   AI অংশ এতিয়া চালু কৰা হোৱা নাই।
+
+   পিছত AI/Web API-ৰ পৰা উত্তৰ পোৱাৰ পিছত
+   এই function ব্যৱহাৰ কৰিব পাৰি:
+
+   saveAIAnswer(
+      question,
+      answer,
+      chapter_name
+   );
+
+   তেতিয়া উত্তৰ questions table-ত
+   সংৰক্ষণ কৰিব পাৰি।
+*/
+
+async function saveAIAnswer(
+ question,
+ answer,
+ chapter_name = ""
+){
+
+ if(!supabaseClient){
+
+  throw new Error(
+   "Supabase connection হোৱা নাই।"
+  );
+
+ }
+
+
+ const payload = {
+
+  question:
+   question,
+
+  answer:
+   answer,
+
+  chapter_name:
+   chapter_name || null,
+
+  question_type:
+   "AI"
+
+ };
+
+
+ const result =
+  await supabaseClient
+   .from("questions")
+   .insert(payload)
+   .select()
+   .single();
+
+
+ if(result.error){
+
+  throw result.error;
+
+ }
+
+
+ return result.data;
+
+}
+
 
 /* =====================================================
-   ENTER KEY
+   ENTER KEY + START
    ===================================================== */
 
 document.addEventListener(
-  "DOMContentLoaded",
-  function(){
+ "DOMContentLoaded",
+ function(){
 
-    initSupabase();
+  initSupabase();
 
-
-    showPage(
-      "home"
-    );
-
-
-    const searchInput =
-      document.getElementById(
-        "searchInput"
-      );
+  showPage(
+   "home"
+  );
 
 
-    if(searchInput){
+  const searchInput =
+   document.getElementById(
+    "searchInput"
+   );
 
-      searchInput.addEventListener(
-        "keydown",
-        function(event){
 
-          if(
-            event.key ===
-            "Enter"
-          ){
+  if(searchInput){
 
-            event.preventDefault();
+   searchInput.addEventListener(
+    "keydown",
+    function(event){
 
-            searchQuestions();
+     if(
+      event.key ===
+      "Enter"
+     ){
 
-          }
+      event.preventDefault();
 
-        }
-      );
+      searchQuestions();
+
+     }
 
     }
-
-
-    const questionInput =
-      document.getElementById(
-        "questionInput"
-      );
-
-
-    if(questionInput){
-
-      questionInput.addEventListener(
-        "keydown",
-        function(event){
-
-          if(
-            event.key ===
-            "Enter" &&
-            !event.shiftKey
-          ){
-
-            event.preventDefault();
-
-            askQuestion();
-
-          }
-
-        }
-      );
-
-    }
+   );
 
   }
-);
+
+
+  const questionInput =
+   document.getElementById(
+    "questionInput"
+   );
+
+
+  if(questionInput){
+
+   questionInput.addEventListener(
+    "keydown",
+    function(event){
+
+     if(
+      event.key ===
+      "Enter" &&
+      !event.shiftKey
+     ){
+
+      event.preventDefault();
+
+      askQuestion();
+
+     }
+
+    }
+   );
+
+  }
+
+ });
 
 </script>
 
 </body>
-</html>
+  </html>

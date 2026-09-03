@@ -1073,66 +1073,164 @@ async function searchQuestions(){
 
 async function askQuestion(){
 
-  const input =
-    document.getElementById(
-      "questionInput"
-    );
+  const input = document.getElementById("questionInput");
+  const output = document.getElementById("questionResult");
 
-  const output =
-    document.getElementById(
-      "questionResult"
-    );
-
-
-  const query =
-    input.value.trim();
-
+  const query = input.value.trim();
 
   if(!query){
-
-    output.innerHTML =
-      `<p class="error">
-        প্ৰশ্ন লিখক।
-      </p>`;
-
+    output.innerHTML = `
+      <div class="card result">
+        <h3>⚠️ প্ৰশ্ন লিখক</h3>
+        <p>অনুগ্ৰহ কৰি এটা প্ৰশ্ন লিখি Search কৰক।</p>
+      </div>
+    `;
     return;
   }
-
-
-  output.innerHTML =
-    `<p class="loading">
-      ⏳ উত্তৰ বিচাৰি থকা হৈছে...
-    </p>`;
-
-
-  const result =
-    await dbSearch(query,10);
-
-
-  if(result.data.length){
-
-    output.innerHTML =
-      renderResults(result.data);
-
-    return;
-  }
-
 
   output.innerHTML = `
-
     <div class="card result">
-
-      <h3>⚠️ উত্তৰ পোৱা নগ'ল</h3>
-
-      <p>
-        এই প্ৰশ্নৰ মিল থকা content
-        database-ত এতিয়াও পোৱা নগ'ল।
-      </p>
-
+      <h3>🔎 বিচাৰি থকা হৈছে...</h3>
+      <p>আপোনাৰ Database আৰু মুক্ত Internet source-ত বিচৰা হৈছে।</p>
     </div>
-
   `;
 
+  try{
+
+    /* =========================
+       1. SUPABASE DATABASE SEARCH
+       ========================= */
+
+    const result = await dbSearch(query,10);
+
+    if(result && result.data && result.data.length){
+
+      output.innerHTML = `
+        <div class="card result">
+          <h3>📚 Database-ৰ উত্তৰ</h3>
+        </div>
+      `;
+
+      renderResults(result.data);
+
+      return;
+    }
+
+
+    /* =========================
+       2. FREE INTERNET SOURCE
+       Wikimedia API
+       ========================= */
+
+    const url =
+      "https://as.wikipedia.org/w/api.php" +
+      "?action=query" +
+      "&generator=search" +
+      "&gsrsearch=" + encodeURIComponent(query) +
+      "&gsrnamespace=0" +
+      "&gsrlimit=3" +
+      "&prop=extracts" +
+      "&exintro=1" +
+      "&explaintext=1" +
+      "&format=json" +
+      "&origin=*";
+
+    const response = await fetch(url);
+
+    if(!response.ok){
+      throw new Error("Internet search failed");
+    }
+
+    const data = await response.json();
+
+    if(data.query && data.query.pages){
+
+      const pages = Object.values(data.query.pages);
+
+      output.innerHTML = `
+        <div class="card result">
+
+          <h3>🌐 Internet-ৰ পৰা পোৱা তথ্য</h3>
+
+          ${pages.map(page => `
+            <div class="card">
+
+              <h3>${page.title || ""}</h3>
+
+              <p>
+                ${page.extract || "তথ্য পোৱা নগ'ল।"}
+              </p>
+
+              <a
+                href="https://as.wikipedia.org/wiki/${encodeURIComponent(
+                  page.title.replace(/ /g,"_")
+                )}"
+                target="_blank"
+                rel="noopener"
+              >
+                📖 সম্পূৰ্ণ তথ্য চাওক
+              </a>
+
+            </div>
+          `).join("")}
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    /* =========================
+       3. GOOGLE SEARCH FALLBACK
+       ========================= */
+
+    output.innerHTML = `
+      <div class="card result">
+
+        <h3>🔍 Database-ত উত্তৰ পোৱা নগ'ল</h3>
+
+        <p>
+          এই প্ৰশ্নটোৰ বাবে Internet-ত অধিক তথ্য বিচাৰিব পাৰে।
+        </p>
+
+        <a
+          class="main-btn"
+          href="https://www.google.com/search?q=${encodeURIComponent(query)}"
+          target="_blank"
+          rel="noopener"
+        >
+          🌐 Google-ত বিচাৰক
+        </a>
+
+      </div>
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+    output.innerHTML = `
+      <div class="card result">
+
+        <h3>⚠️ তথ্য বিচৰাত সমস্যা হৈছে</h3>
+
+        <p>
+          Internet সংযোগ পৰীক্ষা কৰক আৰু পুনৰ চেষ্টা কৰক।
+        </p>
+
+        <a
+          class="main-btn"
+          href="https://www.google.com/search?q=${encodeURIComponent(query)}"
+          target="_blank"
+          rel="noopener"
+        >
+          🔎 Google Search
+        </a>
+
+      </div>
+    `;
+  }
 }
 
 

@@ -1,62 +1,1819 @@
 <!DOCTYPE html>
 <html lang="as">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>অসমীয়া সহায়িকা — 10 & HSLC</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans Assamese",sans-serif;background:#f4f7fb;color:#172033}header{background:linear-gradient(135deg,#075985,#2563eb);color:#fff;text-align:center;padding:20px 12px}header h1{margin:0;font-size:23px}header p{margin:5px 0 0;font-size:12px}nav{position:sticky;top:0;z-index:100;display:flex;gap:6px;overflow-x:auto;background:#fff;padding:7px;border-bottom:1px solid #ddd}nav button{white-space:nowrap;border:0;border-radius:9px;padding:8px 12px;background:#075985;color:#fff;font-family:inherit;font-size:12px}.container{max-width:900px;margin:auto;padding:14px}.card{background:#fff;border:1px solid #e3e7ee;border-radius:15px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px rgba(0,0,0,.05)}h2,h3{margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}button{font-family:inherit;cursor:pointer}.main-btn{width:100%;border:0;border-radius:11px;padding:12px;background:#075985;color:#fff;font-size:14px}.secondary{width:100%;background:#eef6ff;color:#075985;border:1px solid #cfe4ff;border-radius:10px;padding:11px;font-size:14px}input,textarea,select{width:100%;padding:12px;border:1px solid #ccd3dd;border-radius:10px;font-family:inherit;font-size:15px;outline:none;background:#fff}textarea{min-height:110px;resize:vertical}.hidden{display:none!important}.small{font-size:12px;color:#667085}.tag{display:inline-block;padding:3px 8px;border-radius:20px;background:#eaf4ff;color:#075985;font-size:11px}.result{border-left:4px solid #2563eb;padding-left:11px;margin-top:11px}.answer{white-space:pre-wrap;line-height:1.8}.notice{background:#fff8df;border:1px solid #f1d47a;padding:11px;border-radius:11px}.success{color:#087f5b}.error{color:#c62828}.loading{color:#075985}.empty{text-align:center;padding:20px;color:#667085}footer{text-align:center;padding:25px;color:#667085;font-size:12px}.back{margin-bottom:10px;background:#64748b}.voice-btn{background:#7c3aed}.voice-btn.listening{background:#dc2626}.speak-btn{background:#059669;border:0;color:#fff;padding:8px 12px;border-radius:8px;font-family:inherit}.share-btn{background:#16a34a!important}.ai-note{background:#eef6ff;border:1px solid #cfe4ff;border-radius:10px;padding:11px;font-size:13px}.admin-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.danger{background:#dc2626}.edit{background:#d97706}.admin-row{border:1px solid #e3e7ee;border-radius:12px;padding:12px;margin-top:10px}@media(max-width:600px){.grid{grid-template-columns:1fr 1fr}header h1{font-size:20px}.container{padding:10px}.card{padding:13px}nav button{padding:8px 10px}}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:"Noto Sans Assamese",sans-serif;
+  background:#f5f7fb;
+  color:#202124;
+}
+
+header{
+  background:linear-gradient(135deg,#075e54,#128c7e);
+  color:white;
+  padding:18px 14px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+  font-size:24px;
+}
+
+header p{
+  margin:5px 0 0;
+  font-size:14px;
+}
+
+nav{
+  display:flex;
+  overflow-x:auto;
+  background:white;
+  border-bottom:1px solid #ddd;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+nav button{
+  border:0;
+  background:white;
+  padding:12px 15px;
+  font-family:inherit;
+  font-size:14px;
+  white-space:nowrap;
+}
+
+nav button:hover{
+  background:#eaf7f5;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:15px;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.search-box{
+  width:100%;
+  padding:14px;
+  border:1px solid #ccc;
+  border-radius:12px;
+  font-family:inherit;
+  font-size:16px;
+  outline:none;
+  background:white;
+}
+
+.search-btn{
+  width:100%;
+  margin-top:8px;
+  padding:13px;
+  border:0;
+  border-radius:10px;
+  background:#075e54;
+  color:white;
+  font-family:inherit;
+  font-size:16px;
+}
+
+.card{
+  background:white;
+  border-radius:14px;
+  padding:16px;
+  margin:10px 0;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.chapter-card{
+  cursor:pointer;
+  border-left:5px solid #128c7e;
+}
+
+.chapter-card h3{
+  margin:0;
+  font-size:17px;
+}
+
+.chapter-card p{
+  margin:4px 0 0;
+  color:#666;
+  font-size:13px;
+}
+
+.lesson-title{
+  color:#075e54;
+  margin-bottom:5px;
+}
+
+.summary{
+  background:#eefaf8;
+  border-left:4px solid #128c7e;
+  padding:13px;
+  border-radius:8px;
+  line-height:1.8;
+}
+
+.q-section{
+  margin-top:18px;
+}
+
+.q-section h3{
+  background:#075e54;
+  color:white;
+  padding:9px 12px;
+  border-radius:8px;
+  font-size:16px;
+}
+
+.qa{
+  background:white;
+  border:1px solid #e2e2e2;
+  border-radius:10px;
+  padding:12px;
+  margin:8px 0;
+}
+
+.question{
+  font-weight:700;
+  line-height:1.7;
+}
+
+.answer{
+  margin-top:5px;
+  line-height:1.7;
+}
+
+.listen{
+  border:0;
+  background:#eaf7f5;
+  color:#075e54;
+  padding:7px 10px;
+  border-radius:7px;
+  margin-top:7px;
+  font-family:inherit;
+}
+
+.back{
+  border:0;
+  background:#eee;
+  padding:9px 13px;
+  border-radius:8px;
+  font-family:inherit;
+  margin-bottom:10px;
+}
+
+.admin-input,
+.admin-select,
+textarea{
+  width:100%;
+  padding:11px;
+  margin:6px 0;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-family:inherit;
+  font-size:15px;
+}
+
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
+
+.primary{
+  width:100%;
+  padding:12px;
+  background:#075e54;
+  color:white;
+  border:0;
+  border-radius:8px;
+  font-family:inherit;
+  font-size:15px;
+  margin-top:7px;
+}
+
+.danger{
+  background:#c62828;
+  color:white;
+  border:0;
+  padding:6px 9px;
+  border-radius:6px;
+  font-family:inherit;
+}
+
+.edit{
+  background:#eee;
+  border:0;
+  padding:6px 9px;
+  border-radius:6px;
+  font-family:inherit;
+  margin-right:5px;
+}
+
+.small{
+  font-size:13px;
+  color:#666;
+}
+
+.logo{
+  font-weight:bold;
+  margin-top:8px;
+}
+
+.loading{
+  text-align:center;
+  padding:20px;
+  color:#666;
+}
+
+.empty{
+  text-align:center;
+  padding:20px;
+  color:#777;
+}
 </style>
-</head><body>
-<header><h1>অসমীয়া সহায়িকা — 10 & HSLC</h1><p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয়</p></header>
+</head>
+
+<body>
+
+<header>
+  <h1>অসমীয়া সহায়িকা — 10 & HSLC</h1>
+  <p>অসমীয়া বিষয়ৰ সম্পূৰ্ণ অধ্যয়ন সহায়িকা</p>
+  <div class="logo">RBG Study Corner</div>
+</header>
+
 <nav>
-<button onclick="showPage('home')">🏠 Home</button><button onclick="showPage('chapters')">📚 পাঠ</button><button onclick="showPage('grammar')">📝 ব্যাকৰণ</button><button onclick="showPage('hslc')">🎯 HSLC</button><button onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button><button onclick="showPage('admin')">👨‍🏫 Admin</button><button class="share-btn" onclick="shareApp()">📤 Share</button><button onclick="showPage('privacy')">🔒 Privacy</button>
+  <button onclick="showPage('home')">🏠 Home</button>
+  <button onclick="showPage('chapters')">📚 পাঠসমূহ</button>
+  <button onclick="showPage('grammar')">✍️ ব্যাকৰণ</button>
+  <button onclick="showPage('hslc')">📝 HSLC</button>
+  <button onclick="showPage('search')">🔍 Search</button>
+  <button onclick="showPage('admin')">🔐 Admin</button>
 </nav>
-<main class="container">
-<section id="home"><div class="card"><h2>স্বাগতম 👋</h2><p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p><div class="grid"><button class="main-btn" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button><button class="main-btn" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button><button class="main-btn" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button><button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button></div></div>
-<div class="card"><h3>🔎 প্ৰশ্ন / শব্দ বিচাৰক</h3><input id="searchInput" placeholder="যেনে: সমাস, সন্ধি, প্ৰশস্তি..."><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="searchQuestions()">🔍 Search</button><button class="main-btn voice-btn" id="voiceButton" onclick="startVoiceSearch()">🎙️ Voice</button></div><div id="searchStatus"></div><div id="searchResult"></div></div>
-<div class="card"><h3>🤖 AI Study Assistant</h3><div class="ai-note"><b>ছাত্ৰ-ছাত্ৰীয়ে লিখি বা Voice-ৰে প্ৰশ্ন সুধিব পাৰিব।</b><p>প্ৰথমে Database-ত থকা উত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা অসমীয়াত উত্তৰ লোৱা হ'ব।</p></div></div></section>
-<section id="chapters" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>📚 দশম শ্ৰেণী – অসমীয়া পাঠসমূহ</h2><p class="small">SEBA/ASSEB দশম শ্ৰেণীৰ অসমীয়া পাঠ্যপুথিৰ পাঠসমূহ</p><h3>📖 পদ্যাংশ</h3><div class="grid">
-<button class="secondary" onclick="searchByWord('বৰগীত')">🎵 ১। বৰগীত</button><button class="secondary" onclick="searchByWord('জিকিৰ')">🎵 ২। জিকিৰ</button><button class="secondary" onclick="searchByWord('প্ৰশস্তি')">📜 ৩। প্ৰশস্তি</button><button class="secondary" onclick="searchByWord('মই অসমীয়া')">🌿 ৪। মই অসমীয়া</button><button class="secondary" onclick="searchByWord('দৃশ্যান্তৰ')">📖 ৫। দৃশ্যান্তৰ</button></div><h3>📚 গদ্যাংশ</h3><div class="grid"><button class="secondary" onclick="searchByWord('উদ্যোগী হওঁ আহাঁ')">📘 ৬। উদ্যোগী হওঁ আহাঁ</button><button class="secondary" onclick="searchByWord('ভাৰতীয় সংস্কৃতি')">📘 ৭। ভাৰতীয় সংস্কৃতি</button><button class="secondary" onclick="searchByWord('অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি')">📘 ৮। অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</button><button class="secondary" onclick="searchByWord('ইণ্টাৰনেটৰ তিতা-মিঠা')">🌐 ৯। ইণ্টাৰনেটৰ তিতা-মিঠা</button><button class="secondary" onclick="searchByWord('অৰুণিমা সিনহা')">📘 ১০। অৰুণিমা সিনহা</button><button class="secondary" onclick="searchByWord('অৰণ্যযাত্ৰা')">📘 ১১। অৰণ্যযাত্ৰা</button><button class="secondary" onclick="searchByWord('পাৰস্যত এভুমুকি')">📘 ১২। পাৰস্যত এভুমুকি</button></div><h3>📕 বৈকল্পিক পাঠ</h3><div class="grid"><button class="secondary" onclick="searchByWord('কানাইৰ চাতুৰী')">📗 ১৩। কানাইৰ চাতুৰী</button><button class="secondary" onclick="searchByWord('ধৰ ঝাড়ু ধৰ ভাই')">📗 ১৪। ধৰ ঝাড়ু ধৰ ভাই</button><button class="secondary" onclick="searchByWord('বিষাদ যোগ')">📗 ১৫। বিষাদ যোগ</button><button class="secondary" onclick="searchByWord('প্ৰাচীন ভাৰতীয় শিক্ষা')">📗 ১৬। প্ৰাচীন ভাৰতীয় শিক্ষা</button></div></div></section>
-<section id="grammar" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>📝 অসমীয়া ব্যাকৰণ</h2><div class="grid"><button class="secondary" onclick="searchByWord('সন্ধি')">সন্ধি</button><button class="secondary" onclick="searchByWord('সমাস')">সমাস</button><button class="secondary" onclick="searchByWord('উপসৰ্গ')">উপসৰ্গ</button><button class="secondary" onclick="searchByWord('প্ৰত্যয়')">প্ৰত্যয়</button><button class="secondary" onclick="searchByWord('সমাৰ্থক শব্দ')">সমাৰ্থক শব্দ</button><button class="secondary" onclick="searchByWord('বিপৰীত শব্দ')">বিপৰীত শব্দ</button><button class="secondary" onclick="searchByWord('জতুৱা ঠাঁচ')">জতুৱা ঠাঁচ</button><button class="secondary" onclick="searchByWord('বাক্য')">বাক্য</button><button class="secondary" onclick="searchByWord('ভাব সম্প্ৰসাৰণ')">ভাব সম্প্ৰসাৰণ</button><button class="secondary" onclick="searchByWord('ৰচনা')">ৰচনা</button><button class="secondary" onclick="searchByWord('দৰ্খাস্ত')">দৰ্খাস্ত</button><button class="secondary" onclick="searchByWord('প্ৰতিবেদন')">প্ৰতিবেদন</button></div></div></section>
-<section id="hslc" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🎯 HSLC — অসমীয়া</h2><p>HSLC-সম্পৰ্কীয় প্ৰশ্ন database-ৰ পৰা বিচাৰিব পাৰিব।</p><div class="grid"><button class="main-btn" onclick="searchByWord('HSLC')">🎯 HSLC প্ৰশ্ন</button><button class="main-btn" onclick="searchByWord('MCQ')">☑️ MCQ</button><button class="main-btn" onclick="searchByWord('ৰচনা')">✍️ ৰচনা</button><button class="main-btn" onclick="searchByWord('ব্যাকৰণ')">📝 ব্যাকৰণ</button></div></div></section>
-<section id="questions" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>❓ প্ৰশ্নোত্তৰ সহায়িকা</h2><div class="notice"><b>📚 Database + AI</b><br><br>প্ৰথমে Supabase <b>questions</b> table-ত থকা প্ৰশ্নোত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা হ'ব।</div><br><textarea id="questionInput" placeholder="আপোনাৰ প্ৰশ্ন লিখক...&#10;উদাহৰণ: সমাস কাক বোলে?"></textarea><br><br><div class="grid"><button class="main-btn" onclick="askQuestion()">🔍 উত্তৰ বিচাৰক</button><button class="main-btn voice-btn" id="questionVoiceButton" onclick="startQuestionVoice()">🎙️ Voice</button></div><div id="questionResult"></div></div></section>
-<section id="admin" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>👨‍🏫 Admin Panel</h2><div id="adminLoginBox"><p>প্ৰশ্নোত্তৰ যোগ/সম্পাদনা কৰিবলৈ Admin account-ৰে Login কৰক।</p><input id="adminEmail" type="email" placeholder="Admin email"><input id="adminPassword" type="password" placeholder="Password" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="adminLogin()">🔐 Login</button><button class="secondary" onclick="adminLogout()">Logout</button></div><div id="adminAuthStatus"></div></div>
-<div id="adminPanel" class="hidden"><div class="admin-head"><h3>✍️ প্ৰশ্নোত্তৰ লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId"><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক" style="margin-top:8px"></textarea><div class="grid" style="margin-top:8px"><input id="adminType" value="Q&A" placeholder="Q&A / MCQ"><input id="adminClass" value="Class 10" placeholder="Class 10 / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="Subject"><input id="adminChapter" placeholder="Chapter name"></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="Option A (MCQ)"><input id="adminOptionB" placeholder="Option B (MCQ)"><input id="adminOptionC" placeholder="Option C (MCQ)"><input id="adminOptionD" placeholder="Option D (MCQ)"></div><input id="adminCorrect" placeholder="Correct answer (MCQ)" style="margin-top:8px"><input id="adminSource" placeholder="Source / উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
-<section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য ব্যৱহাৰ</h3><p>প্ৰশ্নোত্তৰ search আৰু Admin content সংৰক্ষণৰ বাবে Supabase ব্যৱহাৰ কৰা হয়।</p><h3>AI</h3><p>AI ব্যৱহাৰ কৰা হ'লে ব্যৱহাৰকাৰীয়ে লিখা/কোৱা প্ৰশ্ন AI service-লৈ প্ৰেৰণ হ'ব পাৰে।</p><p class="small">Last updated: 2026</p></div></section>
-</main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese</footer>
+
+<div class="container">
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+  <div class="card">
+    <h2>স্বাগতম 👋</h2>
+    <p>
+      দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া বিষয়ৰ
+      পাঠ, মূলভাৱ, প্ৰশ্নোত্তৰ আৰু অনুশীলন।
+    </p>
+  </div>
+
+  <div class="card">
+    <input
+      id="homeSearch"
+      class="search-box"
+      placeholder="প্ৰশ্ন বা শব্দ লিখি Search কৰক..."
+      onkeydown="if(event.key==='Enter') globalSearch()"
+    >
+    <button class="search-btn" onclick="globalSearch()">
+      🔍 Search
+    </button>
+  </div>
+
+  <div class="card">
+    <h3>📚 পাঠসমূহ</h3>
+    <button class="primary" onclick="showPage('chapters')">
+      দশম শ্ৰেণীৰ পাঠসমূহ চাওক
+    </button>
+  </div>
+
+  <div class="card">
+    <h3>🎤 Voice Question</h3>
+    <p class="small">
+      অসমীয়াত প্ৰশ্ন সুধিব পাৰিব।
+    </p>
+    <button class="primary" onclick="startVoice()">
+      🎤 কথা কৈ প্ৰশ্ন সুধক
+    </button>
+    <p id="voiceText"></p>
+  </div>
+
+  <div id="homeResults"></div>
+
+</section>
+
+
+<!-- CHAPTER LIST -->
+<section id="chapters" class="page">
+
+  <div class="card">
+    <h2>📚 দশম শ্ৰেণীৰ অসমীয়া</h2>
+    <p class="small">
+      পাঠ এটাত টিপিলে সেই পাঠৰ মূলভাৱ আৰু প্ৰশ্নোত্তৰসমূহ দেখা যাব।
+    </p>
+  </div>
+
+  <div id="chapterList"></div>
+
+</section>
+
+
+<!-- CHAPTER VIEW -->
+<section id="chapterView" class="page">
+
+  <button class="back" onclick="showPage('chapters')">
+    ← পাঠসমূহলৈ উভতি যাওক
+  </button>
+
+  <div id="chapterContent"></div>
+
+</section>
+
+
+<!-- GRAMMAR -->
+<section id="grammar" class="page">
+
+  <div class="card">
+    <h2>✍️ অসমীয়া ব্যাকৰণ</h2>
+    <p>সন্ধি, সমাস, প্ৰত্যয়, উপসৰ্গ, অনুসৰ্গ, সমাৰ্থক শব্দ আদি।</p>
+  </div>
+
+  <div class="card">
+    <h3>সন্ধি</h3>
+    <p>দুটা শব্দ বা ধ্বনি মিলি নতুন ৰূপ লোৱাকে সন্ধি বোলে।</p>
+  </div>
+
+  <div class="card">
+    <h3>সমাস</h3>
+    <p>দুটা বা ততোধিক পদ একত্ৰিত হৈ এটা পদত পৰিণত হোৱাকে সমাস বোলে।</p>
+  </div>
+
+  <div class="card">
+    <h3>প্ৰত্যয়</h3>
+    <p>শব্দৰ পিছত যোগ হৈ নতুন শব্দ গঠন কৰা বৰ্ণ বা বৰ্ণসমষ্টিক প্ৰত্যয় বোলে।</p>
+  </div>
+
+</section>
+
+
+<!-- HSLC -->
+<section id="hslc" class="page">
+
+  <div class="card">
+    <h2>📝 HSLC পৰীক্ষা</h2>
+    <p>
+      HSLC-ৰ বাবে গুৰুত্বপূৰ্ণ প্ৰশ্নোত্তৰ আৰু অনুশীলন।
+    </p>
+  </div>
+
+  <div id="hslcResults"></div>
+
+</section>
+
+
+<!-- SEARCH -->
+<section id="search" class="page">
+
+  <div class="card">
+    <h2>🔍 প্ৰশ্ন Search</h2>
+
+    <input
+      id="searchInput"
+      class="search-box"
+      placeholder="প্ৰশ্ন / উত্তৰ / পাঠৰ নাম লিখক..."
+      onkeydown="if(event.key==='Enter') globalSearch()"
+    >
+
+    <button class="search-btn" onclick="globalSearch()">
+      🔍 Search
+    </button>
+  </div>
+
+  <div id="searchResults"></div>
+
+</section>
+
+
+<!-- ADMIN -->
+<section id="admin" class="page">
+
+  <div class="card">
+
+    <h2>🔐 Admin Panel</h2>
+
+    <div id="loginBox">
+
+      <input
+        id="email"
+        type="email"
+        class="admin-input"
+        placeholder="Admin Email"
+      >
+
+      <input
+        id="password"
+        type="password"
+        class="admin-input"
+        placeholder="Password"
+      >
+
+      <button class="primary" onclick="adminLogin()">
+        Login
+      </button>
+
+      <p id="loginMessage"></p>
+
+    </div>
+
+
+    <div id="adminPanel" style="display:none;">
+
+      <p>
+        <b>Admin সফলভাৱে Login হৈছে ✅</b>
+      </p>
+
+      <button class="primary" onclick="adminLogout()">
+        Logout
+      </button>
+
+      <hr>
+
+      <h3>➕ নতুন প্ৰশ্নোত্তৰ যোগ কৰক</h3>
+
+      <label>পাঠ</label>
+
+      <select id="adminChapter" class="admin-select">
+      </select>
+
+
+      <label>প্ৰশ্নৰ ধৰণ</label>
+
+      <select id="questionType" class="admin-select">
+
+        <option value="অতি চমু">
+          অতি চমু প্ৰশ্নোত্তৰ
+        </option>
+
+        <option value="চমু">
+          চমু প্ৰশ্নোত্তৰ
+        </option>
+
+        <option value="ৰচনাধৰ্মী">
+          ৰচনাধৰ্মী প্ৰশ্নোত্তৰ
+        </option>
+
+      </select>
+
+
+      <textarea
+        id="question"
+        placeholder="প্ৰশ্ন লিখক"
+      ></textarea>
+
+
+      <textarea
+        id="answer"
+        placeholder="উত্তৰ লিখক"
+      ></textarea>
+
+
+      <input
+        id="source"
+        class="admin-input"
+        placeholder="Source (optional)"
+      >
+
+      <button class="primary" onclick="saveQuestion()">
+        💾 Save Question
+      </button>
+
+      <p id="saveMessage"></p>
+
+      <hr>
+
+      <h3>📋 এই পাঠৰ প্ৰশ্নসমূহ</h3>
+
+      <div id="adminQuestions"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PRIVACY -->
+<section id="privacy" class="page">
+
+  <div class="card">
+
+    <h2>🔒 Privacy Policy</h2>
+
+    <p>
+      এই app-টো শিক্ষামূলক উদ্দেশ্যে নিৰ্মাণ কৰা হৈছে।
+      ব্যৱহাৰকাৰীৰ ব্যক্তিগত তথ্য অপ্ৰয়োজনীয়ভাৱে সংগ্ৰহ কৰা নহয়।
+    </p>
+
+    <p>
+      Login সুবিধা কেৱল Admin management-ৰ বাবে ব্যৱহাৰ কৰা হয়।
+    </p>
+
+  </div>
+
+</section>
+
+</div>
+
+
 <script>
-const SUPABASE_URL="https://rlmxfzdbipksbrikgfbs.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
-/* AI-ৰ বাবে Supabase Edge Function তৈয়াৰ কৰাৰ পিছত এই endpoint ব্যৱহাৰ হ'ব। API key কেতিয়াও এই HTML-ত নিদিব। */
-const AI_ENDPOINT=SUPABASE_URL+"/functions/v1/ai-answer";
-let supabaseClient=null;
-function initSupabase(){try{if(!window.supabase)return false;supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return true}catch(e){console.error(e);return false}}
-function showPage(id){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));const p=document.getElementById(id);if(p)p.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});if(id==="admin")checkAdminSession()}
-function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
-async function dbSearch(term,limit=10){if(!supabaseClient)return{data:[],error:new Error("Supabase connection হোৱা নাই")};const clean=String(term).trim();if(!clean)return{data:[],error:null};const r=await supabaseClient.from("questions").select("*").or("question.ilike.%"+clean+"%,answer.ilike.%"+clean+"%").limit(limit);return{data:r.data||[],error:r.error||null}}
-function renderResults(rows){if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;return rows.map(r=>{const a=r.answer||r.correct_answer||"উত্তৰ নাই।";let h=`<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3>`;if(r.option_a||r.option_b||r.option_c||r.option_d)h+=`<div class="answer">${r.option_a?"A. "+esc(r.option_a)+"\n":""}${r.option_b?"B. "+esc(r.option_b)+"\n":""}${r.option_c?"C. "+esc(r.option_c)+"\n":""}${r.option_d?"D. "+esc(r.option_d):""}</div>`;h+=`<div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div><button class="speak-btn" onclick="speakText(this.dataset.text)" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;const m=[];if(r.class_name)m.push(r.class_name);if(r.subject)m.push(r.subject);if(r.chapter_name)m.push(r.chapter_name);if(m.length)h+=`<p class="small">${esc(m.join(" • "))}</p>`;return h+`</div>`}).join("")}
-async function searchQuestions(){const q=document.getElementById("searchInput").value.trim(),s=document.getElementById("searchStatus"),o=document.getElementById("searchResult");if(!q){s.innerHTML=`<p class="error">প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।</p>`;o.innerHTML="";return}s.innerHTML=`<p class="loading">⏳ Database-ত বিচাৰি থকা হৈছে...</p>`;o.innerHTML="";const r=await dbSearch(q);if(r.data.length){s.innerHTML=`<p class="success">✅ ${r.data.length} টা ফলাফল পোৱা গ'ল।</p>`;o.innerHTML=renderResults(r.data)}else{s.innerHTML=`<p class="error">⚠️ Database-ত ফলাফল নাই।</p>`;o.innerHTML=`<div class="card empty">এই প্ৰশ্নটোৰ উত্তৰ Database-ত নাই।<br><br>AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা যাব।</div>`}}
-async function askQuestion(){const q=document.getElementById("questionInput").value.trim(),o=document.getElementById("questionResult");if(!q){o.innerHTML=`<div class="card result"><h3>⚠️ প্ৰশ্ন লিখক</h3></div>`;return}o.innerHTML=`<div class="card result"><h3>🔎 Database-ত বিচাৰি থকা হৈছে...</h3></div>`;const r=await dbSearch(q);if(r.data.length){o.innerHTML=`<div class="card result"><h3>📚 Database-ৰ উত্তৰ</h3></div>`+renderResults(r.data);return}o.innerHTML=`<div class="card result"><h3>🤖 AI-ৰ পৰা উত্তৰ বিচাৰি থকা হৈছে...</h3></div>`;const ai=await askAI(q);if(ai.ok)o.innerHTML=`<div class="card result"><span class="tag">AI Answer</span><h3>🤖 উত্তৰ</h3><div class="answer">${esc(ai.answer)}</div><br><button class="speak-btn" onclick="speakText(this.dataset.text)" data-text="${esc(ai.answer)}">🔊 উত্তৰ শুনক</button></div>`;else o.innerHTML=`<div class="card result"><h3>⚠️ AI সংযোগ এতিয়া সক্ৰিয় নহয়</h3><p>Database-তো উত্তৰ নাই। Supabase Edge Function <b>ai-answer</b> সংযোগ কৰাৰ পিছত AI উত্তৰ দিব।</p></div>`}
-async function askAI(question){try{const {data:{session}}=await supabaseClient.auth.getSession();const headers={"Content-Type":"application/json"};if(session?.access_token)headers.Authorization="Bearer "+session.access_token;const r=await fetch(AI_ENDPOINT,{method:"POST",headers,body:JSON.stringify({question,language:"Assamese",app:"Assamese Sahayika"})});if(!r.ok)return{ok:false};const d=await r.json(),a=d.answer||d.text||d.response;return a?{ok:true,answer:a}:{ok:false}}catch(e){console.error(e);return{ok:false}}}
-function searchByWord(w){showPage("home");document.getElementById("searchInput").value=w;searchQuestions()}
-function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
-function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
-function startRecognition(bid,iid,cb){const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Chrome ব্যৱহাৰ কৰি চেষ্টা কৰক।");return}const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 শুনি আছে...";try{rec.start()}catch(e){}rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};rec.onerror=e=>console.log("Voice error",e.error);rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}}
-function speakText(text){if(!("speechSynthesis"in window)){alert("এই browser-ত Voice Answer support নাই।");return}window.speechSynthesis.cancel();const s=new SpeechSynthesisUtterance(text);s.lang="as-IN";s.rate=.82;s.pitch=1;const v=window.speechSynthesis.getVoices().find(x=>(x.lang||"").toLowerCase().startsWith("as"));if(v)s.voice=v;window.speechSynthesis.speak(s)}
-async function shareApp(){try{const d={title:"অসমীয়া সহায়িকা — 10 & HSLC",text:"দশম শ্ৰেণী আৰু HSLC অসমীয়া বিষয়ৰ সহায়িকা।",url:location.href};if(navigator.share)await navigator.share(d);else{await navigator.clipboard.writeText(location.href);alert("App-ৰ link copy হৈছে। WhatsApp-ত paste কৰিব পাৰিব।")}}catch(e){console.log("Share cancelled")}}
-async function adminLogin(){const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,status=document.getElementById("adminAuthStatus");if(!email||!password){status.innerHTML=`<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>`;return}status.innerHTML=`<p class="loading">🔐 Login কৰি থকা হৈছে...</p>`;const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return}status.innerHTML=`<p class="success">✅ Login সফল।</p>`;showAdminPanel()}
-async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}
-async function checkAdminSession(){if(!supabaseClient)return;const {data}=await supabaseClient.auth.getSession();if(data.session)showAdminPanel();else{document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}}
-async function showAdminPanel(){document.getElementById("adminLoginBox").classList.add("hidden");document.getElementById("adminPanel").classList.remove("hidden");loadAdminQuestions()}
-function adminPayload(){return{question:document.getElementById("adminQuestion").value.trim(),answer:document.getElementById("adminAnswer").value.trim(),question_type:document.getElementById("adminType").value.trim()||"Q&A",class_name:document.getElementById("adminClass").value.trim()||"Class 10",subject:document.getElementById("adminSubject").value.trim()||"Assamese",chapter_name:document.getElementById("adminChapter").value.trim(),option_a:document.getElementById("adminOptionA").value.trim(),option_b:document.getElementById("adminOptionB").value.trim(),option_c:document.getElementById("adminOptionC").value.trim(),option_d:document.getElementById("adminOptionD").value.trim(),correct_answer:document.getElementById("adminCorrect").value.trim(),source:document.getElementById("adminSource").value.trim(),language:"Assamese"}}
-async function saveQuestion(){const st=document.getElementById("adminSaveStatus"),id=document.getElementById("editId").value,p=adminPayload();if(!p.question||!p.answer){st.innerHTML=`<p class="error">প্ৰশ্ন আৰু উত্তৰ দুয়োটা পূৰণ কৰক।</p>`;return}st.innerHTML=`<p class="loading">💾 Save কৰি থকা হৈছে...</p>`;const r=id?await supabaseClient.from("questions").update(p).eq("id",id):await supabaseClient.from("questions").insert(p);if(r.error){st.innerHTML=`<p class="error">❌ Save নহ'ল: ${esc(r.error.message)}</p>`;return}st.innerHTML=`<p class="success">✅ প্ৰশ্নোত্তৰ সংৰক্ষণ হ'ল।</p>`;clearAdminForm();loadAdminQuestions()}
-async function loadAdminQuestions(){const box=document.getElementById("adminQuestionList");box.innerHTML=`<p class="loading">⏳ Loading...</p>`;const r=await supabaseClient.from("questions").select("id,question,answer,question_type,class_name,chapter_name,created_at").order("created_at",{ascending:false}).limit(50);if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}if(!r.data.length){box.innerHTML=`<div class="empty">এতিয়াও কোনো প্ৰশ্ন যোগ কৰা হোৱা নাই।</div>`;return}box.innerHTML=r.data.map(x=>`<div class="admin-row"><b>${esc(x.question)}</b><p class="small">${esc(x.answer)}</p><p class="small">${esc(x.class_name||"")} ${x.chapter_name?"• "+esc(x.chapter_name):""}</p><div class="grid"><button class="main-btn edit" onclick="editQuestion(${x.id})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${x.id})">🗑️ Delete</button></div></div>`).join("")}
-async function editQuestion(id){const r=await supabaseClient.from("questions").select("*").eq("id",id).single();if(r.error){alert(r.error.message);return}const x=r.data;document.getElementById("editId").value=x.id||"";document.getElementById("adminQuestion").value=x.question||"";document.getElementById("adminAnswer").value=x.answer||"";document.getElementById("adminType").value=x.question_type||"Q&A";document.getElementById("adminClass").value=x.class_name||"";document.getElementById("adminSubject").value=x.subject||"Assamese";document.getElementById("adminChapter").value=x.chapter_name||"";document.getElementById("adminOptionA").value=x.option_a||"";document.getElementById("adminOptionB").value=x.option_b||"";document.getElementById("adminOptionC").value=x.option_c||"";document.getElementById("adminOptionD").value=x.option_d||"";document.getElementById("adminCorrect").value=x.correct_answer||"";document.getElementById("adminSource").value=x.source||"";window.scrollTo({top:0,behavior:"smooth"})}
-async function deleteQuestion(id){if(!confirm("এই প্ৰশ্নটো Delete কৰিবনে?"))return;const r=await supabaseClient.from("questions").delete().eq("id",id);if(r.error)alert("Delete নহ'ল: "+r.error.message);else{document.getElementById("adminSaveStatus").innerHTML=`<p class="success">✅ Delete কৰা হ'ল।</p>`;loadAdminQuestions()}}
-function clearAdminForm(){document.getElementById("editId").value="";["adminQuestion","adminAnswer","adminChapter","adminOptionA","adminOptionB","adminOptionC","adminOptionD","adminCorrect","adminSource"].forEach(id=>document.getElementById(id).value="");document.getElementById("adminType").value="Q&A";document.getElementById("adminClass").value="Class 10";document.getElementById("adminSubject").value="Assamese"}
-document.addEventListener("DOMContentLoaded",()=>{initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
-</script></body></html>
+
+/* =====================================================
+   SUPABASE CONFIG
+   ===================================================== */
+
+/*
+  ইয়াত নিজৰ Supabase Project URL আৰু Publishable/Anon Key দিয়ক।
+
+  Supabase Dashboard →
+  Project Settings →
+  API
+*/
+
+const SUPABASE_URL =
+  "https://rlmxfzdbipksbrikgfbs.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
+
+
+let supabaseClient = null;
+
+
+/* Supabase JS library load */
+const script = document.createElement("script");
+
+script.src =
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+
+script.onload = function(){
+
+  supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+  loadChapters();
+
+};
+
+document.head.appendChild(script);
+
+
+/* =====================================================
+   CHAPTERS
+   ===================================================== */
+
+const chapters = [
+
+"বৰগীত",
+"জিকিৰ",
+"প্ৰশস্তি",
+"মই অসমীয়া",
+"দৃশ্যান্তৰ",
+"উদ্যোগী হওঁ আহাঁ",
+"ভাৰতীয় সংস্কৃতি",
+"অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি",
+"ইণ্টাৰনেটৰ তিতা-মিঠা",
+"অৰুণিমা সিনহা",
+"অৰণ্যযাত্ৰা",
+"পাৰস্যত এভুমুকি",
+"কানাইৰ চাতুৰী",
+"ধৰ ঝাড়ু ধৰ ভাই",
+"বিষাদ যোগ",
+"প্ৰাচীন ভাৰতীয় শিক্ষা"
+
+];
+
+
+/*
+  পাঠৰ মূলভাৱ/সাৰাংশ।
+
+  পিছত প্ৰতিটো পাঠৰ সঠিক textbook content
+  ইয়াত পৃথকে যোগ কৰিব পাৰিম।
+*/
+
+const summaries = {
+
+"বৰগীত":
+"এই পাঠত বৰগীতৰ ভাব, ভক্তি আৰু আধ্যাত্মিক চেতনাৰ বিষয়ে আলোচনা কৰা হৈছে।",
+
+"জিকিৰ":
+"জিকিৰত ধৰ্মীয় সম্প্ৰীতি, মানৱতা আৰু ভাতৃত্ববোধৰ সুন্দৰ প্ৰকাশ দেখা যায়।",
+
+"প্ৰশস্তি":
+"ৰঘুনাথ চৌধাৰী দেৱে প্ৰশস্তি কবিতাটোৰ জৰিয়তে বিনন্দীয়া প্ৰকৃতিৰ সৌন্দৰ্যৰ মাজেৰে সুন্দৰৰ আৰাধনা কৰিছে।",
+
+"মই অসমীয়া":
+"এই পাঠত অসমীয়া জাতিৰ পৰিচয়, স্বদেশপ্ৰেম আৰু জাতীয় চেতনাৰ কথা প্ৰকাশ পাইছে।",
+
+"দৃশ্যান্তৰ":
+"এই পাঠত জীৱন আৰু সমাজৰ পৰিৱৰ্তনৰ বিভিন্ন দিশ প্ৰকাশ কৰা হৈছে।",
+
+"উদ্যোগী হওঁ আহাঁ":
+"পাঠটোৱে ছাত্ৰ-ছাত্ৰীসকলক আত্মনিৰ্ভৰশীল আৰু উদ্যোগী হ'বলৈ উৎসাহিত কৰে।",
+
+"ভাৰতীয় সংস্কৃতি":
+"ভাৰতীয় সংস্কৃতিৰ বৈচিত্ৰ্য, ঐক্য আৰু পৰম্পৰাৰ বিষয়ে পাঠটোত আলোচনা কৰা হৈছে।",
+
+"অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি":
+"অসমৰ বিভিন্ন জনগোষ্ঠীৰ বৈচিত্ৰ্যময় সংস্কৃতি আৰু সামাজিক জীৱনৰ বিষয়ে আলোচনা কৰা হৈছে।",
+
+"ইণ্টাৰনেটৰ তিতা-মিঠা":
+"ইণ্টাৰনেটৰ উপকাৰিতা আৰু অপকাৰিতা তথা সঠিক ব্যৱহাৰৰ প্ৰয়োজনীয়তা পাঠটোত দেখুওৱা হৈছে।",
+
+"অৰুণিমা সিনহা":
+"অৰুণিমা সিনহাৰ জীৱনসংগ্ৰাম, সাহস, আত্মবিশ্বাস আৰু অসাধাৰণ সফলতাৰ কাহিনী এই পাঠৰ মূল বিষয়।",
+
+"অৰণ্যযাত্ৰা":
+"এই পাঠত অৰণ্যৰ প্ৰকৃতি, সৌন্দৰ্য আৰু মানুহৰ সৈতে প্ৰকৃতিৰ সম্পৰ্ক প্ৰকাশ কৰা হৈছে।",
+
+"পাৰস্যত এভুমুকি":
+"পাৰস্যৰ সমাজ, সংস্কৃতি আৰু ভ্ৰমণৰ অভিজ্ঞতাৰ বিভিন্ন দিশ এই পাঠত প্ৰকাশ পাইছে।",
+
+"কানাইৰ চাতুৰী":
+"কানাইৰ বুদ্ধি, চাতুৰী আৰু কৌশলৰ মনোৰম প্ৰকাশ এই পাঠত দেখা যায়।",
+
+"ধৰ ঝাড়ু ধৰ ভাই":
+"পৰিষ্কাৰ-পৰিচ্ছন্নতা আৰু সামাজিক দায়িত্বৰ প্ৰতি সচেতন হ'বলৈ পাঠটোৱে আহ্বান জনায়।",
+
+"বিষাদ যোগ":
+"পাঠটোত জীৱনৰ বিষাদ, কৰ্তব্য আৰু মানৱীয় অনুভূতিৰ বিভিন্ন দিশ প্ৰকাশ কৰা হৈছে।",
+
+"প্ৰাচীন ভাৰতীয় শিক্ষা":
+"প্ৰাচীন ভাৰতৰ শিক্ষা ব্যৱস্থা, গুৰু-শিষ্য পৰম্পৰা আৰু শিক্ষাৰ উদ্দেশ্যৰ বিষয়ে আলোচনা কৰা হৈছে।"
+
+};
+
+
+/* =====================================================
+   PAGE SYSTEM
+   ===================================================== */
+
+function showPage(page){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+  const target =
+    document.getElementById(page);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =====================================================
+   CHAPTER LIST
+   ===================================================== */
+
+function loadChapters(){
+
+  const list =
+    document.getElementById("chapterList");
+
+  list.innerHTML = "";
+
+  chapters.forEach((chapter,index)=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "card chapter-card";
+
+    div.onclick =
+      () => openChapter(chapter);
+
+    div.innerHTML = `
+
+      <h3>
+        ${index+1}. ${escapeHTML(chapter)}
+      </h3>
+
+      <p>
+        📖 পাঠ খুলিবলৈ ইয়াত টিপক
+      </p>
+
+    `;
+
+    list.appendChild(div);
+
+  });
+
+
+  const select =
+    document.getElementById("adminChapter");
+
+  select.innerHTML = "";
+
+  chapters.forEach(chapter=>{
+
+    const option =
+      document.createElement("option");
+
+    option.value = chapter;
+    option.textContent = chapter;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+/* =====================================================
+   OPEN CHAPTER
+   ===================================================== */
+
+async function openChapter(chapter){
+
+  showPage("chapterView");
+
+  const container =
+    document.getElementById("chapterContent");
+
+  container.innerHTML = `
+
+    <div class="card">
+
+      <h2 class="lesson-title">
+        📖 ${escapeHTML(chapter)}
+      </h2>
+
+      <div class="summary">
+
+        <b>📌 মূলভাৱ / সাৰাংশ</b><br>
+
+        ${
+          summaries[chapter] ||
+          "এই পাঠৰ মূলভাৱ সোনকালেই যোগ কৰা হ'ব।"
+        }
+
+      </div>
+
+    </div>
+
+    <div class="loading">
+      ⏳ প্ৰশ্নোত্তৰসমূহ লোড হৈ আছে...
+    </div>
+
+  `;
+
+
+  if(!supabaseClient){
+
+    container.innerHTML += `
+
+      <div class="card empty">
+        Supabase এতিয়াও সংযোগ হোৱা নাই।
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  const {data,error} =
+    await supabaseClient
+      .from("questions")
+      .select("*")
+      .eq("chapter_name",chapter)
+      .order("id",{ascending:true});
+
+
+  if(error){
+
+    container.innerHTML += `
+
+      <div class="card empty">
+
+        ❌ প্ৰশ্নোত্তৰ লোড কৰিব পৰা নগ'ল।
+
+        <br><br>
+
+        ${escapeHTML(error.message)}
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  renderChapterQuestions(
+    container,
+    chapter,
+    data || []
+  );
+
+}
+
+
+/* =====================================================
+   RENDER CHAPTER QUESTIONS
+   ===================================================== */
+
+function renderChapterQuestions(
+  container,
+  chapter,
+  data
+){
+
+  const oldLoading =
+    container.querySelector(".loading");
+
+  if(oldLoading){
+    oldLoading.remove();
+  }
+
+
+  if(!data.length){
+
+    container.innerHTML += `
+
+      <div class="card empty">
+
+        📚 এই পাঠৰ প্ৰশ্নোত্তৰ এতিয়াও
+        Database-ত যোগ কৰা হোৱা নাই।
+
+        <br><br>
+
+        Admin Panel-ৰ পৰা প্ৰশ্নোত্তৰ যোগ কৰক।
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  const types = [
+
+    {
+      key:"অতি চমু",
+      title:"অতি চমু প্ৰশ্নোত্তৰ"
+    },
+
+    {
+      key:"চমু",
+      title:"চমু প্ৰশ্নোত্তৰ"
+    },
+
+    {
+      key:"ৰচনাধৰ্মী",
+      title:"ৰচনাধৰ্মী প্ৰশ্নোত্তৰ"
+    }
+
+  ];
+
+
+  types.forEach(type=>{
+
+    const rows =
+      data.filter(
+        q =>
+        normalizeType(q.question_type)
+        ===
+        normalizeType(type.key)
+      );
+
+
+    if(!rows.length) return;
+
+
+    const section =
+      document.createElement("div");
+
+    section.className =
+      "q-section";
+
+    section.innerHTML =
+      `<h3>${type.title}</h3>`;
+
+
+    rows.forEach(q=>{
+
+      const qa =
+        document.createElement("div");
+
+      qa.className = "qa";
+
+
+      const question =
+        escapeHTML(q.question || "");
+
+      const answer =
+        escapeHTML(q.answer || "");
+
+
+      qa.innerHTML = `
+
+        <div class="question">
+          প্ৰশ্নঃ ${question}
+        </div>
+
+        <div class="answer">
+          উত্তৰঃ ${answer}
+        </div>
+
+        <button
+          class="listen"
+          onclick='speakAnswer(${JSON.stringify(
+            q.answer || ""
+          )})'
+        >
+          🔊 উত্তৰ শুনক
+        </button>
+
+      `;
+
+      section.appendChild(qa);
+
+    });
+
+
+    container.appendChild(section);
+
+  });
+
+}
+
+
+/* =====================================================
+   TYPE NORMALIZATION
+   ===================================================== */
+
+function normalizeType(type){
+
+  if(!type) return "";
+
+  type =
+    String(type)
+      .trim()
+      .replace(/প্ৰশ্নোত্তৰ/g,"")
+      .trim();
+
+  return type;
+
+}
+
+
+/* =====================================================
+   GLOBAL SEARCH
+   ===================================================== */
+
+async function globalSearch(){
+
+  const input =
+    document.getElementById("searchInput");
+
+  const homeInput =
+    document.getElementById("homeSearch");
+
+
+  let text =
+    input?.value.trim() ||
+    homeInput?.value.trim();
+
+
+  if(!text){
+
+    alert("অনুগ্ৰহ কৰি Search শব্দ লিখক।");
+
+    return;
+  }
+
+
+  showPage("search");
+
+
+  const results =
+    document.getElementById("searchResults");
+
+
+  results.innerHTML =
+    `<div class="loading">🔍 Search হৈ আছে...</div>`;
+
+
+  if(!supabaseClient){
+
+    results.innerHTML =
+      `<div class="card empty">
+        Supabase সংযোগ হোৱা নাই।
+      </div>`;
+
+    return;
+  }
+
+
+  /*
+    বিশেষ SQL-safe character handling
+  */
+
+  const clean =
+    text
+      .replace(/[%_]/g," ")
+      .trim();
+
+
+  const {data,error} =
+    await supabaseClient
+      .from("questions")
+      .select("*")
+      .or(
+        `question.ilike.%${clean}%,answer.ilike.%${clean}%,chapter_name.ilike.%${clean}%`
+      )
+      .order("id",{ascending:true});
+
+
+  if(error){
+
+    results.innerHTML = `
+
+      <div class="card empty">
+
+        ❌ Search error
+
+        <br><br>
+
+        ${escapeHTML(error.message)}
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  renderSearchResults(
+    results,
+    data || []
+  );
+
+}
+
+
+/* =====================================================
+   SEARCH RESULTS
+   ===================================================== */
+
+function renderSearchResults(
+  container,
+  data
+){
+
+  container.innerHTML = "";
+
+  if(!data.length){
+
+    container.innerHTML = `
+
+      <div class="card empty">
+
+        ❌ এই প্ৰশ্নটোৰ উত্তৰ Database-ত পোৱা নগ'ল।
+
+        <br><br>
+
+        AI সুবিধা পিছত যোগ কৰিব পাৰিম।
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  const title =
+    document.createElement("div");
+
+  title.className = "card";
+
+  title.innerHTML =
+    `<b>🔎 ${data.length}টা ফলাফল পোৱা গৈছে</b>`;
+
+  container.appendChild(title);
+
+
+  data.forEach(q=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className = "qa";
+
+
+    div.innerHTML = `
+
+      <div class="small">
+        📖 ${escapeHTML(q.chapter_name || "")}
+      </div>
+
+      <div class="question">
+        প্ৰশ্নঃ ${escapeHTML(q.question || "")}
+      </div>
+
+      <div class="answer">
+        উত্তৰঃ ${escapeHTML(q.answer || "")}
+      </div>
+
+      <button
+        class="listen"
+        onclick='speakAnswer(${JSON.stringify(
+          q.answer || ""
+        )})'
+      >
+        🔊 উত্তৰ শুনক
+      </button>
+
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+/* =====================================================
+   TEXT TO SPEECH
+   ===================================================== */
+
+function speakAnswer(text){
+
+  if(!text){
+
+    alert("উত্তৰ পোৱা নগ'ল।");
+
+    return;
+  }
+
+
+  if(!("speechSynthesis" in window)){
+
+    alert(
+      "আপোনাৰ Browser-ত Voice সুবিধা উপলব্ধ নহয়।"
+    );
+
+    return;
+  }
+
+
+  speechSynthesis.cancel();
+
+
+  const utterance =
+    new SpeechSynthesisUtterance(text);
+
+
+  utterance.lang = "as-IN";
+  utterance.rate = 0.85;
+  utterance.pitch = 1;
+
+
+  const voices =
+    speechSynthesis.getVoices();
+
+
+  /*
+    Assamese voice থাকিলে প্ৰথমে সেইটো লোৱা।
+  */
+
+  const assameseVoice =
+    voices.find(v =>
+      /^as(-|_)/i.test(v.lang)
+    );
+
+
+  if(assameseVoice){
+    utterance.voice =
+      assameseVoice;
+  }
+
+
+  speechSynthesis.speak(
+    utterance
+  );
+
+}
+
+
+/* =====================================================
+   VOICE INPUT
+   ===================================================== */
+
+let recognition = null;
+
+function startVoice(){
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+  if(!SpeechRecognition){
+
+    alert(
+      "এই Browser-ত Voice Input সুবিধা নাই। Chrome ব্যৱহাৰ কৰক।"
+    );
+
+    return;
+  }
+
+
+  recognition =
+    new SpeechRecognition();
+
+
+  recognition.lang =
+    "as-IN";
+
+  recognition.interimResults =
+    false;
+
+  recognition.continuous =
+    false;
+
+
+  const output =
+    document.getElementById("voiceText");
+
+
+  output.innerHTML =
+    "🎤 শুনি আছোঁ...";
+
+
+  recognition.onresult =
+    function(event){
+
+      const text =
+        event.results[0][0].transcript;
+
+
+      output.innerHTML =
+        `আপুনি কৈছে: <b>${escapeHTML(text)}</b>`;
+
+
+      document.getElementById(
+        "searchInput"
+      ).value = text;
+
+
+      globalSearch();
+
+    };
+
+
+  recognition.onerror =
+    function(){
+
+      output.innerHTML =
+        "❌ Voice Input-ত সমস্যা হৈছে।";
+    };
+
+
+  recognition.start();
+
+}
+
+
+/* =====================================================
+   ADMIN LOGIN
+   ===================================================== */
+
+async function adminLogin(){
+
+  if(!supabaseClient){
+
+    alert(
+      "Supabase সংযোগ হোৱা নাই।"
+    );
+
+    return;
+  }
+
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+
+  if(!email || !password){
+
+    alert(
+      "Email আৰু Password দিয়ক।"
+    );
+
+    return;
+  }
+
+
+  const {data,error} =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+
+  if(error){
+
+    document.getElementById(
+      "loginMessage"
+    ).innerHTML =
+      "❌ Login failed: " +
+      escapeHTML(error.message);
+
+    return;
+  }
+
+
+  document.getElementById(
+    "loginMessage"
+  ).innerHTML =
+    "✅ Login সফল।";
+
+
+  document.getElementById(
+    "loginBox"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "adminPanel"
+  ).style.display = "block";
+
+
+  loadAdminQuestions();
+
+}
+
+
+/* =====================================================
+   ADMIN LOGOUT
+   ===================================================== */
+
+async function adminLogout(){
+
+  await supabaseClient.auth.signOut();
+
+  document.getElementById(
+    "loginBox"
+  ).style.display = "block";
+
+
+  document.getElementById(
+    "adminPanel"
+  ).style.display = "none";
+
+}
+
+
+/* =====================================================
+   SAVE QUESTION
+   ===================================================== */
+
+async function saveQuestion(){
+
+  const chapter =
+    document.getElementById(
+      "adminChapter"
+    ).value;
+
+
+  const type =
+    document.getElementById(
+      "questionType"
+    ).value;
+
+
+  const question =
+    document.getElementById(
+      "question"
+    ).value.trim();
+
+
+  const answer =
+    document.getElementById(
+      "answer"
+    ).value.trim();
+
+
+  const source =
+    document.getElementById(
+      "source"
+    ).value.trim();
+
+
+  if(!chapter || !question || !answer){
+
+    alert(
+      "পাঠ, প্ৰশ্ন আৰু উত্তৰ পূৰণ কৰক।"
+    );
+
+    return;
+  }
+
+
+  const user =
+    await supabaseClient.auth.getUser();
+
+
+  if(!user.data.user){
+
+    alert(
+      "প্ৰথমে Admin Login কৰক।"
+    );
+
+    return;
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("questions")
+      .insert({
+
+        question:question,
+
+        answer:answer,
+
+        question_type:type,
+
+        class_name:"10",
+
+        subject:"অসমীয়া",
+
+        chapter_name:chapter,
+
+        source:source || null,
+
+        is_ai_generated:false,
+
+        is_approved:true
+
+      });
+
+
+  if(error){
+
+    document.getElementById(
+      "saveMessage"
+    ).innerHTML =
+      "❌ Save Error: " +
+      escapeHTML(error.message);
+
+    return;
+  }
+
+
+  document.getElementById(
+    "saveMessage"
+  ).innerHTML =
+    "✅ প্ৰশ্নোত্তৰ সফলভাৱে Save হৈছে।";
+
+
+  document.getElementById(
+    "question"
+  ).value = "";
+
+
+  document.getElementById(
+    "answer"
+  ).value = "";
+
+
+  document.getElementById(
+    "source"
+  ).value = "";
+
+
+  loadAdminQuestions();
+
+}
+
+
+/* =====================================================
+   ADMIN QUESTIONS
+   ===================================================== */
+
+async function loadAdminQuestions(){
+
+  const chapter =
+    document.getElementById(
+      "adminChapter"
+    ).value;
+
+
+  const box =
+    document.getElementById(
+      "adminQuestions"
+    );
+
+
+  if(!supabaseClient) return;
+
+
+  box.innerHTML =
+    `<div class="loading">লোড হৈ আছে...</div>`;
+
+
+  const {data,error} =
+    await supabaseClient
+      .from("questions")
+      .select("*")
+      .eq("chapter_name",chapter)
+      .order("id",{ascending:true});
+
+
+  if(error){
+
+    box.innerHTML =
+      `<div class="empty">
+        ${escapeHTML(error.message)}
+      </div>`;
+
+    return;
+  }
+
+
+  box.innerHTML = "";
+
+
+  if(!data.length){
+
+    box.innerHTML =
+      `<div class="empty">
+        এই পাঠত এতিয়াও প্ৰশ্ন নাই।
+      </div>`;
+
+    return;
+  }
+
+
+  data.forEach(q=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className = "qa";
+
+
+    div.innerHTML = `
+
+      <div class="small">
+        ${escapeHTML(q.question_type || "")}
+      </div>
+
+      <div class="question">
+        ${escapeHTML(q.question || "")}
+      </div>
+
+      <div class="answer">
+        ${escapeHTML(q.answer || "")}
+      </div>
+
+      <br>
+
+      <button
+        class="edit"
+        onclick="editQuestion(${q.id})"
+      >
+        ✏️ Edit
+      </button>
+
+      <button
+        class="danger"
+        onclick="deleteQuestion(${q.id})"
+      >
+        🗑 Delete
+      </button>
+
+    `;
+
+
+    box.appendChild(div);
+
+  });
+
+}
+
+
+/* =====================================================
+   CHANGE ADMIN CHAPTER
+   ===================================================== */
+
+document.addEventListener(
+  "change",
+  function(event){
+
+    if(
+      event.target &&
+      event.target.id === "adminChapter"
+    ){
+
+      loadAdminQuestions();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   DELETE
+   ===================================================== */
+
+async function deleteQuestion(id){
+
+  if(
+    !confirm(
+      "এই প্ৰশ্নটো Delete কৰিবনে?"
+    )
+  ){
+
+    return;
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("questions")
+      .delete()
+      .eq("id",id);
+
+
+  if(error){
+
+    alert(
+      "Delete হোৱা নাই: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "✅ Delete হৈছে।"
+  );
+
+
+  loadAdminQuestions();
+
+}
+
+
+/* =====================================================
+   EDIT
+   ===================================================== */
+
+async function editQuestion(id){
+
+  const {data,error} =
+    await supabaseClient
+      .from("questions")
+      .select("*")
+      .eq("id",id)
+      .single();
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+  }
+
+
+  const newQuestion =
+    prompt(
+      "প্ৰশ্ন:",
+      data.question || ""
+    );
+
+
+  if(newQuestion === null)
+    return;
+
+
+  const newAnswer =
+    prompt(
+      "উত্তৰ:",
+      data.answer || ""
+    );
+
+
+  if(newAnswer === null)
+    return;
+
+
+  const {error:updateError} =
+    await supabaseClient
+      .from("questions")
+      .update({
+
+        question:newQuestion,
+
+        answer:newAnswer
+
+      })
+      .eq("id",id);
+
+
+  if(updateError){
+
+    alert(
+      "Update হোৱা নাই: " +
+      updateError.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "✅ Update হৈছে।"
+  );
+
+
+  loadAdminQuestions();
+
+}
+
+
+/* =====================================================
+   HTML SECURITY
+   ===================================================== */
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   INITIAL
+   ===================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    loadChapters();
+
+  }
+);
+
+</script>
+
+</body>
+</html>

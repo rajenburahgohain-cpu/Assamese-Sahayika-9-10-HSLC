@@ -399,31 +399,6 @@ async function adminVoiceTo(targetId,buttonId){
   try{rec.start();}catch(e){b.disabled=false;b.classList.remove("listening");b.innerText=normalText;activeAdminRecognition=null;alert("🎤 Assamese Voice Input আৰম্ভ কৰিব পৰা নগ'ল।\n\nMicrophone permission Allow আছে নে পৰীক্ষা কৰক আৰু Chrome-ত page Reload কৰক।\n\nকাৰণ: "+(e.message||e));}
 }
 
-// Admin audio recording: এইটোও একে Microphone permission ব্যৱহাৰ কৰে
-let adminAudioRecorder=null, adminAudioChunks=[], adminRecordedBlob=null;
-async function startAdminAudioRecord(){
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    adminAudioChunks=[]; adminRecordedBlob=null;
-    const mime=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":"audio/webm";
-    adminAudioRecorder=new MediaRecorder(stream,{mimeType:mime});
-    adminAudioRecorder.ondataavailable=e=>{if(e.data&&e.data.size)adminAudioChunks.push(e.data)};
-    adminAudioRecorder.onstop=()=>{
-      adminRecordedBlob=new Blob(adminAudioChunks,{type:adminAudioRecorder.mimeType||"audio/webm"});
-      const url=URL.createObjectURL(adminRecordedBlob);
-      const a=document.getElementById("adminAudioPreview");
-      a.src=url; a.style.display="block";
-      document.getElementById("adminAudioStatus").textContent=" ✅ ৰেকৰ্ডিং সাজু হৈছে";
-      stream.getTracks().forEach(t=>t.stop());
-    };
-    adminAudioRecorder.start();
-    document.getElementById("adminAudioStatus").textContent=" 🔴 ৰেকৰ্ডিং চলি আছে...";
-  }catch(e){
-    alert("🎙️ Microphone permission পোৱা নগ'ল।\nChrome → Site settings → Microphone → Allow কৰক।\n\n"+(e.message||e));
-  }
-}
-function stopAdminAudioRecord(){if(adminAudioRecorder&&adminAudioRecorder.state!=="inactive")adminAudioRecorder.stop()}
-
 document.addEventListener("DOMContentLoaded",()=>{initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script>
 <script>

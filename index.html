@@ -142,6 +142,12 @@
 .recorded-stop-btn{background:#ffebee;}
 </style>
 
+
+<style>
+/* Section 3 is dynamically shown only when recorded audio exists. */
+.recorded-qa-card { display:block; }
+</style>
+
 </head><body>
 <header><h1>অসমীয়া সহায়িকা — 10 & HSLC</h1><p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয় • দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীৰ বাবেও উপযোগী</p></header>
 <nav class="big-nav">
@@ -257,7 +263,7 @@ async function searchQuestions(){const q=document.getElementById("searchInput").
 async function askQuestion(){const q=document.getElementById("questionInput").value.trim(),o=document.getElementById("questionResult");if(!q){o.innerHTML=`<div class="card result"><h3>⚠️ প্ৰশ্ন লিখক</h3></div>`;return}o.innerHTML=`<div class="card result"><h3>🔎 Database-ত বিচাৰি থকা হৈছে...</h3></div>`;const r=await dbSearch(q);if(r.data.length){o.innerHTML=`<div class="card result"><h3>📚 Database-ৰ উত্তৰ</h3></div>`+renderResults(r.data);return}o.innerHTML=`<div class="card result"><h3>🤖 AI-ৰ পৰা উত্তৰ বিচাৰি থকা হৈছে...</h3></div>`;const ai=await askAI(q);if(ai.ok)o.innerHTML=`<div class="card result"><span class="tag">AI Answer</span><h3>🤖 উত্তৰ</h3><div class="answer">${esc(ai.answer)}</div><br><button class="speak-btn" onclick="speakText(this.dataset.text)" data-text="${esc(ai.answer)}">🔊 উত্তৰ শুনক</button></div>`;else o.innerHTML=`<div class="card result"><h3>⚠️ AI সংযোগ এতিয়া সক্ৰিয় নহয়</h3><p>Database-তো উত্তৰ নাই। Supabase Edge Function <b>ai-answer</b> সংযোগ কৰাৰ পিছত AI উত্তৰ দিব।</p></div>`}
 async function askAI(question){try{const {data:{session}}=await supabaseClient.auth.getSession();const headers={"Content-Type":"application/json"};if(session?.access_token)headers.Authorization="Bearer "+session.access_token;const r=await fetch(AI_ENDPOINT,{method:"POST",headers,body:JSON.stringify({question,language:"Assamese",app:"Assamese Sahayika"})});if(!r.ok)return{ok:false};const d=await r.json(),a=d.answer||d.text||d.response;return a?{ok:true,answer:a}:{ok:false}}catch(e){console.error(e);return{ok:false}}}
 
-async function openLesson(chapter){
+async async function openLesson(chapter){
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card">
@@ -448,7 +454,8 @@ function playRecordedAudio(url, label){
 function recordedQAHtml(q){
   const pq = q.question_audio_url || q.question_audio || q.questionAudioUrl || '';
   const pa = q.audio_url || q.answer_audio_url || q.answer_audio || q.answerAudioUrl || '';
-  if(!pq && !pa) return '';
+  // Show section 3 only when a recorded question OR recorded answer exists.
+  if(!(String(pq).trim() || String(pa).trim())) return '';
   return `
     <div class="recorded-qa-card">
       <div class="recorded-qa-title">🎧 ৩। ৰেকৰ্ড কৰা প্ৰশ্নোত্তৰ</div>

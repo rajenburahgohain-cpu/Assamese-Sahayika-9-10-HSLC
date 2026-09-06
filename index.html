@@ -107,7 +107,10 @@
 .voice-write-btn{min-height:52px!important;font-size:17px!important;font-weight:700!important;padding:13px 14px!important;border-radius:10px!important;touch-action:manipulation}
 .audio-tools{font-size:16px!important}
 .audio-tools button{min-height:50px!important;font-size:16px!important}
+</style><style>
+.tts-disabled{opacity:.5!important;cursor:not-allowed!important;}
 </style>
+
 
 <style>
 .recorded-qa-card{
@@ -260,7 +263,15 @@
 <section id="hslc" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🎯 HSLC — অসমীয়া</h2><p>HSLC-সম্পৰ্কীয় প্ৰশ্ন database-ৰ পৰা বিচাৰিব পাৰিব।</p><div class="grid"><button class="main-btn" onclick="searchByWord('HSLC')">🎯 HSLC প্ৰশ্ন</button><button class="main-btn" onclick="searchByWord('MCQ')">☑️ MCQ</button><button class="main-btn" onclick="searchByWord('ৰচনা')">✍️ ৰচনা</button><button class="main-btn" onclick="searchByWord('ব্যাকৰণ')">📝 ব্যাকৰণ</button></div></div></section>
 <section id="questions" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>❓ প্ৰশ্নোত্তৰ সহায়িকা</h2><div class="notice"><b>📚 Database + AI</b><br><br>প্ৰথমে Supabase <b>questions</b> table-ত থকা প্ৰশ্নোত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা হ'ব।</div><br><textarea id="questionInput" placeholder="আপোনাৰ প্ৰশ্ন লিখক...&#10;উদাহৰণ: সমাস কাক বোলে?"></textarea><br><br><div class="grid"><button class="main-btn" onclick="askQuestion()">🔍 উত্তৰ বিচাৰক</button><button class="main-btn voice-btn" id="questionVoiceButton" onclick="startQuestionVoice()">🎙️ Voice</button></div><div id="questionResult"></div></div></section>
 <section id="admin" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>👨‍🏫 Admin Panel</h2><div id="adminLoginBox"><p>প্ৰশ্নোত্তৰ যোগ/সম্পাদনা কৰিবলৈ Admin account-ৰে Login কৰক।</p><input id="adminEmail" type="email" placeholder="Admin email"><input id="adminPassword" type="password" placeholder="Password" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="adminLogin()">🔐 Login</button><button class="secondary" onclick="adminLogout()">Logout</button></div><div id="adminAuthStatus"></div></div>
-<div id="adminPanel" class="hidden"><div class="admin-head"><h3>✍️ প্ৰশ্নোত্তৰ লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
+<div id="adminPanel" class="hidden"><div class="admin-head"><div class="card" style="margin:10px 0;padding:12px;border:2px solid #d97706;border-radius:12px;">
+<h3 style="margin:0 0 8px;color:#b45309;">🔊 ছাত্ৰ-ছাত্ৰীৰ “শুনক” নিয়ন্ত্ৰণ</h3>
+<p style="margin:5px 0;font-size:13px;">শুদ্ধ অসমীয়া voice নিশ্চিত নোহোৱালৈকে বন্ধ ৰাখক। Assamese voice পোৱা আৰু পৰীক্ষা কৰাৰ পিছতহে ON কৰক। Bengali/বাংলা voice কেতিয়াও ব্যৱহাৰ কৰা নহ'ব।</p>
+<label style="display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;">
+<input type="checkbox" id="adminTtsEnabled" onchange="saveGlobalTtsSetting()" style="width:24px;height:24px;">
+<span id="adminTtsStatus">🔴 বন্ধ — ছাত্ৰ-ছাত্ৰীৰ “শুনক” বন্ধ</span>
+</label>
+</div>
+<h3>✍️ প্ৰশ্নোত্তৰ লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
 <label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
 <label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div>
 <div class="audio-tools">
@@ -365,19 +376,80 @@ function stopAllAudio(){
   document.querySelectorAll("audio").forEach(a=>{try{a.pause();a.currentTime=0}catch(e){}});
   document.querySelectorAll(".speak-btn").forEach(b=>{b.classList.remove("audio-stop");b.textContent="🔊 উত্তৰ শুনক"});
 }
+function strictAssameseVoice(){
+  if(!("speechSynthesis" in window)) return null;
+  const voices=window.speechSynthesis.getVoices()||[];
+  return voices.find(v=>String(v.lang||"").toLowerCase()==="as-in") ||
+         voices.find(v=>String(v.lang||"").toLowerCase().startsWith("as-")) ||
+         voices.find(v=>String(v.lang||"").toLowerCase()==="as");
+}
+let globalTtsEnabled=false;
+function applyGlobalTtsSetting(enabled){
+  globalTtsEnabled=!!enabled;
+  document.querySelectorAll(".tts-listen-btn").forEach(btn=>{
+    btn.disabled=!globalTtsEnabled;
+    btn.classList.toggle("tts-disabled",!globalTtsEnabled);
+    btn.title=globalTtsEnabled?"অসমীয়া voice-ৰে শুনক":"Admin-এ “শুনক” বন্ধ কৰি ৰাখিছে";
+  });
+  const cb=document.getElementById("adminTtsEnabled");
+  const st=document.getElementById("adminTtsStatus");
+  if(cb) cb.checked=globalTtsEnabled;
+  if(st) st.textContent=globalTtsEnabled?"🟢 ON — Assamese voice-ৰে “শুনক” চালু":"🔴 বন্ধ — ছাত্ৰ-ছাত্ৰীৰ “শুনক” বন্ধ";
+}
+async function loadGlobalTtsSetting(){
+  try{
+    if(!supabaseClient){applyGlobalTtsSetting(false);return}
+    const {data,error}=await supabaseClient.from("app_settings").select("value").eq("key","assamese_tts_enabled").maybeSingle();
+    if(error){console.warn(error);applyGlobalTtsSetting(false);return}
+    applyGlobalTtsSetting(data && data.value==="true");
+  }catch(e){console.warn(e);applyGlobalTtsSetting(false)}
+}
+async function saveGlobalTtsSetting(){
+  const cb=document.getElementById("adminTtsEnabled");
+  const requested=!!(cb&&cb.checked);
+  if(requested && !strictAssameseVoice()){
+    if(cb) cb.checked=false;
+    applyGlobalTtsSetting(false);
+    alert("⚠️ এই Browser/Device-ত শুদ্ধ Assamese voice পোৱা নগ'ল। Bengali/বাংলা voice ব্যৱহাৰ কৰা নহ'ব। Assamese voice পোৱাৰ পিছতহে ON কৰক।");
+    return;
+  }
+  try{
+    const {error}=await supabaseClient.from("app_settings").upsert({key:"assamese_tts_enabled",value:requested?"true":"false"});
+    if(error) throw error;
+    applyGlobalTtsSetting(requested);
+    alert(requested?"✅ Assamese “শুনক” ON কৰা হৈছে।":"🔴 “শুনক” বন্ধ কৰা হৈছে।");
+  }catch(e){
+    applyGlobalTtsSetting(false);
+    alert("❌ Setting Save হোৱা নাই: "+(e.message||e));
+  }
+}
 function toggleSpeakText(btn){
+  if(!globalTtsEnabled){
+    alert("🔴 Admin-এ “শুনক” ব্যৱস্থা বন্ধ কৰি ৰাখিছে।");
+    return;
+  }
   if(btn.classList.contains("audio-stop")){stopAllAudio();return}
   stopAllAudio();
   const text=btn.dataset.text||"";
-  if(!( "speechSynthesis" in window)){alert("এই browser-ত Voice Answer support নাই।");return}
-  const voices=window.speechSynthesis.getVoices();
-  const v=voices.find(x=>/^as(-|_)/i.test(x.lang||""));
-  if(!v){alert("এই ফোন/Browser-ত Assamese (অসমীয়া) voice available নাই। বাংলা voice ব্যৱহাৰ কৰা নহ'ব।");return}
+  if(!("speechSynthesis" in window)){alert("এই Browser-ত Voice Answer support নাই।");return}
+  const v=strictAssameseVoice();
+  if(!v){
+    applyGlobalTtsSetting(false);
+    alert("⚠️ শুদ্ধ Assamese voice এই Browser/Device-ত উপলব্ধ নহয়। Bengali/বাংলা voice ব্যৱহাৰ কৰা নহ'ব।");
+    return;
+  }
   const parts=splitSpeechText(text,650);let i=0;
   btn.classList.add("audio-stop");btn.textContent="⏹️ শুনা বন্ধ কৰক";
-  function next(){if(i>=parts.length){btn.classList.remove("audio-stop");btn.textContent="🔊 উত্তৰ শুনক";return}const u=new SpeechSynthesisUtterance(parts[i++]);u.lang=v.lang||"as-IN";u.voice=v;u.rate=.78;u.pitch=1;u.volume=1;u.onend=next;u.onerror=()=>{btn.classList.remove("audio-stop");btn.textContent="🔊 উত্তৰ শুনক"};window.speechSynthesis.speak(u)}
+  function next(){
+    if(i>=parts.length){btn.classList.remove("audio-stop");btn.textContent="🔊 উত্তৰ শুনক";return}
+    const u=new SpeechSynthesisUtterance(parts[i++]);
+    u.lang=v.lang;u.voice=v;u.rate=.78;u.pitch=1;u.volume=1;u.onend=next;
+    u.onerror=()=>{btn.classList.remove("audio-stop");btn.textContent="🔊 উত্তৰ শুনক"};
+    window.speechSynthesis.speak(u);
+  }
   next();
 }
+
 function splitSpeechText(text,max){const out=[];let s=String(text||"");while(s.length>max){let p=s.lastIndexOf("।",max);if(p<150)p=s.lastIndexOf(" ",max);if(p<1)p=max;out.push(s.slice(0,p+1));s=s.slice(p+1)}if(s)out.push(s);return out}
 function toggleSavedAnswerAudio(btn){
   if(btn._audio && !btn._audio.paused){btn._audio.pause();btn._audio.currentTime=0;btn.classList.remove("audio-stop");btn.textContent="🔊 উত্তৰ শুনক";return}
@@ -602,7 +674,8 @@ async function adminVoiceTo(targetId,buttonId){
   try{rec.start();}catch(e){b.disabled=false;b.classList.remove("listening");b.innerText=normalText;activeAdminRecognition=null;alert("🎤 Assamese Voice Input আৰম্ভ কৰিব পৰা নগ'ল।\n\nMicrophone permission Allow আছে নে পৰীক্ষা কৰক আৰু Chrome-ত page Reload কৰক।\n\nকাৰণ: "+(e.message||e));}
 }
 
-document.addEventListener("DOMContentLoaded",()=>{initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
+document.addEventListener("DOMContentLoaded",()=>{
+  loadGlobalTtsSetting();initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script>
 <script>
 /* ===== Recorded Question + Answer section ===== */

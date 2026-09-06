@@ -178,6 +178,10 @@
 }
 </style>
 
+<style>
+.record-audio-box{margin-top:12px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff}
+.record-audio-box b{display:block;font-size:18px;margin-bottom:6px}
+</style>
 </head><body>
 <header><h1>অসমীয়া সহায়িকা — 10 & HSLC</h1><p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয় • দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীৰ বাবেও উপযোগী</p></header>
 <nav class="big-nav">
@@ -259,7 +263,30 @@
 <div id="adminPanel" class="hidden"><div class="admin-head"><h3>✍️ প্ৰশ্নোত্তৰ লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
 <label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
 <label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div>
-<div class="audio-tools"><h4>🔊 উত্তৰৰ অডিঅ' সংৰক্ষণ</h4><p class="assamese-only-note">Admin-এ নিজৰ কণ্ঠ ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল বাছি আপলোড কৰিব পাৰে। সংৰক্ষণ কৰাৰ পিছত ছাত্ৰ-ছাত্ৰীয়ে সেই অডিঅ' শুনিব পাৰিব।</p><label class="audio-file-label">🎧 অডিঅ' ফাইল বাছনি কৰক</label><input id="adminAudioFile" class="audio-upload" type="file" accept="audio/*"><button class="voice-write-btn" onclick="startAdminAudioRecord()">🎙️ অডিঅ' ৰেকৰ্ড আৰম্ভ কৰক</button><button class="secondary" style="margin-top:7px" onclick="stopAdminAudioRecord()">⏹️ ৰেকৰ্ড বন্ধ কৰক</button><span id="adminAudioStatus" class="small"></span><audio id="adminAudioPreview" class="audio-preview" controls style="display:none"></audio></div>
+<div class="audio-tools">
+<h4>🎧 ৩। প্ৰশ্ন আৰু উত্তৰ অডিঅ' ৰেকৰ্ড কৰি সংৰক্ষণ</h4>
+<p class="assamese-only-note">Admin-এ প্ৰশ্ন আৰু উত্তৰ দুয়োটাই নিজৰ অসমীয়া কণ্ঠত ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল আপলোড কৰিব পাৰে। Save কৰাৰ পিছত পাঠৰ ভিতৰত দুয়োটা শুনিব পাৰিব।</p>
+
+<div class="record-audio-box">
+  <b>🎙️ প্ৰশ্নৰ অডিঅ'</b>
+  <label class="audio-file-label">📁 প্ৰশ্নৰ অডিঅ' ফাইল বাছনি কৰক</label>
+  <input id="adminQuestionAudioFile" class="audio-upload" type="file" accept="audio/*">
+  <button class="voice-write-btn" onclick="startAdminQuestionAudioRecord()">🎙️ প্ৰশ্ন ৰেকৰ্ড আৰম্ভ কৰক</button>
+  <button class="secondary" style="margin-top:7px" onclick="stopAdminQuestionAudioRecord()">⏹️ প্ৰশ্নৰ ৰেকৰ্ড বন্ধ কৰক</button>
+  <span id="adminQuestionAudioStatus" class="small"></span>
+  <audio id="adminQuestionAudioPreview" class="audio-preview" controls style="display:none"></audio>
+</div>
+
+<div class="record-audio-box">
+  <b>🔊 উত্তৰৰ অডিঅ'</b>
+  <label class="audio-file-label">📁 উত্তৰৰ অডিঅ' ফাইল বাছনি কৰক</label>
+  <input id="adminAnswerAudioFile" class="audio-upload" type="file" accept="audio/*">
+  <button class="voice-write-btn" onclick="startAdminAnswerAudioRecord()">🎙️ উত্তৰ ৰেকৰ্ড আৰম্ভ কৰক</button>
+  <button class="secondary" style="margin-top:7px" onclick="stopAdminAnswerAudioRecord()">⏹️ উত্তৰৰ ৰেকৰ্ড বন্ধ কৰক</button>
+  <span id="adminAnswerAudioStatus" class="small"></span>
+  <audio id="adminAnswerAudioPreview" class="audio-preview" controls style="display:none"></audio>
+</div>
+</div>
 <div class="grid" style="margin-top:8px"><input id="adminType" value="Q&A" placeholder="প্ৰশ্ন-উত্তৰ / বহু-বিকল্পী"><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"></div>
 <div class="admin-chapter-box">
 <label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
@@ -373,37 +400,165 @@ function findLessonFromQuestion(question){
 }
 
 function adminPayload(){return{question:document.getElementById("adminQuestion").value.trim(),answer:document.getElementById("adminAnswer").value.trim(),question_type:document.getElementById("adminType").value.trim()||"Q&A",class_name:document.getElementById("adminClass").value.trim()||"Class 10",subject:document.getElementById("adminSubject").value.trim()||"Assamese",chapter_name:document.getElementById("adminChapter").value.trim(),option_a:document.getElementById("adminOptionA").value.trim(),option_b:document.getElementById("adminOptionB").value.trim(),option_c:document.getElementById("adminOptionC").value.trim(),option_d:document.getElementById("adminOptionD").value.trim(),correct_answer:document.getElementById("adminCorrect").value.trim(),source:document.getElementById("adminSource").value.trim(),language:"Assamese"}}
-let adminAudioRecorder=null,adminAudioChunks=[],adminRecordedBlob=null;
-async function startAdminAudioRecord(){try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});adminAudioChunks=[];adminRecordedBlob=null;adminAudioRecorder=new MediaRecorder(stream);adminAudioRecorder.ondataavailable=e=>{if(e.data.size)adminAudioChunks.push(e.data)};adminAudioRecorder.onstop=()=>{adminRecordedBlob=new Blob(adminAudioChunks,{type:adminAudioRecorder.mimeType||"audio/webm"});const url=URL.createObjectURL(adminRecordedBlob);const a=document.getElementById("adminAudioPreview");a.src=url;a.style.display="block";document.getElementById("adminAudioStatus").textContent=" ✅ ৰেকৰ্ডিং সাজু হৈছে";stream.getTracks().forEach(t=>t.stop())};adminAudioRecorder.start();document.getElementById("adminAudioStatus").textContent=" 🔴 ৰেকৰ্ডিং চলি আছে..."}catch(e){alert("Microphone permission দিব লাগিব: "+e.message)}}
-function stopAdminAudioRecord(){if(adminAudioRecorder&&adminAudioRecorder.state!=="inactive")adminAudioRecorder.stop()}
-async function uploadAnswerAudio(blob,id){if(!blob) return null;const ext=(blob.type||"").includes("mp4")?"m4a":((blob.type||"").includes("wav")?"wav":"webm");const path="answers/"+id+"_"+Date.now()+"."+ext;const up=await supabaseClient.storage.from("answer-audio").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:true});if(up.error)throw up.error;const pub=supabaseClient.storage.from("answer-audio").getPublicUrl(path);return pub.data.publicUrl}
-async function saveQuestion(){const st=document.getElementById("adminSaveStatus"),id=document.getElementById("editId").value;
-let chapterEl=document.getElementById("adminChapter");
-if(chapterEl && !chapterEl.value){
-  const guessed=findLessonFromQuestion(document.getElementById("adminQuestion").value);
-  if(guessed) chapterEl.value=guessed;
+
+let adminQuestionAudioRecorder=null,adminQuestionAudioChunks=[],adminQuestionRecordedBlob=null;
+let adminAnswerAudioRecorder=null,adminAnswerAudioChunks=[],adminAnswerRecordedBlob=null;
+
+async function startAdminQuestionAudioRecord(){
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    adminQuestionAudioChunks=[]; adminQuestionRecordedBlob=null;
+    adminQuestionAudioRecorder=new MediaRecorder(stream);
+    adminQuestionAudioRecorder.ondataavailable=e=>{if(e.data.size)adminQuestionAudioChunks.push(e.data)};
+    adminQuestionAudioRecorder.onstop=()=>{
+      adminQuestionRecordedBlob=new Blob(adminQuestionAudioChunks,{type:adminQuestionAudioRecorder.mimeType||"audio/webm"});
+      const a=document.getElementById("adminQuestionAudioPreview");
+      a.src=URL.createObjectURL(adminQuestionRecordedBlob); a.style.display="block";
+      document.getElementById("adminQuestionAudioStatus").textContent=" ✅ প্ৰশ্নৰ ৰেকৰ্ডিং সাজু হৈছে";
+      stream.getTracks().forEach(t=>t.stop());
+    };
+    adminQuestionAudioRecorder.start();
+    document.getElementById("adminQuestionAudioStatus").textContent=" 🔴 প্ৰশ্নৰ ৰেকৰ্ডিং চলি আছে...";
+  }catch(e){alert("🎙️ প্ৰশ্নৰ Microphone permission দিব লাগিব: "+e.message)}
 }
-const p=adminPayload();
-if(!p.question||!p.answer){st.innerHTML=`<p class="error">প্ৰশ্ন আৰু উত্তৰ দুয়োটা পূৰণ কৰক।</p>`;return}
-if(!p.chapter_name){st.innerHTML=`<p class="error">📚 অনুগ্ৰহ কৰি প্ৰশ্নটো কোনটো পাঠৰ সেইটো বাছনি কৰক।</p>`;return}st.innerHTML=`<p class="loading">💾 Save কৰি থকা হৈছে...</p>`;let r=id?await supabaseClient.from("questions").update(p).eq("id",id).select().single():await supabaseClient.from("questions").insert(p).select().single();if(r.error){st.innerHTML=`<p class="error">❌ Save নহ'ল: ${esc(r.error.message)}</p>`;return}const qid=r.data.id;const file=document.getElementById("adminAudioFile").files[0];const blob=file||adminRecordedBlob;if(blob){try{const url=await uploadAnswerAudio(blob,qid);const ar=await supabaseClient.from("questions").update({audio_url:url}).eq("id",qid);if(ar.error)throw ar.error}catch(e){st.innerHTML=`<p class="error">প্ৰশ্ন/উত্তৰ Save হৈছে, কিন্তু অডিঅ' সংৰক্ষণ হোৱা নাই: ${esc(e.message)}<br>audio_url column আৰু answer-audio bucket setup পৰীক্ষা কৰক।</p>`;clearAdminForm();loadAdminQuestions();return}}st.innerHTML=`<p class="success">✅ প্ৰশ্ন, উত্তৰ আৰু নিৰ্বাচিত Audio সফলভাৱে সংৰক্ষণ হৈছে।</p>`;clearAdminForm();loadAdminQuestions()}
-async function loadAdminQuestions(){const box=document.getElementById("adminQuestionList");box.innerHTML=`<p class="loading">⏳ Loading...</p>`;const r=await supabaseClient.from("questions").select("*").order("id",{ascending:false}).limit(50);if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}if(!r.data.length){box.innerHTML=`<div class="empty">এতিয়াও কোনো প্ৰশ্ন যোগ কৰা হোৱা নাই।</div>`;return}box.innerHTML=r.data.map(x=>`<div class="admin-row"><b>${esc(x.question||"")}</b><p class="small">${esc(x.answer||"")}</p><p class="small">${esc(x.class_name||"")} ${x.chapter_name?"• "+esc(x.chapter_name):""}</p>${x.audio_url?`<audio class="audio-preview" controls src="${esc(x.audio_url)}"></audio>`:`<p class="small">🔊 অডিঅ' নাই</p>`}<div class="grid"><button class="main-btn edit" onclick="editQuestion(${x.id})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${x.id})">🗑️ Delete</button></div></div>`).join("")}
-async function editQuestion(id){const r=await supabaseClient.from("questions").select("*").eq("id",id).single();if(r.error){alert(r.error.message);return}const x=r.data;document.getElementById("editId").value=x.id||"";document.getElementById("adminQuestion").value=x.question||"";document.getElementById("adminAnswer").value=x.answer||"";document.getElementById("adminType").value=x.question_type||"Q&A";document.getElementById("adminClass").value=x.class_name||"";document.getElementById("adminSubject").value=x.subject||"Assamese";document.getElementById("adminChapter").value=x.chapter_name||"";document.getElementById("adminOptionA").value=x.option_a||"";document.getElementById("adminOptionB").value=x.option_b||"";document.getElementById("adminOptionC").value=x.option_c||"";document.getElementById("adminOptionD").value=x.option_d||"";document.getElementById("adminCorrect").value=x.correct_answer||"";document.getElementById("adminSource").value=x.source||"";document.getElementById("adminAudioFile").value="";adminRecordedBlob=null;if(x.audio_url){const a=document.getElementById("adminAudioPreview");a.src=x.audio_url;a.style.display="block"}window.scrollTo({top:0,behavior:"smooth"})}
+function stopAdminQuestionAudioRecord(){
+  if(adminQuestionAudioRecorder&&adminQuestionAudioRecorder.state!=="inactive")adminQuestionAudioRecorder.stop();
+}
+
+async function startAdminAnswerAudioRecord(){
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    adminAnswerAudioChunks=[]; adminAnswerRecordedBlob=null;
+    adminAnswerAudioRecorder=new MediaRecorder(stream);
+    adminAnswerAudioRecorder.ondataavailable=e=>{if(e.data.size)adminAnswerAudioChunks.push(e.data)};
+    adminAnswerAudioRecorder.onstop=()=>{
+      adminAnswerRecordedBlob=new Blob(adminAnswerAudioChunks,{type:adminAnswerAudioRecorder.mimeType||"audio/webm"});
+      const a=document.getElementById("adminAnswerAudioPreview");
+      a.src=URL.createObjectURL(adminAnswerRecordedBlob); a.style.display="block";
+      document.getElementById("adminAnswerAudioStatus").textContent=" ✅ উত্তৰৰ ৰেকৰ্ডিং সাজু হৈছে";
+      stream.getTracks().forEach(t=>t.stop());
+    };
+    adminAnswerAudioRecorder.start();
+    document.getElementById("adminAnswerAudioStatus").textContent=" 🔴 উত্তৰৰ ৰেকৰ্ডিং চলি আছে...";
+  }catch(e){alert("🎙️ উত্তৰৰ Microphone permission দিব লাগিব: "+e.message)}
+}
+function stopAdminAnswerAudioRecord(){
+  if(adminAnswerAudioRecorder&&adminAnswerAudioRecorder.state!=="inactive")adminAnswerAudioRecorder.stop();
+}
+
+async function uploadQuestionAudio(blob,id){
+  if(!blob)return null;
+  const ext=(blob.type||"").includes("mp4")?"m4a":((blob.type||"").includes("wav")?"wav":"webm");
+  const path="questions/"+id+"_"+Date.now()+"."+ext;
+  const up=await supabaseClient.storage.from("answer-audio").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:true});
+  if(up.error)throw up.error;
+  return supabaseClient.storage.from("answer-audio").getPublicUrl(path).data.publicUrl;
+}
+async function uploadAnswerAudioNew(blob,id){
+  if(!blob)return null;
+  const ext=(blob.type||"").includes("mp4")?"m4a":((blob.type||"").includes("wav")?"wav":"webm");
+  const path="answers/"+id+"_"+Date.now()+"."+ext;
+  const up=await supabaseClient.storage.from("answer-audio").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:true});
+  if(up.error)throw up.error;
+  return supabaseClient.storage.from("answer-audio").getPublicUrl(path).data.publicUrl;
+}
+
+async function uploadAnswerAudio(blob,id){if(!blob) return null;const ext=(blob.type||"").includes("mp4")?"m4a":((blob.type||"").includes("wav")?"wav":"webm");const path="answers/"+id+"_"+Date.now()+"."+ext;const up=await supabaseClient.storage.from("answer-audio").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:true});if(up.error)throw up.error;const pub=supabaseClient.storage.from("answer-audio").getPublicUrl(path);return pub.data.publicUrl}
+async function saveQuestion(){
+  const st=document.getElementById("adminSaveStatus");
+  const id=document.getElementById("editId").value;
+  let chapterEl=document.getElementById("adminChapter");
+  if(chapterEl && !chapterEl.value){
+    const guessed=findLessonFromQuestion(document.getElementById("adminQuestion").value);
+    if(guessed)chapterEl.value=guessed;
+  }
+  const p=adminPayload();
+  if(!p.question||!p.answer){st.innerHTML=`<p class="error">প্ৰশ্ন আৰু উত্তৰ দুয়োটা পূৰণ কৰক।</p>`;return}
+  if(!p.chapter_name){st.innerHTML=`<p class="error">📚 অনুগ্ৰহ কৰি প্ৰশ্নটো কোনটো পাঠৰ সেইটো বাছনি কৰক।</p>`;return}
+  st.innerHTML=`<p class="loading">💾 প্ৰশ্নোত্তৰ সংৰক্ষণ কৰি থকা হৈছে...</p>`;
+  let r=id
+    ?await supabaseClient.from("questions").update(p).eq("id",id).select().single()
+    :await supabaseClient.from("questions").insert(p).select().single();
+  if(r.error){st.innerHTML=`<p class="error">❌ Save নহ'ল: ${esc(r.error.message)}</p>`;return}
+  const qid=r.data.id;
+  const qFile=document.getElementById("adminQuestionAudioFile").files[0];
+  const aFile=document.getElementById("adminAnswerAudioFile").files[0];
+  const qBlob=qFile||adminQuestionRecordedBlob;
+  const aBlob=aFile||adminAnswerRecordedBlob;
+  try{
+    if(qBlob){
+      const qurl=await uploadQuestionAudio(qBlob,qid);
+      const qr=await supabaseClient.from("questions").update({question_audio_url:qurl}).eq("id",qid);
+      if(qr.error)throw qr.error;
+    }
+    if(aBlob){
+      const aurl=await uploadAnswerAudioNew(aBlob,qid);
+      const ar=await supabaseClient.from("questions").update({audio_url:aurl}).eq("id",qid);
+      if(ar.error)throw ar.error;
+    }
+  }catch(e){
+    st.innerHTML=`<p class="error">❌ প্ৰশ্নোত্তৰ Save হৈছে, কিন্তু Audio সম্পূৰ্ণ সংৰক্ষণ হোৱা নাই।<br>${esc(e.message)}</p>`;
+    loadAdminQuestions(); return;
+  }
+  st.innerHTML=`<p class="success">✅ প্ৰশ্ন, উত্তৰ আৰু নিৰ্বাচিত Audio সফলভাৱে সংৰক্ষণ হৈছে।</p>`;
+  clearAdminForm(); loadAdminQuestions();
+}
+
+async function loadAdminQuestions(){
+  const box=document.getElementById("adminQuestionList");
+  box.innerHTML=`<p class="loading">⏳ Loading...</p>`;
+  const r=await supabaseClient.from("questions").select("*").order("id",{ascending:false}).limit(50);
+  if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}
+  if(!r.data.length){box.innerHTML=`<div class="empty">এতিয়াও কোনো প্ৰশ্ন যোগ কৰা হোৱা নাই।</div>`;return}
+  box.innerHTML=r.data.map(x=>`
+    <div class="admin-row">
+      <b>${esc(x.question||"")}</b>
+      <p class="small">${esc(x.answer||"")}</p>
+      <p class="small">${esc(x.class_name||"")} ${x.chapter_name?"• "+esc(x.chapter_name):""}</p>
+      ${x.question_audio_url?`<p class="small">🎙️ প্ৰশ্নৰ অডিঅ' সংৰক্ষিত</p><audio class="audio-preview" controls src="${esc(x.question_audio_url)}"></audio>`:`<p class="small">🎙️ প্ৰশ্নৰ অডিঅ' নাই</p>`}
+      ${x.audio_url?`<p class="small">🔊 উত্তৰৰ অডিঅ' সংৰক্ষিত</p><audio class="audio-preview" controls src="${esc(x.audio_url)}"></audio>`:`<p class="small">🔊 উত্তৰৰ অডিঅ' নাই</p>`}
+      <div class="grid"><button class="main-btn edit" onclick="editQuestion(${x.id})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${x.id})">🗑️ Delete</button></div>
+    </div>`).join("")
+}
+async function editQuestion(id){
+  const r=await supabaseClient.from("questions").select("*").eq("id",id).single();
+  if(r.error){alert(r.error.message);return}
+  const x=r.data;
+  document.getElementById("editId").value=x.id||"";
+  document.getElementById("adminQuestion").value=x.question||"";
+  document.getElementById("adminAnswer").value=x.answer||"";
+  document.getElementById("adminType").value=x.question_type||"Q&A";
+  document.getElementById("adminClass").value=x.class_name||"";
+  document.getElementById("adminSubject").value=x.subject||"Assamese";
+  document.getElementById("adminChapter").value=x.chapter_name||"";
+  document.getElementById("adminOptionA").value=x.option_a||"";
+  document.getElementById("adminOptionB").value=x.option_b||"";
+  document.getElementById("adminOptionC").value=x.option_c||"";
+  document.getElementById("adminOptionD").value=x.option_d||"";
+  document.getElementById("adminCorrect").value=x.correct_answer||"";
+  document.getElementById("adminSource").value=x.source||"";
+  document.getElementById("adminQuestionAudioFile").value="";
+  document.getElementById("adminAnswerAudioFile").value="";
+  adminQuestionRecordedBlob=null; adminAnswerRecordedBlob=null;
+  const qa=document.getElementById("adminQuestionAudioPreview");
+  const aa=document.getElementById("adminAnswerAudioPreview");
+  if(x.question_audio_url){qa.src=x.question_audio_url;qa.style.display="block"}else{qa.removeAttribute("src");qa.style.display="none"}
+  if(x.audio_url){aa.src=x.audio_url;aa.style.display="block"}else{aa.removeAttribute("src");aa.style.display="none"}
+  window.scrollTo({top:0,behavior:"smooth"})
+}
 async function deleteQuestion(id){if(!confirm("এই প্ৰশ্নটো Delete কৰিবনে?"))return;const r=await supabaseClient.from("questions").delete().eq("id",id);if(r.error)alert("Delete নহ'ল: "+r.error.message);else{document.getElementById("adminSaveStatus").innerHTML=`<p class="success">✅ Delete কৰা হ'ল।</p>`;loadAdminQuestions()}}
-function clearAdminForm(){document.getElementById("editId").value="";["adminQuestion","adminAnswer","adminChapter","adminOptionA","adminOptionB","adminOptionC","adminOptionD","adminCorrect","adminSource"].forEach(id=>document.getElementById(id).value="");document.getElementById("adminType").value="Q&A";document.getElementById("adminClass").value="Class 10";document.getElementById("adminSubject").value="Assamese";document.getElementById("adminAudioFile").value="";adminRecordedBlob=null;document.getElementById("adminAudioPreview").style.display="none";document.getElementById("adminAudioStatus").textContent=""}
-
-/* Admin-ৰ বাবে অসমীয়া speech-to-text */
-let activeAdminRecognition=null;
-
-// প্ৰথমে Browser-ৰ পৰা Microphone permission লোৱা, তাৰ পিছত Assamese Speech Recognition আৰম্ভ কৰা
-async function requestMicrophonePermission(){
-  if(!window.isSecureContext){
-    throw new Error("এই webpageটো HTTPS নহয়। GitHub Pages-ৰ https:// address-ৰ পৰা খুলক।");
-  }
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    throw new Error("এই Browser-এ Microphone access support নকৰে। Android Chrome ব্যৱহাৰ কৰক।");
-  }
-  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-  stream.getTracks().forEach(t=>t.stop());
+function clearAdminForm(){
+  document.getElementById("editId").value="";
+  ["adminQuestion","adminAnswer","adminChapter","adminOptionA","adminOptionB","adminOptionC","adminOptionD","adminCorrect","adminSource"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("adminType").value="Q&A";
+  document.getElementById("adminClass").value="Class 10";
+  document.getElementById("adminSubject").value="Assamese";
+  document.getElementById("adminQuestionAudioFile").value="";
+  document.getElementById("adminAnswerAudioFile").value="";
+  adminQuestionRecordedBlob=null; adminAnswerRecordedBlob=null;
+  ["adminQuestionAudioPreview","adminAnswerAudioPreview"].forEach(id=>{const a=document.getElementById(id);a.removeAttribute("src");a.style.display="none"});
+  document.getElementById("adminQuestionAudioStatus").textContent="";
+  document.getElementById("adminAnswerAudioStatus").textContent="";
 }
 
 async function adminVoiceTo(targetId,buttonId){
@@ -478,8 +633,8 @@ function playRecordedAudio(url, label){
   a.play().catch(()=>{});
 }
 function recordedQAHtml(q){
-  const pq = q.question_audio_url || q.question_audio || q.questionAudioUrl || '';
-  const pa = q.audio_url || q.answer_audio_url || q.answer_audio || q.answerAudioUrl || '';
+  const pq = q.question_audio_url || '';
+  const pa = q.audio_url || '';
   // Show section 3 only when a recorded question OR recorded answer exists.
   if(!(String(pq).trim() || String(pa).trim())) return '';
   return `
@@ -529,8 +684,8 @@ function recordedQAHtml(q){
   // Expose a safe function for recorded-Q&A rendering without requiring a global questions variable.
   window.renderRecordedQAIfNeeded = function(container, q){
     if(!container || !q) return;
-    const pq = q.question_audio_url || q.question_audio || q.questionAudioUrl || '';
-    const pa = q.audio_url || q.answer_audio_url || q.answer_audio || q.answerAudioUrl || '';
+    const pq = q.question_audio_url || '';
+    const pa = q.audio_url || '';
     if(!(String(pq).trim() || String(pa).trim())) return;
     if(container.querySelector('.recorded-qa-card')) return;
     if(typeof recordedQAHtml === 'function'){

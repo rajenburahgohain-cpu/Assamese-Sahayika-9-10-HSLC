@@ -183,7 +183,7 @@
 <section id="admin" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>👨‍🏫 Admin Panel</h2><div id="adminLoginBox"><p>প্ৰশ্নোত্তৰ যোগ/সম্পাদনা কৰিবলৈ Admin account-ৰে Login কৰক।</p><input id="adminEmail" type="email" placeholder="Admin email"><input id="adminPassword" type="password" placeholder="Password" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="adminLogin()">🔐 Login</button><button class="secondary" onclick="adminLogout()">Logout</button></div><div id="adminAuthStatus"></div></div>
 <div id="adminPanel" class="hidden"><div class="admin-head"><h3>✍️ প্ৰশ্নোত্তৰ লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
 <label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক</button>
-<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক</button>
+<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div>
 <div class="audio-tools"><h4>🔊 উত্তৰৰ অডিঅ' সংৰক্ষণ</h4><p class="assamese-only-note">Admin-এ নিজৰ কণ্ঠ ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল বাছি আপলোড কৰিব পাৰে। সংৰক্ষণ কৰাৰ পিছত ছাত্ৰ-ছাত্ৰীয়ে সেই অডিঅ' শুনিব পাৰিব।</p><label class="audio-file-label">🎧 অডিঅ' ফাইল বাছনি কৰক</label><input id="adminAudioFile" class="audio-upload" type="file" accept="audio/*"><button class="voice-write-btn" onclick="startAdminAudioRecord()">🎙️ অডিঅ' ৰেকৰ্ড আৰম্ভ কৰক</button><button class="secondary" style="margin-top:7px" onclick="stopAdminAudioRecord()">⏹️ ৰেকৰ্ড বন্ধ কৰক</button><span id="adminAudioStatus" class="small"></span><audio id="adminAudioPreview" class="audio-preview" controls style="display:none"></audio></div>
 <div class="grid" style="margin-top:8px"><input id="adminType" value="Q&A" placeholder="প্ৰশ্ন-উত্তৰ / বহু-বিকল্পী"><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"><input id="adminChapter" placeholder="পাঠৰ নাম"></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
 <section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য ব্যৱহাৰ</h3><p>প্ৰশ্নোত্তৰ search আৰু Admin content সংৰক্ষণৰ বাবে Supabase ব্যৱহাৰ কৰা হয়।</p><h3>AI</h3><p>AI ব্যৱহাৰ কৰা হ'লে ব্যৱহাৰকাৰীয়ে লিখা/কোৱা প্ৰশ্ন AI service-লৈ প্ৰেৰণ হ'ব পাৰে।</p><p class="small">Last updated: 2026</p></div></section>
@@ -296,7 +296,36 @@ async function deleteQuestion(id){if(!confirm("এই প্ৰশ্নটো D
 function clearAdminForm(){document.getElementById("editId").value="";["adminQuestion","adminAnswer","adminChapter","adminOptionA","adminOptionB","adminOptionC","adminOptionD","adminCorrect","adminSource"].forEach(id=>document.getElementById(id).value="");document.getElementById("adminType").value="Q&A";document.getElementById("adminClass").value="Class 10";document.getElementById("adminSubject").value="Assamese";document.getElementById("adminAudioFile").value="";adminRecordedBlob=null;document.getElementById("adminAudioPreview").style.display="none";document.getElementById("adminAudioStatus").textContent=""}
 
 /* Admin-ৰ বাবে অসমীয়া speech-to-text */
-function adminVoiceTo(targetId,buttonId){const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Assamese Voice Input support নাই। Chrome ব্যৱহাৰ কৰি চেষ্টা কৰক।");return}const el=document.getElementById(targetId),b=document.getElementById(buttonId),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=false;rec.maxAlternatives=3;b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";try{rec.start()}catch(e){}rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){el.value+=(el.value?"\n":"")+t.trim();rec.stop()}};rec.onerror=e=>{b.classList.remove("listening");b.innerText=targetId==="adminQuestion"?"🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক":"🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক";if(e.error!=="aborted")alert("Voice Input-ত সমস্যা: "+e.error)};rec.onend=()=>{b.classList.remove("listening");b.innerText=targetId==="adminQuestion"?"🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক":"🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক"}}
+let activeAdminRecognition=null;
+function adminVoiceTo(targetId,buttonId){
+  const SR=getSpeechRecognition();
+  const el=document.getElementById(targetId),b=document.getElementById(buttonId);
+  const normalText=targetId==="adminQuestion"?"🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক":"🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক";
+  if(!SR){alert("এই browser-ত Voice Input চলিব নোৱাৰে। Android Chrome-ত appটো খুলি চেষ্টা কৰক।");return}
+  if(activeAdminRecognition){try{activeAdminRecognition.abort()}catch(e){} activeAdminRecognition=null;}
+  const rec=new SR(); activeAdminRecognition=rec;
+  rec.lang="as-IN"; rec.interimResults=true; rec.continuous=false; rec.maxAlternatives=3;
+  b.classList.add("listening"); b.innerText="🔴 অসমীয়া মাত শুনি আছে..."; b.disabled=true;
+  let finalText="";
+  rec.onresult=function(e){
+    let live="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const part=e.results[i][0]?.transcript||"";
+      if(e.results[i].isFinal) finalText += (finalText?" ":"")+part.trim(); else live += part;
+    }
+    b.innerText=live?"🔴 "+live:"🔴 অসমীয়া মাত শুনি আছে...";
+  };
+  rec.onerror=function(e){
+    b.disabled=false; b.classList.remove("listening"); b.innerText=normalText; activeAdminRecognition=null;
+    const msg={"not-allowed":"Microphone অনুমতি দিয়া হোৱা নাই। Chrome Settings → Site settings → Microphone → Allow কৰক।","service-not-allowed":"Browser-এ Voice service অনুমতি দিয়া নাই। Chrome-ত চেষ্টা কৰক।","language-not-supported":"এই device/browser-ত Assamese (as-IN) speech recognition উপলব্ধ নহয়।","no-speech":"কোনো মাত ধৰা পৰা নাই। পুনৰ স্পষ্টকৈ কওক।","network":"Internet connection পৰীক্ষা কৰি পুনৰ চেষ্টা কৰক."}[e.error]||("Voice Input-ত সমস্যা: "+e.error);
+    if(e.error!=="aborted") alert("🎤 "+msg);
+  };
+  rec.onend=function(){
+    if(finalText.trim()) el.value+=(el.value?"\n":"")+finalText.trim();
+    b.disabled=false; b.classList.remove("listening"); b.innerText=normalText; activeAdminRecognition=null;
+  };
+  try{rec.start();}catch(e){b.disabled=false;b.classList.remove("listening");b.innerText=normalText;activeAdminRecognition=null;alert("🎤 Voice Input আৰম্ভ কৰিব পৰা নগ'ল। Microphone permission Allow আছে নে পৰীক্ষা কৰক।");}
+}
 
 document.addEventListener("DOMContentLoaded",()=>{initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script></body></html>

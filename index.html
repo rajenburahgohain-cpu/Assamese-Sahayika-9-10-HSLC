@@ -258,12 +258,15 @@ function appBack(){
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
 async function dbSearch(term,limit=10){if(!supabaseClient)return{data:[],error:new Error("Supabase connection হোৱা নাই")};const clean=String(term).trim();if(!clean)return{data:[],error:null};const r=await supabaseClient.from("questions").select("*").or("question.ilike.%"+clean+"%,answer.ilike.%"+clean+"%").limit(limit);return{data:r.data||[],error:r.error||null}}
-function renderResults(rows){if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;return rows.map(r=>{const a=r.answer||r.correct_answer||"উত্তৰ নাই।";let h=`<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3>`;if(r.option_a||r.option_b||r.option_c||r.option_d)h+=`<div class="answer">${r.option_a?"A. "+esc(r.option_a)+"\n":""}${r.option_b?"B. "+esc(r.option_b)+"\n":""}${r.option_c?"C. "+esc(r.option_c)+"\n":""}${r.option_d?"D. "+esc(r.option_d):""}</div>`;h+=`<div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div>`;if(r.audio_url)h+=`<audio class="audio-preview" src="${esc(r.audio_url)}" preload="none"></audio><button class="speak-btn" onclick="toggleSavedAnswerAudio(this)" data-url="${esc(r.audio_url)}">🔊 উত্তৰ শুনক</button>`;else h+=`<button class="speak-btn" onclick="toggleSpeakText(this)" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;const m=[];if(r.class_name)m.push(r.class_name);if(r.subject)m.push(r.subject);if(r.chapter_name)m.push(r.chapter_name);if(m.length)h+=`<p class="small">${esc(m.join(" • "))}</p>`;return h+`</div>`}).join("")}
+function renderResults(rows){if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;return rows.map(r=>{const a=r.answer||r.correct_answer||"উত্তৰ নাই।";let h=`<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3>`;if(r.option_a||r.option_b||r.option_c||r.option_d)h+=`<div class="answer">${r.option_a?"A. "+esc(r.option_a)+"\n":""}${r.option_b?"B. "+esc(r.option_b)+"\n":""}${r.option_c?"C. "+esc(r.option_c)+"\n":""}${r.option_d?"D. "+esc(r.option_d):""}</div>`;h+=`<div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div>`;if(r.audio_url)h+=`<audio class="audio-preview" src="${esc(r.audio_url)}" preload="none"></audio><button class="speak-btn" onclick="toggleSavedAnswerAudio(this)" data-url="${esc(r.audio_url)}">🔊 উত্তৰ শুনক</button>`;else h+=`<button class="speak-btn" onclick="toggleSpeakText(this)" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;const m=[];if(r.class_name)m.push(r.class_name);if(r.subject)m.push(r.subject);if(r.chapter_name)m.push(r.chapter_name);if(m.length)h+=`<p class="small">${esc(m.join(" • "))}</p>`;
+const recordedBlock = (typeof recordedQAHtml === "function") ? recordedQAHtml(r) : "";
+if(recordedBlock) h += recordedBlock;
+return h+`</div>`}).join("")}
 async function searchQuestions(){const q=document.getElementById("searchInput").value.trim(),s=document.getElementById("searchStatus"),o=document.getElementById("searchResult");if(!q){s.innerHTML=`<p class="error">প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।</p>`;o.innerHTML="";return}s.innerHTML=`<p class="loading">⏳ Database-ত বিচাৰি থকা হৈছে...</p>`;o.innerHTML="";const r=await dbSearch(q);if(r.data.length){s.innerHTML=`<p class="success">✅ ${r.data.length} টা ফলাফল পোৱা গ'ল।</p>`;o.innerHTML=renderResults(r.data)}else{s.innerHTML=`<p class="error">⚠️ Database-ত ফলাফল নাই।</p>`;o.innerHTML=`<div class="card empty">এই প্ৰশ্নটোৰ উত্তৰ Database-ত নাই।<br><br>AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা যাব।</div>`}}
 async function askQuestion(){const q=document.getElementById("questionInput").value.trim(),o=document.getElementById("questionResult");if(!q){o.innerHTML=`<div class="card result"><h3>⚠️ প্ৰশ্ন লিখক</h3></div>`;return}o.innerHTML=`<div class="card result"><h3>🔎 Database-ত বিচাৰি থকা হৈছে...</h3></div>`;const r=await dbSearch(q);if(r.data.length){o.innerHTML=`<div class="card result"><h3>📚 Database-ৰ উত্তৰ</h3></div>`+renderResults(r.data);return}o.innerHTML=`<div class="card result"><h3>🤖 AI-ৰ পৰা উত্তৰ বিচাৰি থকা হৈছে...</h3></div>`;const ai=await askAI(q);if(ai.ok)o.innerHTML=`<div class="card result"><span class="tag">AI Answer</span><h3>🤖 উত্তৰ</h3><div class="answer">${esc(ai.answer)}</div><br><button class="speak-btn" onclick="speakText(this.dataset.text)" data-text="${esc(ai.answer)}">🔊 উত্তৰ শুনক</button></div>`;else o.innerHTML=`<div class="card result"><h3>⚠️ AI সংযোগ এতিয়া সক্ৰিয় নহয়</h3><p>Database-তো উত্তৰ নাই। Supabase Edge Function <b>ai-answer</b> সংযোগ কৰাৰ পিছত AI উত্তৰ দিব।</p></div>`}
 async function askAI(question){try{const {data:{session}}=await supabaseClient.auth.getSession();const headers={"Content-Type":"application/json"};if(session?.access_token)headers.Authorization="Bearer "+session.access_token;const r=await fetch(AI_ENDPOINT,{method:"POST",headers,body:JSON.stringify({question,language:"Assamese",app:"Assamese Sahayika"})});if(!r.ok)return{ok:false};const d=await r.json(),a=d.answer||d.text||d.response;return a?{ok:true,answer:a}:{ok:false}}catch(e){console.error(e);return{ok:false}}}
 
-async async function openLesson(chapter){
+async function openLesson(chapter){
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card">
@@ -469,22 +472,61 @@ function recordedQAHtml(q){
 </script>
 
 
+
+
+
 <script>
-/* After the app renders question cards, add recorded Q&A blocks where audio_url exists.
-   This hook is deliberately non-destructive: it only adds the section once per card. */
-function addRecordedSectionsToCards(){
-  if(typeof questions === 'undefined' || !Array.isArray(questions)) return;
-  const cards = document.querySelectorAll('[data-question-id]');
-  cards.forEach(card=>{
-    if(card.querySelector('.recorded-qa-card')) return;
-    const id = card.getAttribute('data-question-id');
-    const q = questions.find(x=>String(x.id)===String(id));
-    if(!q) return;
-    const block = recordedQAHtml(q);
-    if(block) card.insertAdjacentHTML('beforeend', block);
-  });
-}
-setInterval(addRecordedSectionsToCards, 1200);
+/* ===== Navigation safety patch ===== */
+(function(){
+  function goHome(){
+    try {
+      if (typeof showSection === 'function') { showSection('home'); return; }
+      if (typeof showPage === 'function') { showPage('home'); return; }
+    } catch(e){}
+    location.hash = '#home';
+  }
+
+  function bindNavigation(){
+    document.querySelectorAll('[data-nav-section]').forEach(function(btn){
+      if(btn.dataset.navBound) return;
+      btn.dataset.navBound='1';
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        const s = btn.getAttribute('data-nav-section');
+        try {
+          if (typeof showSection === 'function') { showSection(s); return; }
+          if (typeof showPage === 'function') { showPage(s); return; }
+        } catch(err){}
+        location.hash = '#' + s;
+      });
+    });
+  }
+
+  // Expose a safe function for recorded-Q&A rendering without requiring a global questions variable.
+  window.renderRecordedQAIfNeeded = function(container, q){
+    if(!container || !q) return;
+    const pq = q.question_audio_url || q.question_audio || q.questionAudioUrl || '';
+    const pa = q.audio_url || q.answer_audio_url || q.answer_audio || q.answerAudioUrl || '';
+    if(!(String(pq).trim() || String(pa).trim())) return;
+    if(container.querySelector('.recorded-qa-card')) return;
+    if(typeof recordedQAHtml === 'function'){
+      container.insertAdjacentHTML('beforeend', recordedQAHtml(q));
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', bindNavigation);
+  setTimeout(bindNavigation, 300);
+  setTimeout(bindNavigation, 1000);
+})();
+</script>
+
+
+<script>
+/* Final navigation safety: keep the app usable even if a section is empty. */
+window.addEventListener('error', function(e){
+  console.error('App error:', e.error || e.message);
+});
 </script>
 
 </body></html>

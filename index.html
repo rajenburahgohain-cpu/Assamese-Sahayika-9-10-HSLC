@@ -152,6 +152,32 @@
 #adminChapter{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:15px;background:#fff}
 </style>
 
+
+<style>
+.admin-chapter-box{
+  margin:12px 0;
+  padding:12px;
+  border:2px solid #1683a8;
+  border-radius:12px;
+  background:#eefaff;
+}
+.admin-chapter-box label{
+  display:block;
+  font-size:18px;
+  margin-bottom:8px;
+}
+#adminChapter{
+  width:100%;
+  min-height:52px;
+  padding:12px;
+  font-size:18px !important;
+  font-weight:700;
+  border:2px solid #1683a8 !important;
+  border-radius:10px;
+  background:#fff;
+}
+</style>
+
 </head><body>
 <header><h1>অসমীয়া সহায়িকা — 10 & HSLC</h1><p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয় • দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীৰ বাবেও উপযোগী</p></header>
 <nav class="big-nav">
@@ -234,7 +260,10 @@
 <label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
 <label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div>
 <div class="audio-tools"><h4>🔊 উত্তৰৰ অডিঅ' সংৰক্ষণ</h4><p class="assamese-only-note">Admin-এ নিজৰ কণ্ঠ ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল বাছি আপলোড কৰিব পাৰে। সংৰক্ষণ কৰাৰ পিছত ছাত্ৰ-ছাত্ৰীয়ে সেই অডিঅ' শুনিব পাৰিব।</p><label class="audio-file-label">🎧 অডিঅ' ফাইল বাছনি কৰক</label><input id="adminAudioFile" class="audio-upload" type="file" accept="audio/*"><button class="voice-write-btn" onclick="startAdminAudioRecord()">🎙️ অডিঅ' ৰেকৰ্ড আৰম্ভ কৰক</button><button class="secondary" style="margin-top:7px" onclick="stopAdminAudioRecord()">⏹️ ৰেকৰ্ড বন্ধ কৰক</button><span id="adminAudioStatus" class="small"></span><audio id="adminAudioPreview" class="audio-preview" controls style="display:none"></audio></div>
-<div class="grid" style="margin-top:8px"><input id="adminType" value="Q&A" placeholder="প্ৰশ্ন-উত্তৰ / বহু-বিকল্পী"><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"><select id="adminChapter"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
+<div class="grid" style="margin-top:8px"><input id="adminType" value="Q&A" placeholder="প্ৰশ্ন-উত্তৰ / বহু-বিকল্পী"><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"></div>
+<div class="admin-chapter-box">
+<label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
+<select id="adminChapter"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
 <section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য ব্যৱহাৰ</h3><p>প্ৰশ্নোত্তৰ search আৰু Admin content সংৰক্ষণৰ বাবে Supabase ব্যৱহাৰ কৰা হয়।</p><h3>AI</h3><p>AI ব্যৱহাৰ কৰা হ'লে ব্যৱহাৰকাৰীয়ে লিখা/কোৱা প্ৰশ্ন AI service-লৈ প্ৰেৰণ হ'ব পাৰে।</p><p class="small">Last updated: 2026</p></div></section>
 </main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese</footer>
 <script>

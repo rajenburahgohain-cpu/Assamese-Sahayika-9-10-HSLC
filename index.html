@@ -361,8 +361,8 @@
 </div>
 
 <h3>✍️ প্ৰশ্নোত্তৰ / বিষয়বস্তু লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
-<label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
-<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div>
+<label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
+<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ এই Voice Input ব্যৱস্থা <b>পাঠ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC</b> — সকলো শিতানৰ প্ৰশ্ন আৰু উত্তৰত একে ধৰণে কাম কৰিব। আপুনি কোৱা কথাখিনি textarea-ত নিজে নিজে টাইপ হৈ যাব।</div>
 <div class="audio-tools">
 <h4>🎧 ৩। প্ৰশ্ন আৰু উত্তৰ অডিঅ' ৰেকৰ্ড কৰি সংৰক্ষণ</h4>
 <p class="assamese-only-note">Admin-এ প্ৰশ্ন আৰু উত্তৰ দুয়োটাই নিজৰ অসমীয়া কণ্ঠত ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল আপলোড কৰিব পাৰে। Save কৰাৰ পিছত পাঠৰ ভিতৰত দুয়োটা শুনিব পাৰিব।</p>
@@ -545,6 +545,15 @@ async function openContentSection(section,title){
   document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data):`<div class="empty">এই অংশত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
 }
 function searchByWord(w){showPage("home");document.getElementById("searchInput").value=w;searchQuestions()}
+
+let activeAdminRecognition=null;
+async function requestMicrophonePermission(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){return true;}
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  stream.getTracks().forEach(t=>t.stop());
+  return true;
+}
+
 function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
 function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
 function startRecognition(bid,iid,cb){const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Chrome ব্যৱহাৰ কৰি চেষ্টা কৰক।");return}const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 শুনি আছে...";try{rec.start()}catch(e){}rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};rec.onerror=e=>console.log("Voice error",e.error);rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}}
@@ -941,7 +950,7 @@ async function adminVoiceTo(targetId,buttonId){
     return;
   }
   const rec=new SR(); activeAdminRecognition=rec;
-  rec.lang="as-IN"; rec.interimResults=true; rec.continuous=false; rec.maxAlternatives=3;
+  rec.lang="as-IN"; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=3;
   b.classList.add("listening"); b.innerText="🔴 অসমীয়া মাত শুনি আছে..."; b.disabled=true;
   let finalText="";
   rec.onresult=function(e){
@@ -1003,7 +1012,7 @@ function recordedQAHtml(q,lessonTtsEnabled){
   const enabled = lessonTtsEnabled !== false;
   const dis = enabled ? '' : ' disabled';
   const offClass = enabled ? '' : ' tts-disabled';
-  const safeUrl = u => String(u).replace(/\/g,'\\').replace(/'/g,"\\'");
+  const safeUrl = u => String(u).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   return `
     <div class="recorded-qa-card" data-recorded-section="3">
       <div class="recorded-qa-title">🎧 ৩। ৰেকৰ্ড কৰা প্ৰশ্ন আৰু উত্তৰ</div>

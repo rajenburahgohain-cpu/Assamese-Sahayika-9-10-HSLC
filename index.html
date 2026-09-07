@@ -561,45 +561,9 @@ async function openContentSection(section,title){
   document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn}):`<div class="empty">এই অংশত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
 }
 
-function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
 function startVoiceSearch(){cloudVoiceToField('searchInput','voiceButton',()=>searchQuestions())}
 function startQuestionVoice(){cloudVoiceToField('questionInput','questionVoiceButton',()=>askQuestion())}
-async function cloudVoiceToField(targetId,buttonId,afterCb){
-  const b=document.getElementById(buttonId),el=document.getElementById(targetId);if(!b||!el)return;
-  if(activeCloudVoice.recorder&&activeCloudVoice.buttonId===buttonId){stopAdminVoice(buttonId);return;}
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(x=>window.MediaRecorder?.isTypeSupported?.(x))||'';
-    const recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined),chunks=[];
-    activeCloudVoice={targetId,buttonId,recorder,stream,audioContext:null,analyser:null,silenceTimer:null,startedAt:Date.now(),chunks};
-    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-    recorder.onstop=async()=>{const blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});stream.getTracks().forEach(t=>t.stop());if(activeCloudVoice.audioContext){try{activeCloudVoice.audioContext.close()}catch(e){}}activeCloudVoice={targetId:null,buttonId:null,recorder:null,stream:null,audioContext:null,analyser:null,silenceTimer:null,startedAt:0,chunks:[]};b.disabled=false;b.classList.remove('listening');b.innerText=targetId==='searchInput'?'🎙️ Voice':'🎙️ Voice';if(blob.size>=1500)await transcribeAssameseBlob(blob,targetId,afterCb);else alert('🎤 যথেষ্ট মাত ৰেকৰ্ড হোৱা নাই। অলপ স্পষ্টকৈ কওক।')};
-    recorder.start(250);b.disabled=false;b.classList.add('listening');b.innerText='🔴 অসমীয়া মাত শুনি আছে...';
-    try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){const ctx=new AC(),source=ctx.createMediaStreamSource(stream),an=ctx.createAnalyser();an.fftSize=2048;source.connect(an);activeCloudVoice.audioContext=ctx;const data=new Uint8Array(an.fftSize);let speechSeen=false,lastLoud=Date.now();const tick=()=>{if(!activeCloudVoice.recorder)return;an.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const x=(data[i]-128)/128;sum+=x*x}const rms=Math.sqrt(sum/data.length),now=Date.now();if(rms>0.025){speechSeen=true;lastLoud=now}if(speechSeen&&now-activeCloudVoice.startedAt>1200&&now-lastLoud>1400){stopAdminVoice(buttonId);return}requestAnimationFrame(tick)};requestAnimationFrame(tick)}}catch(e){}
-  }catch(e){b.disabled=false;b.classList.remove('listening');b.innerText='🎙️ Voice';alert('🎤 Microphone permission দিব লাগিব। Chrome → Site settings → Microphone → Allow কৰক।\n\n'+(e.message||e))}
-}
-function startRecognition(bid,iid,cb){
-  const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Assamese Voice Server সংযোগ কৰক।");return}
-  const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";try{rec.start()}catch(e){}
-  rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};
-  rec.onerror=e=>{if(e.error!=="aborted")alert("এই Browser-ৰ built-in Voice service-এ Assamese নিশ্চিতভাৱে নিদিয়ে। Assamese STT server ব্যৱহাৰ কৰক।")};
-  rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}
-}
-function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
-function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
-function startRecognition(bid,iid,cb){
-  const SR=getSpeechRecognition();
-  if(!SR){alert("এই browser-ত Voice support নাই।");return}
-  const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;
-  b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";
-  try{rec.start()}catch(e){}
-  rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};
-  rec.onerror=e=>{console.log("Voice error",e.error);if(e.error==="language-not-supported")alert("এই Browser-ৰ Voice service-এ Assamese ভালদৰে সমৰ্থন নকৰে। Admin Voice Input-ৰ বাবে Assamese STT server ব্যৱহাৰ কৰক।")};
-  rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}
-}
-function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
-function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
-function startRecognition(bid,iid,cb){const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Chrome ব্যৱহাৰ কৰি চেষ্টা কৰক।");return}const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 শুনি আছে...";try{rec.start()}catch(e){}rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};rec.onerror=e=>console.log("Voice error",e.error);rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}}
+
 function stopAllAudio(){
   if("speechSynthesis" in window) window.speechSynthesis.cancel();
   document.querySelectorAll("audio").forEach(a=>{try{a.pause();a.currentTime=0}catch(e){}});

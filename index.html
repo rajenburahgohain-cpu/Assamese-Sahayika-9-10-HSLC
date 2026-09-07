@@ -371,8 +371,8 @@
 </div>
 
 <h3>✍️ প্ৰশ্নোত্তৰ / বিষয়বস্তু লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
-<label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
-<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ এই Voice Input ব্যৱস্থা <b>পাঠ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC</b> — সকলো শিতানৰ প্ৰশ্ন আৰু উত্তৰত একে ধৰণে কাম কৰিব। আপুনি কোৱা কথাখিনি textarea-ত নিজে নিজে টাইপ হৈ যাব।</div>
+<label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><div class="answer-audio-row" style="margin:6px 0 8px"><button id="adminQuestionSpeakBtn" class="speak-btn tts-listen-btn" onclick="toggleAdminFieldTts(this,'adminQuestion','🎙️ প্ৰশ্ন শুনক')" data-allow-tts="1">🎙️ প্ৰশ্ন শুনক</button></div><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
+<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><div class="answer-audio-row" style="margin:6px 0 8px"><button id="adminAnswerSpeakBtn" class="speak-btn tts-listen-btn" onclick="toggleAdminFieldTts(this,'adminAnswer','🔊 উত্তৰ শুনক')" data-allow-tts="1">🔊 উত্তৰ শুনক</button></div><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ এই Voice Input ব্যৱস্থা <b>পাঠ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC</b> — সকলো শিতানৰ প্ৰশ্ন আৰু উত্তৰত একে ধৰণে কাম কৰিব। আপুনি কোৱা কথাখিনি textarea-ত নিজে নিজে টাইপ হৈ যাব।</div>
 <div class="assamese-voice-status">🇦🇸 <b>শুদ্ধ অসমীয়া Voice-to-Text:</b> এই সংস্কৰণত browser-ৰ English/Bengali fallback এৰাই Supabase <b>assamese-stt</b> server-ৰ পৰা <b>as-IN</b> transcription লোৱা হ'ব। প্ৰথমবাৰ Microphone-ত <b>Allow</b> কৰক।</div>
 <div class="audio-tools">
 <h4>🎧 ৩। প্ৰশ্ন আৰু উত্তৰ অডিঅ' ৰেকৰ্ড কৰি সংৰক্ষণ</h4>
@@ -561,9 +561,45 @@ async function openContentSection(section,title){
   document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn}):`<div class="empty">এই অংশত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
 }
 
+function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
 function startVoiceSearch(){cloudVoiceToField('searchInput','voiceButton',()=>searchQuestions())}
 function startQuestionVoice(){cloudVoiceToField('questionInput','questionVoiceButton',()=>askQuestion())}
-
+async function cloudVoiceToField(targetId,buttonId,afterCb){
+  const b=document.getElementById(buttonId),el=document.getElementById(targetId);if(!b||!el)return;
+  if(activeCloudVoice.recorder&&activeCloudVoice.buttonId===buttonId){stopAdminVoice(buttonId);return;}
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(x=>window.MediaRecorder?.isTypeSupported?.(x))||'';
+    const recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined),chunks=[];
+    activeCloudVoice={targetId,buttonId,recorder,stream,audioContext:null,analyser:null,silenceTimer:null,startedAt:Date.now(),chunks};
+    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+    recorder.onstop=async()=>{const blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});stream.getTracks().forEach(t=>t.stop());if(activeCloudVoice.audioContext){try{activeCloudVoice.audioContext.close()}catch(e){}}activeCloudVoice={targetId:null,buttonId:null,recorder:null,stream:null,audioContext:null,analyser:null,silenceTimer:null,startedAt:0,chunks:[]};b.disabled=false;b.classList.remove('listening');b.innerText=targetId==='searchInput'?'🎙️ Voice':'🎙️ Voice';if(blob.size>=1500)await transcribeAssameseBlob(blob,targetId,afterCb);else alert('🎤 যথেষ্ট মাত ৰেকৰ্ড হোৱা নাই। অলপ স্পষ্টকৈ কওক।')};
+    recorder.start(250);b.disabled=false;b.classList.add('listening');b.innerText='🔴 অসমীয়া মাত শুনি আছে...';
+    try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){const ctx=new AC(),source=ctx.createMediaStreamSource(stream),an=ctx.createAnalyser();an.fftSize=2048;source.connect(an);activeCloudVoice.audioContext=ctx;const data=new Uint8Array(an.fftSize);let speechSeen=false,lastLoud=Date.now();const tick=()=>{if(!activeCloudVoice.recorder)return;an.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const x=(data[i]-128)/128;sum+=x*x}const rms=Math.sqrt(sum/data.length),now=Date.now();if(rms>0.025){speechSeen=true;lastLoud=now}if(speechSeen&&now-activeCloudVoice.startedAt>1200&&now-lastLoud>1400){stopAdminVoice(buttonId);return}requestAnimationFrame(tick)};requestAnimationFrame(tick)}}catch(e){}
+  }catch(e){b.disabled=false;b.classList.remove('listening');b.innerText='🎙️ Voice';alert('🎤 Microphone permission দিব লাগিব। Chrome → Site settings → Microphone → Allow কৰক।\n\n'+(e.message||e))}
+}
+function startRecognition(bid,iid,cb){
+  const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Assamese Voice Server সংযোগ কৰক।");return}
+  const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";try{rec.start()}catch(e){}
+  rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};
+  rec.onerror=e=>{if(e.error!=="aborted")alert("এই Browser-ৰ built-in Voice service-এ Assamese নিশ্চিতভাৱে নিদিয়ে। Assamese STT server ব্যৱহাৰ কৰক।")};
+  rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}
+}
+function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
+function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
+function startRecognition(bid,iid,cb){
+  const SR=getSpeechRecognition();
+  if(!SR){alert("এই browser-ত Voice support নাই।");return}
+  const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;
+  b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";
+  try{rec.start()}catch(e){}
+  rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};
+  rec.onerror=e=>{console.log("Voice error",e.error);if(e.error==="language-not-supported")alert("এই Browser-ৰ Voice service-এ Assamese ভালদৰে সমৰ্থন নকৰে। Admin Voice Input-ৰ বাবে Assamese STT server ব্যৱহাৰ কৰক।")};
+  rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}
+}
+function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
+function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
+function startRecognition(bid,iid,cb){const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Chrome ব্যৱহাৰ কৰি চেষ্টা কৰক।");return}const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 শুনি আছে...";try{rec.start()}catch(e){}rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};rec.onerror=e=>console.log("Voice error",e.error);rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}}
 function stopAllAudio(){
   if("speechSynthesis" in window) window.speechSynthesis.cancel();
   document.querySelectorAll("audio").forEach(a=>{try{a.pause();a.currentTime=0}catch(e){}});
@@ -649,6 +685,28 @@ async function saveGlobalTtsSetting(){
     alert("❌ Setting Save হোৱা নাই: "+(e.message||e));
   }
 }
+function toggleAdminFieldTts(btn, fieldId, normalLabel){
+  if(btn.classList.contains("audio-stop")){ stopAllAudio(); return; }
+  const field=document.getElementById(fieldId);
+  const text=field ? String(field.value||"").trim() : "";
+  if(!text){ alert("প্ৰথমে অসমীয়াত লিখনী লিখক বা Voice Input-ৰে লিখক।"); return; }
+  if(!("speechSynthesis" in window)){ alert("এই Browser-ত Voice Answer support নাই।"); return; }
+  const v=strictAssameseVoice();
+  if(!v){ alert("⚠️ এই Device/Browser-ত শুদ্ধ Assamese voice উপলব্ধ নহয়। Bengali/বাংলা voice ব্যৱহাৰ কৰা নহ'ব।"); return; }
+  stopAllAudio();
+  const parts=splitSpeechText(text,650); let i=0;
+  btn.classList.add("audio-stop"); btn.textContent="⏹️ শুনা বন্ধ কৰক";
+  function next(){
+    if(i>=parts.length){ btn.classList.remove("audio-stop"); btn.textContent=normalLabel; return; }
+    const u=new SpeechSynthesisUtterance(parts[i++]);
+    u.lang=v.lang; u.voice=v; u.rate=.78; u.pitch=1; u.volume=1;
+    u.onend=next;
+    u.onerror=()=>{ btn.classList.remove("audio-stop"); btn.textContent=normalLabel; };
+    window.speechSynthesis.speak(u);
+  }
+  next();
+}
+
 function toggleSpeakText(btn){
   if(!globalTtsEnabled && btn.dataset.allowTts!=="1"){
     alert("🔴 Admin-এ “শুনক” ব্যৱস্থা বন্ধ কৰি ৰাখিছে।");

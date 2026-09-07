@@ -195,7 +195,7 @@
   border:2px solid #1683a8;border-radius:10px;background:#fff;
 }
 .lesson-tts-box{border-color:#d97706;background:#fffaf0}
-.lesson-tts-box .tts-state{font-size:16px;font-weight:700}
+.lesson-tts-box .tts-state{font-size:16px;font-weight:700}.admin-visibility-box{margin-top:10px;padding:12px;border:1px solid #7dd3fc;border-radius:12px;background:#f0f9ff}.toggle-row{display:flex!important;align-items:center;gap:8px;padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-weight:700}.toggle-row input{width:25px!important;height:25px!important}.section-disabled{display:none!important}
 .tts-off-btn{opacity:.55!important;cursor:not-allowed!important}
 .content-meta{font-size:13px;color:#475569;margin-top:5px}
 </style>
@@ -203,9 +203,9 @@
 <header><h1>অসমীয়া সহায়িকা — 10 & HSLC</h1><p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয় • দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীৰ বাবেও উপযোগী</p></header>
 <nav class="big-nav">
 <button class="n-home" onclick="showPage('home')"><span>🏠</span>Home</button>
-<button class="n-lessons" onclick="showPage('chapters')"><span>📚</span>পাঠসমূহ</button>
-<button class="n-grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
-<button class="n-hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>
+<button class="n-lessons" data-section-page="chapters" data-nav-section="chapters" onclick="showPage('chapters')"><span>📚</span>পাঠসমূহ</button>
+<button class="n-grammar" data-section-page="grammar" data-nav-section="grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
+<button class="n-hslc" data-section-page="hslc" data-nav-section="hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>
 <button class="n-qa" onclick="showPage('questions')"><span>❓</span>প্ৰশ্নোত্তৰ</button>
 <button class="n-admin" onclick="showPage('admin')"><span>👨‍🏫</span>Admin</button>
 <button class="n-share" onclick="shareApp()"><span>📤</span>Share</button>
@@ -213,7 +213,7 @@
 </nav>
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
 <main class="container">
-<section id="home"><div class="card welcome-card"><h2>স্বাগতম 👋</h2><p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p><p class="access-note">🔊 ডাঙৰ লেখা, Voice Input আৰু উত্তৰ শুনাৰ সুবিধাৰ বাবে দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীয়েও ব্যৱহাৰ কৰিব পাৰে।</p><div class="grid"><button class="main-btn" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button><button class="main-btn" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button><button class="main-btn" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button><button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button></div></div>
+<section id="home"><div class="card welcome-card"><h2>স্বাগতম 👋</h2><p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p><p class="access-note">🔊 ডাঙৰ লেখা, Voice Input আৰু উত্তৰ শুনাৰ সুবিধাৰ বাবে দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীয়েও ব্যৱহাৰ কৰিব পাৰে।</p><div class="grid"><button class="main-btn" data-open-page="chapters" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button><button class="main-btn" data-open-page="grammar" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button><button class="main-btn" data-open-page="hslc" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button><button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button></div></div>
 <div class="card"><h3>🔎 প্ৰশ্ন / শব্দ বিচাৰক</h3><input id="searchInput" placeholder="যেনে: সমাস, সন্ধি, প্ৰশস্তি..."><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="searchQuestions()">🔍 Search</button><button class="main-btn voice-btn" id="voiceButton" onclick="startVoiceSearch()">🎙️ Voice</button></div><div id="searchStatus"></div><div id="searchResult"></div></div>
 <div class="card"><h3>🤖 AI Study Assistant</h3><div class="ai-note"><b>ছাত্ৰ-ছাত্ৰীয়ে লিখি বা Voice-ৰে প্ৰশ্ন সুধিব পাৰিব।</b><p>প্ৰথমে Database-ত থকা উত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা অসমীয়াত উত্তৰ লোৱা হ'ব।</p></div></div></section>
 <section id="chapters" class="hidden">
@@ -317,6 +317,14 @@
 <option value="report">📰 প্ৰতিবেদন</option>
 <option value="hslc">🎯 HSLC</option>
 </select>
+<div class="admin-visibility-box" style="margin-top:10px">
+<label>⚙️ ছাত্ৰ-ছাত্ৰীৰ বাবে শিতানৰ দেখা/নেদেখা নিয়ন্ত্ৰণ</label>
+<div class="grid">
+<label class="toggle-row"><input type="checkbox" id="adminSectionEnabled" checked onchange="saveCurrentSectionEnabled()"> 🟢 এই শিতান ON</label>
+<span id="adminSectionState" class="small">শিতান ON</span>
+</div>
+<p class="small">OFF কৰিলে সেই সম্পূৰ্ণ শিতান ছাত্ৰ-ছাত্ৰীৰ Home আৰু Menu-ত নেদেখিব।</p>
+</div>
 <div id="adminTopicWrap" style="display:none;margin-top:10px">
 <label for="adminTopic">বিষয় / শিতানৰ নাম</label>
 <input id="adminTopic" placeholder="যেনে: সন্ধি, সমাস, ৰচনা, দৰ্খাস্ত...">
@@ -324,13 +332,20 @@
 </div>
 
 <div class="lesson-tts-box" id="lessonTtsControl" style="display:none">
+<label>📖 এই পাঠৰ নিয়ন্ত্ৰণ</label>
+<div class="grid" style="margin-top:8px">
+<label class="toggle-row"><input type="checkbox" id="adminLessonEnabled" checked onchange="saveLessonEnabled()"> 🟢 পাঠ ON</label>
+<span id="adminLessonEnabledState" class="small">পাঠ ON</span>
+</div>
+<p class="small">🔴 OFF কৰিলে এই পাঠটো ছাত্ৰ-ছাত্ৰীয়ে পাঠসমূহৰ তালিকাত নেদেখিব আৰু direct link-ৰ পৰাও খুলিব নোৱাৰিব।</p>
+<hr>
 <label>🔊 এই পাঠৰ “শুনক” নিয়ন্ত্ৰণ</label>
-<div class="tts-state" id="lessonTtsState">🔴 OFF — ছাত্ৰ-ছাত্ৰীয়ে এই পাঠৰ “শুনক” শুনিব নোৱাৰিব</div>
+<div class="tts-state" id="lessonTtsState">🔴 OFF — “শুনক” বন্ধ</div>
 <label style="display:flex;align-items:center;gap:10px;margin-top:10px;font-size:16px">
 <input type="checkbox" id="adminLessonTtsEnabled" onchange="saveLessonTtsSetting()" style="width:25px;height:25px">
-<span>🟢 ON = শুদ্ধ অসমীয়া voice / recorded audio শুনিবলৈ অনুমতি</span>
+<span>🟢 ON = শুনক অনুমতি</span>
 </label>
-<p class="small">⚠️ Assamese voice নিশ্চিত নোহোৱালৈকে ON নকৰিব। Bengali voice fallback কৰা নহ'ব।</p>
+<p class="small">⚠️ Text-to-Speech-ত শুদ্ধ অসমীয়া voice নাথাকিলে ON নকৰিব। Bengali voice fallback কৰা নহ'ব। Admin-এ recorded Assamese audio দিলে সেই audio-ও এই setting-ৰ অধীনত থাকিব।</p>
 </div>
 
 <h3>✍️ প্ৰশ্নোত্তৰ / বিষয়বস্তু লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
@@ -370,7 +385,11 @@
 <label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
 <select id="adminChapter" onchange="loadLessonTtsSetting()"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
 <section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য ব্যৱহাৰ</h3><p>প্ৰশ্নোত্তৰ search আৰু Admin content সংৰক্ষণৰ বাবে Supabase ব্যৱহাৰ কৰা হয়।</p><h3>AI</h3><p>AI ব্যৱহাৰ কৰা হ'লে ব্যৱহাৰকাৰীয়ে লিখা/কোৱা প্ৰশ্ন AI service-লৈ প্ৰেৰণ হ'ব পাৰে।</p><p class="small">Last updated: 2026</p></div></section>
-</main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese</footer>
+</main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese
+<div class="student-purpose-note" style="margin:10px auto 0;max-width:900px;padding:8px 12px;border-top:1px solid #d9e1ea;color:#667085;font-size:11px;line-height:1.55;text-align:center;">
+এই এপটোৰ দ্বাৰা ছাত্ৰ-ছাত্ৰীসকলক <b>পঢ়া, লিখা আৰু শুনা</b> মাধ্যমেৰে HSLC পৰীক্ষাত সুখ্যাতিৰে উত্তীৰ্ণ হোৱাৰ বাবে সহায় কৰাৰ প্ৰয়াস কৰা হৈছে।<br>
+এই এপত দিয়া উত্তৰসমূহ <b>সৰ্বোৎকৃষ্ট</b> বুলি Admin-এ কেতিয়াও দাবী নকৰে।
+</div></footer>
 <script>
 const SUPABASE_URL="https://rlmxfzdbipksbrikgfbs.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
@@ -379,7 +398,9 @@ const AI_ENDPOINT=SUPABASE_URL+"/functions/v1/ai-answer";
 let supabaseClient=null;
 function initSupabase(){try{if(!window.supabase)return false;supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return true}catch(e){console.error(e);return false}}
 let pageHistory=[];let currentPage="home";
-function showPage(id,fromBack=false){
+async function showPage(id,fromBack=false){
+  const gate={chapters:'lesson',grammar:'grammar',hslc:'hslc'};
+  if(gate[id]){const on=await getSettingBool(sectionSettingKey(gate[id]),true);if(!on){alert('🔴 Admin-এ এই শিতানটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}}
   if(id===currentPage)return;
   if(!fromBack)pageHistory.push(currentPage);
   document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
@@ -404,8 +425,8 @@ function renderResults(rows,opts={}){
     let h=`<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3>`;
     if(r.option_a||r.option_b||r.option_c||r.option_d)h+=`<div class="answer">${r.option_a?"A. "+esc(r.option_a)+"\n":""}${r.option_b?"B. "+esc(r.option_b)+"\n":""}${r.option_c?"C. "+esc(r.option_c)+"\n":""}${r.option_d?"D. "+esc(r.option_d):""}</div>`;
     h+=`<div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div>`;
-    if(r.audio_url){
-      h+=`<button class="speak-btn recorded-answer-audio ${lessonTtsEnabled===false?"tts-off-btn":""}" ${lessonTtsEnabled===false?"disabled":""} onclick="toggleSavedAnswerAudio(this)" data-url="${esc(r.audio_url)}">🔊 উত্তৰ শুনক</button>`;
+    if(r.audio_url || r.answer_audio_url){
+      h+=`<button class="speak-btn recorded-answer-audio ${lessonTtsEnabled===false?"tts-off-btn":""}" ${lessonTtsEnabled===false?"disabled":""} onclick="toggleSavedAnswerAudio(this)" data-url="${esc(r.audio_url||r.answer_audio_url)}">🔊 উত্তৰ শুনক</button>`;
     }else{
       h+=`<button class="speak-btn tts-listen-btn ${lessonTtsEnabled===false?"tts-off-btn":""}" ${lessonTtsEnabled===false?"disabled":""} onclick="toggleSpeakText(this)" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;
     }
@@ -427,6 +448,8 @@ async function getLessonTtsEnabled(chapter){
   }catch(e){return false}
 }
 async function openLesson(chapter){
+  const lessonOn=await getLessonEnabled(chapter);
+  if(!lessonOn){alert('🔴 Admin-এ এই পাঠটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card">
@@ -495,6 +518,7 @@ async function loadLessonTtsSetting(){
     if(error)throw error;
     const on=data?.value==="true";
     const cb=document.getElementById("adminLessonTtsEnabled");if(cb)cb.checked=on;
+    loadLessonEnabled();
     const st=document.getElementById("lessonTtsState");if(st)st.textContent=on?"🟢 ON — এই পাঠৰ “শুনক” চালু":"🔴 OFF — এই পাঠৰ “শুনক” বন্ধ";
     return on;
   }catch(e){
@@ -631,12 +655,58 @@ function adminPayload(){
     language:"Assamese"
   }
 }
+const CONTENT_SECTIONS={lesson:'পাঠসমূহ',grammar:'ব্যাকৰণ',writing:'ৰচনা',application:'দৰ্খাস্ত',expansion:'ভাব সম্প্ৰসাৰণ',report:'প্ৰতিবেদন',hslc:'HSLC'};
+function sectionSettingKey(section){return 'section_enabled_'+section;}
+function lessonEnabledKey(chapter){return 'lesson_enabled_'+encodeURIComponent(chapter);}
+async function getSettingBool(key,defaultValue=true){
+  try{const {data,error}=await supabaseClient.from('app_settings').select('value').eq('key',key).maybeSingle();if(error)return defaultValue;return data?data.value==='true':defaultValue}catch(e){return defaultValue}
+}
+async function setSettingBool(key,value){
+  const {error}=await supabaseClient.from('app_settings').upsert({key:key,value:value?'true':'false'});if(error)throw error;
+}
+async function loadCurrentSectionEnabled(){
+  const section=(document.getElementById('adminContentSection')||{}).value||'lesson';
+  const on=await getSettingBool(sectionSettingKey(section),true);
+  const cb=document.getElementById('adminSectionEnabled');if(cb)cb.checked=on;
+  const st=document.getElementById('adminSectionState');if(st)st.textContent=on?'🟢 শিতান ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব':'🔴 শিতান OFF — ছাত্ৰ-ছাত্ৰীয়ে নেদেখিব';
+  return on;
+}
+async function saveCurrentSectionEnabled(){
+  const section=(document.getElementById('adminContentSection')||{}).value||'lesson';
+  const cb=document.getElementById('adminSectionEnabled');const on=!!cb.checked;
+  try{await setSettingBool(sectionSettingKey(section),on);const st=document.getElementById('adminSectionState');if(st)st.textContent=on?'🟢 শিতান ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব':'🔴 শিতান OFF — ছাত্ৰ-ছাত্ৰীয়ে নেদেখিব';await applyAllVisibility();alert(on?'✅ শিতান ON কৰা হৈছে।':'🔴 শিতান OFF কৰা হৈছে।')}catch(e){cb.checked=!on;alert('❌ Setting Save হোৱা নাই: '+e.message)}
+}
+async function getLessonEnabled(chapter){return getSettingBool(lessonEnabledKey(chapter),true)}
+async function loadLessonEnabled(){
+ const ch=(document.getElementById('adminChapter')||{}).value||''; if(!ch)return true;
+ const on=await getLessonEnabled(ch);const cb=document.getElementById('adminLessonEnabled');if(cb)cb.checked=on;
+ const st=document.getElementById('adminLessonEnabledState');if(st)st.textContent=on?'🟢 পাঠ ON — তালিকাত দেখিব':'🔴 পাঠ OFF — তালিকাত নেদেখিব';return on;
+}
+async function saveLessonEnabled(){
+ const ch=(document.getElementById('adminChapter')||{}).value||'';if(!ch){alert('প্ৰথমে পাঠ বাছনি কৰক।');return}
+ const cb=document.getElementById('adminLessonEnabled'),on=!!cb.checked;
+ try{await setSettingBool(lessonEnabledKey(ch),on);const st=document.getElementById('adminLessonEnabledState');if(st)st.textContent=on?'🟢 পাঠ ON — তালিকাত দেখিব':'🔴 পাঠ OFF — তালিকাত নেদেখিব';await applyAllVisibility();alert(on?'✅ এই পাঠ ON কৰা হৈছে।':'🔴 এই পাঠ OFF কৰা হৈছে।')}catch(e){cb.checked=!on;alert('❌ Setting Save হোৱা নাই: '+e.message)}
+}
+async function applyAllVisibility(){
+ try{
+   const navMap={chapters:'lesson',grammar:'grammar',hslc:'hslc'};
+   for(const [page,section] of Object.entries(navMap)){
+     const on=await getSettingBool(sectionSettingKey(section),true);
+     document.querySelectorAll('[data-section-page="'+page+'"], [data-nav-section="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
+     document.querySelectorAll('[data-open-page="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
+   }
+   const buttons=[...document.querySelectorAll('.lesson-btn')];
+   for(const b of buttons){const m=b.getAttribute('onclick')?.match(/openLesson\('([^']+)'\)/);if(m){const on=await getLessonEnabled(m[1]);b.classList.toggle('section-disabled',!on);}}
+ }catch(e){console.warn('visibility',e)}
+}
+
 function adminContentSectionChanged(){
   const section=document.getElementById("adminContentSection").value;
   const lessonBox=document.getElementById("lessonTtsControl");
   const topicWrap=document.getElementById("adminTopicWrap");
   lessonBox.style.display=section==="lesson"?"block":"none";
   topicWrap.style.display=section==="lesson"?"none":"block";
+  loadCurrentSectionEnabled();
   if(section==="lesson") loadLessonTtsSetting();
 }
 let adminQuestionAudioRecorder=null,adminQuestionAudioChunks=[],adminQuestionRecordedBlob=null;
@@ -702,6 +772,7 @@ async function uploadAnswerAudioNew(blob,id){
 }
 
 async function uploadAnswerAudio(blob,id){if(!blob) return null;const ext=(blob.type||"").includes("mp4")?"m4a":((blob.type||"").includes("wav")?"wav":"webm");const path="answers/"+id+"_"+Date.now()+"."+ext;const up=await supabaseClient.storage.from("answer-audio").upload(path,blob,{contentType:blob.type||"audio/webm",upsert:true});if(up.error)throw up.error;const pub=supabaseClient.storage.from("answer-audio").getPublicUrl(path);return pub.data.publicUrl}
+// IMPORTANT: question_audio_url must exist in public.questions for recorded question audio to appear.
 async function saveQuestion(){
   const st=document.getElementById("adminSaveStatus");
   const id=document.getElementById("editId").value;
@@ -847,7 +918,7 @@ async function adminVoiceTo(targetId,buttonId){
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-  document.getElementById("adminContentSection") && adminContentSectionChanged();initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
+  document.getElementById("adminContentSection") && adminContentSectionChanged();initSupabase();applyAllVisibility();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script>
 <script>
 /* ===== Recorded Question + Answer section ===== */
@@ -878,17 +949,21 @@ function playRecordedAudio(url, label){
   a.play().catch(()=>{});
 }
 function recordedQAHtml(q,lessonTtsEnabled){
-  const pq = q.question_audio_url || '';
-  const pa = q.audio_url || '';
-  // Show section 3 only when a recorded question OR recorded answer exists.
-  if(!(String(pq).trim() || String(pa).trim())) return '';
+  const pq=String(q?.question_audio_url||q?.questionAudioUrl||'').trim();
+  const pa=String(q?.audio_url||q?.answer_audio_url||q?.answerAudioUrl||'').trim();
+  // Section 3 appears ONLY when at least one recorded audio exists.
+  if(!pq && !pa) return '';
+  const enabled = lessonTtsEnabled !== false;
+  const dis = enabled ? '' : ' disabled';
+  const offClass = enabled ? '' : ' tts-disabled';
+  const safeUrl = u => String(u).replace(/\/g,'\\').replace(/'/g,"\\'");
   return `
-    <div class="recorded-qa-card">
-      <div class="recorded-qa-title">🎧 ৩। ৰেকৰ্ড কৰা প্ৰশ্নোত্তৰ</div>
-      <div class="recorded-qa-question"><b>❓ প্ৰশ্ন:</b> ${escapeHtml(q.question || '')}</div>
-      ${pq ? `<button class="recorded-play-btn ${lessonTtsEnabled===false?"tts-off-btn":""}" ${lessonTtsEnabled===false?"disabled":""} onclick="playRecordedAudio('${String(pq).replace(/'/g,"&#39;")}','প্ৰশ্ন')">🎙️ প্ৰশ্ন শুনক</button>` : ''}
-      <div class="recorded-qa-answer"><b>📝 উত্তৰ:</b> ${escapeHtml(q.answer || '')}</div>
-      ${pa ? `<button class="recorded-play-btn ${lessonTtsEnabled===false?"tts-off-btn":""}" ${lessonTtsEnabled===false?"disabled":""} onclick="playRecordedAudio('${String(pa).replace(/'/g,"&#39;")}','উত্তৰ')">🔊 উত্তৰ শুনক</button>` : ''}
+    <div class="recorded-qa-card" data-recorded-section="3">
+      <div class="recorded-qa-title">🎧 ৩। ৰেকৰ্ড কৰা প্ৰশ্ন আৰু উত্তৰ</div>
+      <div class="recorded-qa-question"><b>❓ প্ৰশ্ন:</b> ${escapeHtml(q.question||'')}</div>
+      ${pq ? `<button class="recorded-play-btn${offClass}"${dis} onclick="playRecordedAudio('${safeUrl(pq)}','প্ৰশ্ন')">🎙️ প্ৰশ্ন শুনক</button>` : ''}
+      <div class="recorded-qa-answer"><b>📝 উত্তৰ:</b> ${escapeHtml(q.answer||'')}</div>
+      ${pa ? `<button class="recorded-play-btn${offClass}"${dis} onclick="playRecordedAudio('${safeUrl(pa)}','উত্তৰ')">🔊 উত্তৰ শুনক</button>` : ''}
       <button class="recorded-stop-btn" onclick="stopAllRecordedAudio()">⏹️ শুনা বন্ধ কৰক</button>
     </div>`;
 }
@@ -934,7 +1009,7 @@ function recordedQAHtml(q,lessonTtsEnabled){
     if(!(String(pq).trim() || String(pa).trim())) return;
     if(container.querySelector('.recorded-qa-card')) return;
     if(typeof recordedQAHtml === 'function'){
-      container.insertAdjacentHTML('beforeend', recordedQAHtml(q));
+      container.insertAdjacentHTML('beforeend', recordedQAHtml(q, window.currentLessonTtsEnabled));
     }
   };
 

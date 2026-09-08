@@ -112,6 +112,7 @@
 .audio-tools button{min-height:50px!important;font-size:16px!important}
 /* ===== Student-side search/voice/lesson audio controls disabled ===== */
 #searchInput,#searchStatus,#searchResult,#voiceButton,#questionVoiceButton,#lessonTtsControl,#lessonAudioAdminControl,.tts-listen-btn,.speak-btn,.recorded-qa-card,.recorded-play-btn,.recorded-stop-btn{display:none!important;}
+.admin-lesson-control{margin-top:10px;padding:12px;border:1px solid #7dd3fc;border-radius:12px;background:#f0f9ff}.admin-lesson-control label{font-weight:700;display:block}.toggle-row{display:flex!important;align-items:center;gap:8px;padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-weight:700}.toggle-row input{width:25px!important;height:25px!important}
 </style><style>
 .admin-group{margin-top:14px;border:1px solid #dbe3ee;border-radius:12px;padding:10px;background:#fafcff}.admin-group h4{margin:0 0 8px;color:#075985;font-size:17px}.admin-entry{display:none!important}
 .tts-disabled{opacity:.5!important;cursor:not-allowed!important;}
@@ -224,7 +225,7 @@
 <button class="n-grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
 <button class="n-hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>
 <button class="n-qa" onclick="showPage('questions')"><span>❓</span>প্ৰশ্নোত্তৰ</button>
-<button class="n-admin admin-entry" onclick="showPage('admin')" style="display:none"><span>👨‍🏫</span>Admin</button>
+<button class="n-admin" onclick="showPage('admin')"><span>👨‍🏫</span>Admin</button>
 <button class="n-share" onclick="shareApp()"><span>📤</span>Share</button>
 <button class="n-privacy" onclick="showPage('privacy')"><span>🔒</span>Privacy</button>
 </nav>
@@ -375,7 +376,12 @@
 </select><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"></div>
 <div class="admin-chapter-box">
 <label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
-<select id="adminChapter"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 পাঠ/শিতান অনুসৰি প্ৰশ্ন পৰিচালনা</h3>
+<select id="adminChapter" onchange="loadLessonEnabled()"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div>
+<div id="lessonVisibilityControl" class="admin-lesson-control" style="display:none">
+<label>📖 এই পাঠৰ নিয়ন্ত্ৰণ</label>
+<div class="grid" style="margin-top:8px"><label class="toggle-row"><input type="checkbox" id="adminLessonEnabled" checked onchange="saveLessonEnabled()"> 🟢 পাঠ ON</label><span id="adminLessonEnabledState" class="small">পাঠ ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব</span></div>
+<p class="small">🔴 OFF কৰিলে এই নিৰ্দিষ্ট পাঠটো ছাত্ৰ-ছাত্ৰীৰ পাঠ তালিকাত নেদেখিব।</p>
+</div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><h3 style="margin-top:20px">📋 পাঠ/শিতান অনুসৰি প্ৰশ্ন পৰিচালনা</h3>
 <div class="admin-content-box">
 <label>📚 কোনটো পাঠ/শিতানৰ প্ৰশ্ন Edit/Delete কৰিব?</label>
 <select id="adminManageSection" onchange="loadAdminQuestions()">
@@ -406,7 +412,7 @@ async function showPage(id,fromBack=false){
   currentPage=id;
   const bb=document.getElementById("appBackBtn");if(bb)bb.style.display=currentPage==="home"?"none":"block";
   window.scrollTo({top:0,behavior:"smooth"});
-  if(id==="admin")checkAdminSession()
+  if(id==="admin")checkAdminSession();if(id==="chapters")applyLessonVisibility()
 }
 function appBack(){
   stopAllAudio();
@@ -553,11 +559,21 @@ function adminPayload(){
  };
 }
 const CONTENT_SECTIONS={lesson:'পাঠসমূহ',grammar:'ব্যাকৰণ',writing:'ৰচনা',application:'দৰ্খাস্ত',expansion:'ভাব সম্প্ৰসাৰণ',report:'প্ৰতিবেদন',hslc:'HSLC'};
+const LESSON_NAMES_FOR_SETTINGS=["বৰগীত","জিকিৰ","প্ৰশস্তি","মই অসমীয়া","দৃশ্যান্তৰ","উদ্যোগী হওঁ আহাঁ","ভাৰতীয় সংস্কৃতি","অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি","ইণ্টাৰনেটৰ তিতা-মিঠা","অৰুণিমা সিনহা","অৰণ্যযাত্ৰা","পাৰস্যত এভুমুকি","কানাইৰ চাতুৰী","ধৰ ঝাড়ু ধৰ ভাই","বিষাদ যোগ","প্ৰাচীন ভাৰতীয় শিক্ষা"];
+function lessonSettingKey(chapter){return "lesson_enabled_"+encodeURIComponent(String(chapter||""));}
+async function getLessonEnabled(chapter){const key=lessonSettingKey(chapter);try{if(supabaseClient){const r=await supabaseClient.from("app_settings").select("value").eq("key",key).maybeSingle();if(!r.error&&r.data)return r.data.value!=="false";}}catch(e){}return localStorage.getItem(key)!=="false";}
+async function loadLessonEnabled(){const ch=(document.getElementById("adminChapter")||{}).value||"";if(!ch)return;const on=await getLessonEnabled(ch);const cb=document.getElementById("adminLessonEnabled"),st=document.getElementById("adminLessonEnabledState");if(cb)cb.checked=on;if(st)st.textContent=on?"পাঠ ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব":"পাঠ OFF — ছাত্ৰ-ছাত্ৰীয়ে নেদেখিব";}
+async function saveLessonEnabled(){const ch=(document.getElementById("adminChapter")||{}).value||"";if(!ch){alert("প্ৰথমে পাঠ বাছনি কৰক।");return;}const cb=document.getElementById("adminLessonEnabled"),on=!!cb.checked,key=lessonSettingKey(ch);try{localStorage.setItem(key,on?"true":"false");if(supabaseClient){const r=await supabaseClient.from("app_settings").upsert({key:key,value:on?"true":"false"});if(r.error)console.warn("app_settings save failed; local setting retained",r.error.message);}const st=document.getElementById("adminLessonEnabledState");if(st)st.textContent=on?"পাঠ ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব":"পাঠ OFF — ছাত্ৰ-ছাত্ৰীয়ে নেদেখিব";await applyLessonVisibility();}catch(e){cb.checked=!on;alert("❌ পাঠৰ setting Save হোৱা নাই: "+(e.message||e));}}
+async function applyLessonVisibility(){const buttons=[...document.querySelectorAll(".lesson-btn")];await Promise.all(buttons.map(async b=>{const m=(b.getAttribute("onclick")||"").match(/openLesson\('([^']+)'\)/);if(!m)return;const on=await getLessonEnabled(m[1]);b.style.display=on?"":"none";}));}
+
 function adminContentSectionChanged(){
  const section=document.getElementById("adminContentSection").value;
  const topicWrap=document.getElementById("adminTopicWrap");
+ const lessonControl=document.getElementById("lessonVisibilityControl");
  if(topicWrap)topicWrap.style.display=section==="lesson"?"none":"block";
+ if(lessonControl)lessonControl.style.display=section==="lesson"?"block":"none";
  updateAdminManageTopics();
+ if(section==="lesson")loadLessonEnabled();
 }
 function getLessonNames(){return ["বৰগীত","জিকিৰ","প্ৰশস্তি","মই অসমীয়া","দৃশ্যান্তৰ","উদ্যোগী হওঁ আহাঁ","ভাৰতীয় সংস্কৃতি","অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি","ইণ্টাৰনেটৰ তিতা-মিঠা","অৰুণিমা সিনহা","অৰণ্যযাত্ৰা","পাৰস্যত এভুমুকি","কানাইৰ চাতুৰী","ধৰ ঝাড়ু ধৰ ভাই","বিষাদ যোগ","প্ৰাচীন ভাৰতীয় শিক্ষা"];}
 function updateAdminManageTopics(){
@@ -571,10 +587,13 @@ function updateAdminManageTopics(){
 }
 function adminManageSectionChanged(){updateAdminManageTopics();loadAdminQuestions()}
 function adminContentSectionChanged(){
-  const section=document.getElementById("adminContentSection").value;
-  const topicWrap=document.getElementById("adminTopicWrap");
-  if(topicWrap) topicWrap.style.display=section==="lesson"?"none":"block";
-  updateAdminManageTopics();
+ const section=document.getElementById("adminContentSection").value;
+ const topicWrap=document.getElementById("adminTopicWrap");
+ const lessonControl=document.getElementById("lessonVisibilityControl");
+ if(topicWrap)topicWrap.style.display=section==="lesson"?"none":"block";
+ if(lessonControl)lessonControl.style.display=section==="lesson"?"block":"none";
+ updateAdminManageTopics();
+ if(section==="lesson")loadLessonEnabled();
 }
 let adminQuestionAudioRecorder=null,adminQuestionAudioChunks=[],adminQuestionRecordedBlob=null;
 let adminAnswerAudioRecorder=null,adminAnswerAudioChunks=[],adminAnswerRecordedBlob=null;
@@ -838,4 +857,4 @@ window.addEventListener('error', function(e){
 });
 </script>
 
-</body></html>
+<script>document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{if(typeof applyLessonVisibility==="function")applyLessonVisibility();},300));</script></body></html>

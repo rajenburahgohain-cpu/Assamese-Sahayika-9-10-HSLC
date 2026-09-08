@@ -108,12 +108,6 @@
 .audio-tools{font-size:16px!important}
 .audio-tools button{min-height:50px!important;font-size:16px!important}
 </style><style>
-.assamese-voice-status{margin-top:8px;padding:9px 11px;border-radius:9px;background:#eef8ff;border-left:4px solid #1976d2;font-size:12px;line-height:1.6}
-.voice-server-btn{background:#0f766e!important}
-.answer-audio-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.answer-audio-row .speak-btn{min-height:44px;font-size:15px}
-.lesson-summary-card{margin:12px 0;padding:14px;border:1px solid #d8e7f5;border-radius:12px;background:#f9fcff}
-</style><style>
 .tts-disabled{opacity:.5!important;cursor:not-allowed!important;}
 </style>
 
@@ -205,6 +199,17 @@
 .tts-off-btn{opacity:.55!important;cursor:not-allowed!important}
 .content-meta{font-size:13px;color:#475569;margin-top:5px}
 </style>
+
+<style>
+/* ===== Student-side audio controls permanently hidden ===== */
+.speak-btn,
+.recorded-qa-card,
+#lessonTtsStudentState,
+#lessonQuestions .audio-tools,
+#lessonQuestions .tts-listen-btn,
+#lessonQuestions .recorded-play-btn,
+#lessonQuestions .recorded-stop-btn { display:none !important; }
+</style>
 </head><body>
 <header><h1>অসমীয়া সহায়িকা — 10 & HSLC</h1><p>দশম শ্ৰেণী • HSLC পৰীক্ষা • অসমীয়া বিষয় • দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীৰ বাবেও উপযোগী</p></header>
 <nav class="big-nav">
@@ -219,7 +224,7 @@
 </nav>
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
 <main class="container">
-<section id="home"><div class="card welcome-card"><h2>স্বাগতম 👋</h2><p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p><p class="access-note">🔊 ডাঙৰ লেখা, Voice Input আৰু উত্তৰ শুনাৰ সুবিধাৰ বাবে দৃষ্টিহীন ছাত্ৰ-ছাত্ৰীয়েও ব্যৱহাৰ কৰিব পাৰে।</p><div class="grid"><button class="main-btn" data-open-page="chapters" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button><button class="main-btn" data-open-page="grammar" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button><button class="main-btn" data-open-page="hslc" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button><button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button></div></div>
+<section id="home"><div class="card welcome-card"><h2>স্বাগতম 👋</h2><p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p><div class="grid"><button class="main-btn" data-open-page="chapters" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button><button class="main-btn" data-open-page="grammar" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button><button class="main-btn" data-open-page="hslc" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button><button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button></div></div>
 <div class="card"><h3>🔎 প্ৰশ্ন / শব্দ বিচাৰক</h3><input id="searchInput" placeholder="যেনে: সমাস, সন্ধি, প্ৰশস্তি..."><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="searchQuestions()">🔍 Search</button><button class="main-btn voice-btn" id="voiceButton" onclick="startVoiceSearch()">🎙️ Voice</button></div><div id="searchStatus"></div><div id="searchResult"></div></div>
 <div class="card"><h3>🤖 AI Study Assistant</h3><div class="ai-note"><b>ছাত্ৰ-ছাত্ৰীয়ে লিখি বা Voice-ৰে প্ৰশ্ন সুধিব পাৰিব।</b><p>প্ৰথমে Database-ত থকা উত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা অসমীয়াত উত্তৰ লোৱা হ'ব।</p></div></div></section>
 <section id="chapters" class="hidden">
@@ -331,10 +336,6 @@
 </div>
 <p class="small">OFF কৰিলে সেই সম্পূৰ্ণ শিতান ছাত্ৰ-ছাত্ৰীৰ Home আৰু Menu-ত নেদেখিব।</p>
 </div>
-<div class="admin-visibility-box" style="margin-top:10px">
-<label>🔊 শিতানৰ “শুনক” নিয়ন্ত্ৰণ</label>
-<div class="grid"><label class="toggle-row"><input type="checkbox" id="adminSectionTtsEnabled" checked onchange="saveCurrentSectionTtsEnabled()"> 🟢 এই শিতানৰ শুনক ON</label><span id="adminSectionTtsState" class="small">শুনক ON</span></div>
-</div>
 <div id="adminTopicWrap" style="display:none;margin-top:10px">
 <label for="adminTopic">বিষয় / শিতানৰ নাম</label>
 <input id="adminTopic" placeholder="যেনে: সন্ধি, সমাস, ৰচনা, দৰ্খাস্ত...">
@@ -371,9 +372,8 @@
 </div>
 
 <h3>✍️ প্ৰশ্নোত্তৰ / বিষয়বস্তু লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
-<label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><div class="answer-audio-row" style="margin:6px 0 8px"><button id="adminQuestionSpeakBtn" class="speak-btn tts-listen-btn" onclick="toggleAdminFieldTts(this,'adminQuestion','🎙️ প্ৰশ্ন শুনক')" data-allow-tts="1">🎙️ প্ৰশ্ন শুনক</button></div><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
-<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><div class="answer-audio-row" style="margin:6px 0 8px"><button id="adminAnswerSpeakBtn" class="speak-btn tts-listen-btn" onclick="toggleAdminFieldTts(this,'adminAnswer','🔊 উত্তৰ শুনক')" data-allow-tts="1">🔊 উত্তৰ শুনক</button></div><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ এই Voice Input ব্যৱস্থা <b>পাঠ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC</b> — সকলো শিতানৰ প্ৰশ্ন আৰু উত্তৰত একে ধৰণে কাম কৰিব। আপুনি কোৱা কথাখিনি textarea-ত নিজে নিজে টাইপ হৈ যাব।</div>
-<div class="assamese-voice-status">🇦🇸 <b>শুদ্ধ অসমীয়া Voice-to-Text:</b> এই সংস্কৰণত browser-ৰ English/Bengali fallback এৰাই Supabase <b>assamese-stt</b> server-ৰ পৰা <b>as-IN</b> transcription লোৱা হ'ব। প্ৰথমবাৰ Microphone-ত <b>Allow</b> কৰক।</div>
+<label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
+<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ এই Voice Input ব্যৱস্থা <b>পাঠ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC</b> — সকলো শিতানৰ প্ৰশ্ন আৰু উত্তৰত একে ধৰণে কাম কৰিব। আপুনি কোৱা কথাখিনি textarea-ত নিজে নিজে টাইপ হৈ যাব।</div>
 <div class="audio-tools">
 <h4>🎧 ৩। প্ৰশ্ন আৰু উত্তৰ অডিঅ' ৰেকৰ্ড কৰি সংৰক্ষণ</h4>
 <p class="assamese-only-note">Admin-এ প্ৰশ্ন আৰু উত্তৰ দুয়োটাই নিজৰ অসমীয়া কণ্ঠত ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল আপলোড কৰিব পাৰে। Save কৰাৰ পিছত পাঠৰ ভিতৰত দুয়োটা শুনিব পাৰিব।</p>
@@ -410,7 +410,7 @@
 <section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য ব্যৱহাৰ</h3><p>প্ৰশ্নোত্তৰ search আৰু Admin content সংৰক্ষণৰ বাবে Supabase ব্যৱহাৰ কৰা হয়।</p><h3>AI</h3><p>AI ব্যৱহাৰ কৰা হ'লে ব্যৱহাৰকাৰীয়ে লিখা/কোৱা প্ৰশ্ন AI service-লৈ প্ৰেৰণ হ'ব পাৰে।</p><p class="small">Last updated: 2026</p></div></section>
 </main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese
 <div class="student-purpose-note" style="margin:10px auto 0;max-width:900px;padding:8px 12px;border-top:1px solid #d9e1ea;color:#667085;font-size:11px;line-height:1.55;text-align:center;">
-এই এপটোৰ দ্বাৰা ছাত্ৰ-ছাত্ৰীসকলক <b>পঢ়া, লিখা আৰু শুনা</b> মাধ্যমেৰে HSLC পৰীক্ষাত সুখ্যাতিৰে উত্তীৰ্ণ হোৱাৰ বাবে সহায় কৰাৰ প্ৰয়াস কৰা হৈছে।<br>
+এই এপটোৰ দ্বাৰা ছাত্ৰ-ছাত্ৰীসকলক <b>পঢ়া আৰু লিখা</b> মাধ্যমেৰে HSLC পৰীক্ষাত সুখ্যাতিৰে উত্তীৰ্ণ হোৱাৰ বাবে সহায় কৰাৰ প্ৰয়াস কৰা হৈছে।<br>
 এই এপত দিয়া উত্তৰসমূহ <b>সৰ্বোৎকৃষ্ট</b> বুলি Admin-এ কেতিয়াও দাবী নকৰে।
 </div></footer>
 <script>
@@ -418,13 +418,10 @@ const SUPABASE_URL="https://rlmxfzdbipksbrikgfbs.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
 /* AI-ৰ বাবে Supabase Edge Function তৈয়াৰ কৰাৰ পিছত এই endpoint ব্যৱহাৰ হ'ব। API key কেতিয়াও এই HTML-ত নিদিব। */
 const AI_ENDPOINT=SUPABASE_URL+"/functions/v1/ai-answer";
-const ASSAMESE_STT_ENDPOINT=SUPABASE_URL+"/functions/v1/Assamese-stt";
 let supabaseClient=null;
 function initSupabase(){try{if(!window.supabase)return false;supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return true}catch(e){console.error(e);return false}}
 let pageHistory=[];let currentPage="home";
 async function showPage(id,fromBack=false){
-  const gate={chapters:'lesson',grammar:'grammar',hslc:'hslc'};
-  if(gate[id]){const on=await getSettingBool(sectionSettingKey(gate[id]),true);if(!on){alert('🔴 Admin-এ এই শিতানটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}}
   if(id===currentPage)return;
   if(!fromBack)pageHistory.push(currentPage);
   document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
@@ -443,17 +440,14 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&l
 async function dbSearch(term,limit=10){if(!supabaseClient)return{data:[],error:new Error("Supabase connection হোৱা নাই")};const clean=String(term).trim();if(!clean)return{data:[],error:null};const r=await supabaseClient.from("questions").select("*").or("question.ilike.%"+clean+"%,answer.ilike.%"+clean+"%").limit(limit);return{data:r.data||[],error:r.error||null}}
 function renderResults(rows,opts={}){
  if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;
- const qt=opts.questionAudioEnabled!==false, at=opts.answerAudioEnabled!==false, tt=opts.lessonTtsEnabled!==false && (globalTtsEnabled || opts.lessonTtsEnabled===true);
+ const qt=opts.questionAudioEnabled!==false, at=opts.answerAudioEnabled!==false, tt=opts.lessonTtsEnabled!==false;
  return rows.map(r=>{
   const a=r.answer||r.correct_answer||"উত্তৰ নাই।";
   let h=`<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3><div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div>`;
-  h+=`<div class="answer-audio-row">`;
   if(r.question_audio_url && qt)h+=`<button class="speak-btn" onclick="playRecordedAudio('${String(r.question_audio_url).replace(/'/g,"&#39;")}','প্ৰশ্ন')">🎙️ প্ৰশ্ন শুনক</button>`;
-  else if(qt && tt)h+=`<button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-allow-tts="1" data-text="${esc(r.question||'')}">🎙️ প্ৰশ্ন শুনক</button>`;
   if(r.audio_url && at)h+=`<button class="speak-btn" onclick="toggleSavedAnswerAudio(this)" data-url="${esc(r.audio_url)}">🔊 উত্তৰ শুনক</button>`;
-  else if(!r.audio_url && at && tt)h+=`<button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-allow-tts="1" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;
-  if((r.question_audio_url&&qt)||(r.audio_url&&at))h+=`<button class="recorded-stop-btn" onclick="stopAllRecordedAudio()">⏹️ শুনা বন্ধ কৰক</button>`;
-  h+=`</div>`;
+  else if(!r.audio_url && at && tt)h+=`<button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;
+  if((r.question_audio_url&&qt)||(r.audio_url&&at))h+=`<div class="recorded-qa-card"><div class="recorded-qa-title">🎧 ৩। ৰেকৰ্ড কৰা প্ৰশ্নোত্তৰ</div><p>যি Audio সংৰক্ষিত আছে, সেইটো ওপৰত শুনিব পাৰিব।</p><button class="recorded-stop-btn" onclick="stopAllRecordedAudio()">⏹️ শুনা বন্ধ কৰক</button></div>`;
   return h+`</div>`;
  }).join("")
 }
@@ -464,8 +458,8 @@ async function askAI(question){try{const {data:{session}}=await supabaseClient.a
 async function getLessonTtsEnabled(chapter){
   try{
     const {data,error}=await supabaseClient.from("app_settings").select("value").eq("key",lessonTtsKey(chapter)).maybeSingle();
-    if(error)return true;
-    return data ? data.value==="true" : true;
+    if(error)return false;
+    return data?.value==="true";
   }catch(e){return false}
 }
 function lessonAudioKey(chapter,kind){return "lesson_audio_"+encodeURIComponent(chapter)+"_"+kind;}
@@ -517,7 +511,7 @@ async function openLesson(chapter){
   box.innerHTML=`<div class="card">
     <button class="main-btn back" onclick="appBack()">← পাঠসমূহলৈ উভতি যাওক</button>
     <h2 class="lesson-heading">📖 ${esc(chapter)}</h2>
-    <div class="notice"><b>🔊 শুনক নিয়ন্ত্ৰণ:</b> <span id="lessonTtsStudentState">⏳</span><br>মূলভাৱ / সাৰাংশ আৰু প্ৰশ্নোত্তৰ — দুয়োটাৰ তলত শুনাৰ সুবিধা থাকিব।</div>
+    <div class="notice">মূলভাৱ / সাৰাংশ আৰু সংৰক্ষিত প্ৰশ্নোত্তৰ তলত দেখা যাব।</div>
     <div id="lessonQuestions"><p class="loading">⏳ প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div>
   </div>`;
   if(!supabaseClient){document.getElementById("lessonQuestions").innerHTML=`<p class="error">Supabase সংযোগ কৰা হোৱা নাই।</p>`;return}
@@ -525,78 +519,50 @@ async function openLesson(chapter){
   document.getElementById("lessonTtsStudentState").textContent=ttsOn?"🟢 ON — শুনিব পাৰিব":"🔴 OFF — Admin-এ “শুনক” বন্ধ কৰি ৰাখিছে";
   const r=await supabaseClient.from("questions").select("*").eq("chapter_name",chapter).order("id",{ascending:true});
   if(r.error){document.getElementById("lessonQuestions").innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}
-  if(!r.data.length){document.getElementById("lessonQuestions").innerHTML=`<div class="empty">📚 এই পাঠৰ বাবে এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষণ কৰা হোৱা নাই।<br><br>Admin Panel-ত প্ৰশ্ন Save কৰাৰ সময়ত <b>📚 পাঠ বাছনি কৰক</b>।</div>`;return;}
-  const first=r.data[0];
-  const summary=String(first.answer||first.correct_answer||"").trim();
-  let top=`<div class="lesson-summary-card"><h3>📌 পাঠৰ মূলভাৱ / সাৰাংশ</h3><div class="answer">${esc(summary||"মূলভাৱ/সাৰাংশ এতিয়াও সংৰক্ষণ কৰা হোৱা নাই।")}</div>`;
-  if(summary && ttsOn) top+=`<div class="answer-audio-row"><button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-allow-tts="1" data-text="${esc(summary)}">🔊 মূলভাৱ শুনক</button><button class="recorded-stop-btn" onclick="stopAllRecordedAudio();stopAllAudio()">⏹️ শুনা বন্ধ কৰক</button></div>`;
-  top+=`</div><h3 style="margin-top:14px">❓ প্ৰশ্নোত্তৰ</h3>`;
-  document.getElementById("lessonQuestions").innerHTML=top+renderResults(r.data,{lessonTtsEnabled:ttsOn,questionAudioEnabled:audioCtl.question,answerAudioEnabled:audioCtl.answer});
+  document.getElementById("lessonQuestions").innerHTML=r.data.length?renderResults(r.data):`<div class="empty">📚 এই পাঠৰ বাবে এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষণ কৰা হোৱা নাই।<br><br>Admin Panel-ত প্ৰশ্ন Save কৰাৰ সময়ত <b>📚 পাঠ বাছনি কৰক</b>।</div>`;
 }
-async function openSyllabusGroup(group){
+function openSyllabusGroup(group){
   showPage("chapterView");
   const box=document.getElementById("chapterView");
-  box.innerHTML=`<div class="card"><button class="main-btn back" onclick="appBack()">← উভতি যাওক</button><div class="title-icon">📖</div><h2 class="lesson-heading">${esc(group)}</h2><div id="groupResults"><p class="loading">⏳ লোড হৈ আছে...</p></div></div>`;
-  if(!supabaseClient)return;
-  const ttsOn=await getSectionTtsEnabled('lesson');
-  const r=await supabaseClient.from("questions").select("*").eq("chapter_name",group).order("id",{ascending:true});
-  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn}):`<div class="empty">এই অংশৰ প্ৰশ্নোত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।</div>`);
+  box.innerHTML=`<div class="card">
+    <button class="main-btn back" onclick="appBack()">← পাঠসমূহলৈ উভতি যাওক</button>
+    <div class="title-icon">${group==="দ্ৰুতপাঠ"?"📖":"📝"}</div>
+    <h2 class="lesson-heading">${esc(group)}</h2>
+    <div class="notice">এই অংশৰ প্ৰশ্নোত্তৰ Admin Panel-ত <b>chapter_name</b> হিচাপে সংৰক্ষণ কৰিলে ইয়াত দেখা যাব।</div>
+    <div id="groupResults"><p class="loading">⏳ লোড হৈ আছে...</p></div>
+  </div>`;
+  if(!supabaseClient){document.getElementById("groupResults").innerHTML=`<p class="error">Supabase সংযোগ কৰা হোৱা নাই।</p>`;return}
+  supabaseClient.from("questions").select("*").eq("chapter_name",group).order("id",{ascending:true}).then(r=>{
+    document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data):`<div class="empty">এই অংশৰ প্ৰশ্নোত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।</div>`);
+  });
 }
+
 async function openContentTopic(section,topic){
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card"><button class="main-btn back" onclick="appBack()">← উভতি যাওক</button><h2 class="lesson-heading">📚 ${esc(topic)}</h2><div id="groupResults"><p class="loading">⏳ লোড হৈ আছে...</p></div></div>`;
   if(!supabaseClient)return;
-  const ttsOn=await getSectionTtsEnabled(section);
   const r=await supabaseClient.from("questions").select("*").eq("content_section",section).eq("chapter_name",topic).order("id",{ascending:true});
-  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn}):`<div class="empty">এই শিতানত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
+  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data):`<div class="empty">এই শিতানত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
 }
 async function openContentSection(section,title){
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card"><button class="main-btn back" onclick="appBack()">← উভতি যাওক</button><h2 class="lesson-heading">${esc(title)}</h2><div id="groupResults"><p class="loading">⏳ লোড হৈ আছে...</p></div></div>`;
   if(!supabaseClient)return;
-  const ttsOn=await getSectionTtsEnabled(section);
   const r=await supabaseClient.from("questions").select("*").eq("content_section",section).order("id",{ascending:true});
-  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn}):`<div class="empty">এই অংশত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
+  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data):`<div class="empty">এই অংশত এতিয়াও কোনো বিষয়বস্তু যোগ কৰা হোৱা নাই।</div>`);
+}
+function searchByWord(w){showPage("home");document.getElementById("searchInput").value=w;searchQuestions()}
+
+let activeAdminRecognition=null;
+async function requestMicrophonePermission(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){return true;}
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  stream.getTracks().forEach(t=>t.stop());
+  return true;
 }
 
-function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
-function startVoiceSearch(){cloudVoiceToField('searchInput','voiceButton',()=>searchQuestions())}
-function startQuestionVoice(){cloudVoiceToField('questionInput','questionVoiceButton',()=>askQuestion())}
-async function cloudVoiceToField(targetId,buttonId,afterCb){
-  const b=document.getElementById(buttonId),el=document.getElementById(targetId);if(!b||!el)return;
-  if(activeCloudVoice.recorder&&activeCloudVoice.buttonId===buttonId){stopAdminVoice(buttonId);return;}
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(x=>window.MediaRecorder?.isTypeSupported?.(x))||'';
-    const recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined),chunks=[];
-    activeCloudVoice={targetId,buttonId,recorder,stream,audioContext:null,analyser:null,silenceTimer:null,startedAt:Date.now(),chunks};
-    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-    recorder.onstop=async()=>{const blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});stream.getTracks().forEach(t=>t.stop());if(activeCloudVoice.audioContext){try{activeCloudVoice.audioContext.close()}catch(e){}}activeCloudVoice={targetId:null,buttonId:null,recorder:null,stream:null,audioContext:null,analyser:null,silenceTimer:null,startedAt:0,chunks:[]};b.disabled=false;b.classList.remove('listening');b.innerText=targetId==='searchInput'?'🎙️ Voice':'🎙️ Voice';if(blob.size>=1500)await transcribeAssameseBlob(blob,targetId,afterCb);else alert('🎤 যথেষ্ট মাত ৰেকৰ্ড হোৱা নাই। অলপ স্পষ্টকৈ কওক।')};
-    recorder.start(250);b.disabled=false;b.classList.add('listening');b.innerText='🔴 অসমীয়া মাত শুনি আছে...';
-    try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){const ctx=new AC(),source=ctx.createMediaStreamSource(stream),an=ctx.createAnalyser();an.fftSize=2048;source.connect(an);activeCloudVoice.audioContext=ctx;const data=new Uint8Array(an.fftSize);let speechSeen=false,lastLoud=Date.now();const tick=()=>{if(!activeCloudVoice.recorder)return;an.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const x=(data[i]-128)/128;sum+=x*x}const rms=Math.sqrt(sum/data.length),now=Date.now();if(rms>0.025){speechSeen=true;lastLoud=now}if(speechSeen&&now-activeCloudVoice.startedAt>1200&&now-lastLoud>1400){stopAdminVoice(buttonId);return}requestAnimationFrame(tick)};requestAnimationFrame(tick)}}catch(e){}
-  }catch(e){b.disabled=false;b.classList.remove('listening');b.innerText='🎙️ Voice';alert('🎤 Microphone permission দিব লাগিব। Chrome → Site settings → Microphone → Allow কৰক।\n\n'+(e.message||e))}
-}
-function startRecognition(bid,iid,cb){
-  const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Assamese Voice Server সংযোগ কৰক।");return}
-  const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";try{rec.start()}catch(e){}
-  rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};
-  rec.onerror=e=>{if(e.error!=="aborted")alert("এই Browser-ৰ built-in Voice service-এ Assamese নিশ্চিতভাৱে নিদিয়ে। Assamese STT server ব্যৱহাৰ কৰক।")};
-  rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}
-}
-function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
-function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
-function startRecognition(bid,iid,cb){
-  const SR=getSpeechRecognition();
-  if(!SR){alert("এই browser-ত Voice support নাই।");return}
-  const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;
-  b.classList.add("listening");b.innerText="🔴 অসমীয়া মাত শুনি আছে...";
-  try{rec.start()}catch(e){}
-  rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};
-  rec.onerror=e=>{console.log("Voice error",e.error);if(e.error==="language-not-supported")alert("এই Browser-ৰ Voice service-এ Assamese ভালদৰে সমৰ্থন নকৰে। Admin Voice Input-ৰ বাবে Assamese STT server ব্যৱহাৰ কৰক।")};
-  rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}
-}
 function getSpeechRecognition(){return window.SpeechRecognition||window.webkitSpeechRecognition||null}
 function startVoiceSearch(){startRecognition("voiceButton","searchInput",searchQuestions)}function startQuestionVoice(){startRecognition("questionVoiceButton","questionInput",askQuestion)}
 function startRecognition(bid,iid,cb){const SR=getSpeechRecognition();if(!SR){alert("এই browser-ত Voice support নাই। Chrome ব্যৱহাৰ কৰি চেষ্টা কৰক।");return}const b=document.getElementById(bid),rec=new SR();rec.lang="as-IN";rec.interimResults=false;rec.continuous=true;rec.maxAlternatives=1;b.classList.add("listening");b.innerText="🔴 শুনি আছে...";try{rec.start()}catch(e){}rec.onresult=e=>{let t="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)t+=e.results[i][0].transcript+" ";if(t.trim()){document.getElementById(iid).value=t.trim();rec.stop();cb()}};rec.onerror=e=>console.log("Voice error",e.error);rec.onend=()=>{b.classList.remove("listening");b.innerText="🎙️ Voice"}}
@@ -685,30 +651,8 @@ async function saveGlobalTtsSetting(){
     alert("❌ Setting Save হোৱা নাই: "+(e.message||e));
   }
 }
-function toggleAdminFieldTts(btn, fieldId, normalLabel){
-  if(btn.classList.contains("audio-stop")){ stopAllAudio(); return; }
-  const field=document.getElementById(fieldId);
-  const text=field ? String(field.value||"").trim() : "";
-  if(!text){ alert("প্ৰথমে অসমীয়াত লিখনী লিখক বা Voice Input-ৰে লিখক।"); return; }
-  if(!("speechSynthesis" in window)){ alert("এই Browser-ত Voice Answer support নাই।"); return; }
-  const v=strictAssameseVoice();
-  if(!v){ alert("⚠️ এই Device/Browser-ত শুদ্ধ Assamese voice উপলব্ধ নহয়। Bengali/বাংলা voice ব্যৱহাৰ কৰা নহ'ব।"); return; }
-  stopAllAudio();
-  const parts=splitSpeechText(text,650); let i=0;
-  btn.classList.add("audio-stop"); btn.textContent="⏹️ শুনা বন্ধ কৰক";
-  function next(){
-    if(i>=parts.length){ btn.classList.remove("audio-stop"); btn.textContent=normalLabel; return; }
-    const u=new SpeechSynthesisUtterance(parts[i++]);
-    u.lang=v.lang; u.voice=v; u.rate=.78; u.pitch=1; u.volume=1;
-    u.onend=next;
-    u.onerror=()=>{ btn.classList.remove("audio-stop"); btn.textContent=normalLabel; };
-    window.speechSynthesis.speak(u);
-  }
-  next();
-}
-
 function toggleSpeakText(btn){
-  if(!globalTtsEnabled && btn.dataset.allowTts!=="1"){
+  if(!globalTtsEnabled){
     alert("🔴 Admin-এ “শুনক” ব্যৱস্থা বন্ধ কৰি ৰাখিছে।");
     return;
   }
@@ -785,18 +729,6 @@ async function getSettingBool(key,defaultValue=true){
 async function setSettingBool(key,value){
   const {error}=await supabaseClient.from('app_settings').upsert({key:key,value:value?'true':'false'});if(error)throw error;
 }
-async function loadCurrentSectionEnabled(){
-  const section=(document.getElementById('adminContentSection')||{}).value||'lesson';
-  const on=await getSettingBool(sectionSettingKey(section),true);
-  const cb=document.getElementById('adminSectionEnabled');if(cb)cb.checked=on;
-  const st=document.getElementById('adminSectionState');if(st)st.textContent=on?'🟢 শিতান ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব':'🔴 শিতান OFF — ছাত্ৰ-ছাত্ৰীয়ে নেদেখিব';
-  return on;
-}
-async function saveCurrentSectionEnabled(){
-  const section=(document.getElementById('adminContentSection')||{}).value||'lesson';
-  const cb=document.getElementById('adminSectionEnabled');const on=!!cb.checked;
-  try{await setSettingBool(sectionSettingKey(section),on);const st=document.getElementById('adminSectionState');if(st)st.textContent=on?'🟢 শিতান ON — ছাত্ৰ-ছাত্ৰীয়ে দেখিব':'🔴 শিতান OFF — ছাত্ৰ-ছাত্ৰীয়ে নেদেখিব';await applyAllVisibility();alert(on?'✅ শিতান ON কৰা হৈছে।':'🔴 শিতান OFF কৰা হৈছে।')}catch(e){cb.checked=!on;alert('❌ Setting Save হোৱা নাই: '+e.message)}
-}
 async function getLessonEnabled(chapter){return getSettingBool(lessonEnabledKey(chapter),true)}
 async function loadLessonEnabled(){
  const ch=(document.getElementById('adminChapter')||{}).value||''; if(!ch)return true;
@@ -808,32 +740,6 @@ async function saveLessonEnabled(){
  const cb=document.getElementById('adminLessonEnabled'),on=!!cb.checked;
  try{await setSettingBool(lessonEnabledKey(ch),on);const st=document.getElementById('adminLessonEnabledState');if(st)st.textContent=on?'🟢 পাঠ ON — তালিকাত দেখিব':'🔴 পাঠ OFF — তালিকাত নেদেখিব';await applyAllVisibility();alert(on?'✅ এই পাঠ ON কৰা হৈছে।':'🔴 এই পাঠ OFF কৰা হৈছে।')}catch(e){cb.checked=!on;alert('❌ Setting Save হোৱা নাই: '+e.message)}
 }
-async function applyAllVisibility(){
- try{
-   const navMap={chapters:'lesson',grammar:'grammar',hslc:'hslc'};
-   for(const [page,section] of Object.entries(navMap)){
-     const on=await getSettingBool(sectionSettingKey(section),true);
-     document.querySelectorAll('[data-section-page="'+page+'"], [data-nav-section="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
-     document.querySelectorAll('[data-open-page="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
-   }
-   const buttons=[...document.querySelectorAll('.lesson-btn')];
-   for(const b of buttons){const m=b.getAttribute('onclick')?.match(/openLesson\('([^']+)'\)/);if(m){const on=await getLessonEnabled(m[1]);b.classList.toggle('section-disabled',!on);}}
- }catch(e){console.warn('visibility',e)}
-}
-
-function sectionTtsKey(section){return 'section_tts_enabled_'+section;}
-async function loadCurrentSectionTtsEnabled(){
- const section=(document.getElementById('adminContentSection')||{}).value||'lesson';
- const on=await getSettingBool(sectionTtsKey(section),true);
- const cb=document.getElementById('adminSectionTtsEnabled');if(cb)cb.checked=on;
- const st=document.getElementById('adminSectionTtsState');if(st)st.textContent=on?'🟢 শুনক ON — এই শিতানত শুনিব পাৰিব':'🔴 শুনক OFF — এই শিতানত শুনিব নোৱাৰিব';
-}
-async function saveCurrentSectionTtsEnabled(){
- const section=(document.getElementById('adminContentSection')||{}).value||'lesson';
- const cb=document.getElementById('adminSectionTtsEnabled');const on=!!cb.checked;
- try{await setSettingBool(sectionTtsKey(section),on);const st=document.getElementById('adminSectionTtsState');if(st)st.textContent=on?'🟢 শুনক ON — এই শিতানত শুনিব পাৰিব':'🔴 শুনক OFF — এই শিতানত শুনিব নোৱাৰিব';alert(on?'✅ এই শিতানৰ শুনক ON হৈছে।':'🔴 এই শিতানৰ শুনক OFF হৈছে।')}catch(e){cb.checked=!on;alert('❌ Setting Save হোৱা নাই: '+e.message)}
-}
-async function getSectionTtsEnabled(section){return getSettingBool(sectionTtsKey(section),true)}
 
 function adminContentSectionChanged(){
   const section=document.getElementById("adminContentSection").value;
@@ -841,8 +747,6 @@ function adminContentSectionChanged(){
   const topicWrap=document.getElementById("adminTopicWrap");
   lessonBox.style.display=section==="lesson"?"block":"none";
   topicWrap.style.display=section==="lesson"?"none":"block";
-  loadCurrentSectionEnabled();
-  loadCurrentSectionTtsEnabled();
   if(section==="lesson") loadLessonTtsSetting();
 }
 let adminQuestionAudioRecorder=null,adminQuestionAudioChunks=[],adminQuestionRecordedBlob=null;
@@ -1012,87 +916,49 @@ function clearAdminForm(){
   document.getElementById("adminAnswerAudioStatus").textContent="";
   loadLessonTtsSetting();
 }
-let activeCloudVoice={targetId:null,buttonId:null,recorder:null,stream:null,audioContext:null,analyser:null,silenceTimer:null,startedAt:0,chunks:[]};
-function setAdminVoiceButton(targetId,buttonId,txt,disabled=false){const b=document.getElementById(buttonId);if(b){b.disabled=disabled;b.innerText=txt}}
-function stopAdminVoice(buttonId){
-  const v=activeCloudVoice;
-  if(v.buttonId!==buttonId)return;
-  if(v.silenceTimer)clearTimeout(v.silenceTimer);
-  try{if(v.recorder&&v.recorder.state!=="inactive")v.recorder.stop()}catch(e){}
-  if(v.stream)v.stream.getTracks().forEach(t=>t.stop());
-}
 async function adminVoiceTo(targetId,buttonId){
+  const SR=getSpeechRecognition();
   const el=document.getElementById(targetId),b=document.getElementById(buttonId);
-  if(!el||!b)return;
-  if(activeCloudVoice.recorder && activeCloudVoice.buttonId===buttonId){stopAdminVoice(buttonId);return;}
+  const normalText=targetId==="adminQuestion"?"🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক":"🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক";
+  if(!SR){alert("এই Browser-ত Voice Input support নাই। Android Chrome-ৰ latest version ব্যৱহাৰ কৰক।");return}
+  if(activeAdminRecognition){try{activeAdminRecognition.abort()}catch(e){} activeAdminRecognition=null;}
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(x=>window.MediaRecorder?.isTypeSupported?.(x))||'';
-    const recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
-    const chunks=[];
-    activeCloudVoice={targetId,buttonId,recorder,stream,audioContext:null,analyser:null,silenceTimer:null,startedAt:Date.now(),chunks};
-    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-    recorder.onstop=async()=>{
-      const blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});
-      stream.getTracks().forEach(t=>t.stop());
-      if(activeCloudVoice.audioContext){try{activeCloudVoice.audioContext.close()}catch(e){}}
-      activeCloudVoice={targetId:null,buttonId:null,recorder:null,stream:null,audioContext:null,analyser:null,silenceTimer:null,startedAt:0,chunks:[]};
-      setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক',false);
-      if(blob.size<1500){alert('🎤 যথেষ্ট মাত ৰেকৰ্ড হোৱা নাই। অলপ স্পষ্টকৈ কওক।');return;}
-      await transcribeAssameseBlob(blob,targetId);
-    };
-    recorder.start(250);
-    setAdminVoiceButton(targetId,buttonId,'🔴 অসমীয়া মাত শুনি আছে... ⏹️',true);
-    document.getElementById(buttonId).disabled=false;
-    // Separate stop button also works.
-    try{
-      const AC=window.AudioContext||window.webkitAudioContext;
-      if(AC){
-        const ctx=new AC(),source=ctx.createMediaStreamSource(stream),an=ctx.createAnalyser();an.fftSize=2048;source.connect(an);activeCloudVoice.audioContext=ctx;activeCloudVoice.analyser=an;
-        const data=new Uint8Array(an.fftSize);let speechSeen=false,lastLoud=Date.now();
-        const tick=()=>{
-          if(!activeCloudVoice.recorder)return;
-          an.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const x=(data[i]-128)/128;sum+=x*x}const rms=Math.sqrt(sum/data.length);
-          const now=Date.now();if(rms>0.025){speechSeen=true;lastLoud=now}
-          if(speechSeen && now-activeCloudVoice.startedAt>1200 && now-lastLoud>1400){stopAdminVoice(buttonId);return}
-          requestAnimationFrame(tick);
-        };requestAnimationFrame(tick);
-      }
-    }catch(e){}
+    b.disabled=true;
+    b.innerText="🎤 Microphone permission লৈ আছে...";
+    await requestMicrophonePermission();
   }catch(e){
-    setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক',false);
-    alert('🎤 Microphone permission দিব লাগিব। Chrome → Site settings → Microphone → Allow কৰক।\n\nকাৰণ: '+(e.message||e));
+    b.disabled=false;
+    b.classList.remove("listening");
+    b.innerText=normalText;
+    alert("🎤 Microphone permission পোৱা নগ'ল।\n\nChrome → ⋮ → Settings → Site settings → Microphone → এই website → Allow কৰক।\n\nতাৰ পিছত pageটো Reload কৰি পুনৰ চেষ্টা কৰক।\n\nকাৰণ: "+(e.message||e));
+    return;
   }
-}
-async function transcribeAssameseBlob(blob,targetId,afterCb){
-  const el=document.getElementById(targetId);if(!el)return;
-  const old=el.value;el.dataset.voiceStatus='processing';
-  const b=targetId==='adminQuestion'?document.getElementById('adminQuestionVoiceBtn'):document.getElementById('adminAnswerVoiceBtn');
-  if(b)b.innerText='⏳ অসমীয়াত লিখনী তৈয়াৰ কৰি আছে...';
-  try{
-    const {data:{session}}=await supabaseClient.auth.getSession();
-    const arrayBuffer=await blob.arrayBuffer();
-    const bytes=new Uint8Array(arrayBuffer);
-    let binary='';
-    const chunkSize=0x8000;
-    for(let i=0;i<bytes.length;i+=chunkSize){binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+chunkSize,bytes.length)));}
-    const audioBase64=btoa(binary);
-    const headers={'Content-Type':'application/json'};if(session?.access_token)headers.Authorization='Bearer '+session.access_token;
-    const r=await fetch(ASSAMESE_STT_ENDPOINT,{method:'POST',headers,body:JSON.stringify({audioBase64})});
-    const d=await r.json().catch(()=>({}));
-    if(!r.ok || !d.transcript)throw new Error(d.error||'Assamese STT server-এ লিখনী দিব পৰা নাই।');
-    el.value=old?(old+'\n'+d.transcript.trim()):d.transcript.trim();
-    el.dispatchEvent(new Event('input',{bubbles:true}));
-    if(typeof afterCb==='function')afterCb();
-    if(b)b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';
-  }catch(e){
-    if(b)b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';
-    alert('❌ অসমীয়া Voice-to-Text সংযোগ হোৱা নাই।\n\nপ্ৰথমে Supabase Edge Function “Assamese-stt” deploy কৰক।\n\n'+(e.message||e));
-  }
+  const rec=new SR(); activeAdminRecognition=rec;
+  rec.lang="as-IN"; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=3;
+  b.classList.add("listening"); b.innerText="🔴 অসমীয়া মাত শুনি আছে..."; b.disabled=true;
+  let finalText="";
+  rec.onresult=function(e){
+    let live="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const part=e.results[i][0]?.transcript||"";
+      if(e.results[i].isFinal) finalText += (finalText?" ":"")+part.trim(); else live += part;
+    }
+    b.innerText=live?"🔴 "+live:"🔴 অসমীয়া মাত শুনি আছে...";
+  };
+  rec.onerror=function(e){
+    b.disabled=false; b.classList.remove("listening"); b.innerText=normalText; activeAdminRecognition=null;
+    const msg={"not-allowed":"Microphone অনুমতি দিয়া হোৱা নাই। Chrome Settings → Site settings → Microphone → Allow কৰক।","service-not-allowed":"Browser-এ Voice service অনুমতি দিয়া নাই। Chrome-ত চেষ্টা কৰক।","language-not-supported":"এই device/browser-ত Assamese (as-IN) speech recognition উপলব্ধ নহয়।","no-speech":"কোনো মাত ধৰা পৰা নাই। পুনৰ স্পষ্টকৈ কওক।","network":"Internet connection পৰীক্ষা কৰি পুনৰ চেষ্টা কৰক."}[e.error]||("Voice Input-ত সমস্যা: "+e.error);
+    if(e.error!=="aborted") alert("🎤 "+msg);
+  };
+  rec.onend=function(){
+    if(finalText.trim()) el.value+=(el.value?"\n":"")+finalText.trim();
+    b.disabled=false; b.classList.remove("listening"); b.innerText=normalText; activeAdminRecognition=null;
+  };
+  try{rec.start();}catch(e){b.disabled=false;b.classList.remove("listening");b.innerText=normalText;activeAdminRecognition=null;alert("🎤 Assamese Voice Input আৰম্ভ কৰিব পৰা নগ'ল।\n\nMicrophone permission Allow আছে নে পৰীক্ষা কৰক আৰু Chrome-ত page Reload কৰক।\n\nকাৰণ: "+(e.message||e));}
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-  document.getElementById("adminContentSection") && adminContentSectionChanged();initSupabase();loadGlobalTtsSetting();applyAllVisibility();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
+  document.getElementById("adminContentSection") && adminContentSectionChanged();initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script>
 <script>
 /* ===== Recorded Question + Answer section ===== */

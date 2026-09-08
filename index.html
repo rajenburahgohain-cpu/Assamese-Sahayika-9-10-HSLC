@@ -429,6 +429,30 @@ function appBack(){
 }
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+// ===== Fast lesson question cache =====
+let lessonQuestionCache=[];
+let lessonQuestionCacheReady=false;
+let lessonQuestionCachePromise=null;
+async function preloadLessonQuestions(){
+  if(!supabaseClient){lessonQuestionCacheReady=false;return [];}
+  try{
+    const r=await supabaseClient.from("questions").select("*").order("id",{ascending:true});
+    if(r.error) throw r.error;
+    lessonQuestionCache=Array.isArray(r.data)?r.data:[];
+    lessonQuestionCacheReady=true;
+    return lessonQuestionCache;
+  }catch(e){
+    console.warn("Lesson question preload failed:",e);
+    lessonQuestionCache=[];
+    lessonQuestionCacheReady=false;
+    return [];
+  }
+}
+function startLessonQuestionPreload(){
+  lessonQuestionCachePromise=preloadLessonQuestions();
+  return lessonQuestionCachePromise;
+}
+
 async function dbSearch(term,limit=10){if(!supabaseClient)return{data:[],error:new Error("Supabase connection হোৱা নাই")};const clean=String(term).trim();if(!clean)return{data:[],error:null};const r=await supabaseClient.from("questions").select("*").or("question.ilike.%"+clean+"%,answer.ilike.%"+clean+"%").limit(limit);return{data:r.data||[],error:r.error||null}}
 function renderResults(rows,opts={}){
  if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;
@@ -463,18 +487,38 @@ async function openLesson(chapter){
     <div class="notice">মূলভাৱ / সাৰাংশ আৰু সংৰক্ষিত প্ৰশ্নোত্তৰ তলত দেখা যাব।</div>
     <div id="lessonQuestions"><p class="loading">⏳ প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div>
   </div>`;
+
   const out=document.getElementById("lessonQuestions");
-  if(!supabaseClient){out.innerHTML=`<p class="error">Supabase সংযোগ কৰা হোৱা নাই।</p>`;return}
-  // Cache থাকিলে Database পুনৰ query নকৰাকৈ প্ৰায় তৎক্ষণাৎ দেখুৱাওক।
-  if(lessonQuestionCacheReady){
-    const rows=lessonQuestionCache.filter(x=>String(x.chapter_name||"")===String(chapter));
-    out.innerHTML=rows.length?renderResults(rows):`<div class="empty">📚 এই পাঠৰ বাবে এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষণ কৰা হোৱা নাই।<br><br>Admin Panel-ত প্ৰশ্ন Save কৰাৰ সময়ত <b>📚 পাঠ বাছনি কৰক</b>।</div>`;
+  if(!supabaseClient){
+    out.innerHTML=`<p class="error">Supabase সংযোগ কৰা হোৱা নাই।</p>`;
     return;
   }
+
+  // App আৰম্ভ হওঁতেই cache preload কৰা হয়। Cache ready থাকিলে একেবাৰে তৎক্ষণাৎ দেখুৱাওক।
+  if(!lessonQuestionCacheReady && lessonQuestionCachePromise){
+    await lessonQuestionCachePromise;
+  }
+
+  if(lessonQuestionCacheReady){
+    const wanted=String(chapter||"").trim();
+    const rows=lessonQuestionCache.filter(x=>String(x.chapter_name||"").trim()===wanted);
+    out.innerHTML=rows.length
+      ?renderResults(rows)
+      :`<div class="empty">📚 এই পাঠৰ বাবে এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষণ কৰা হোৱা নাই।<br><br>Admin Panel-ত প্ৰশ্ন Save কৰাৰ সময়ত <b>📚 পাঠ বাছনি কৰক</b>।</div>`;
+    return;
+  }
+
+  // Preload বিফল হ'লে এই পাঠটোৰ বাবে direct query fallback।
   const r=await supabaseClient.from("questions").select("*").eq("chapter_name",chapter).order("id",{ascending:true});
-  if(r.error){out.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}
-  out.innerHTML=r.data.length?renderResults(r.data):`<div class="empty">📚 এই পাঠৰ বাবে এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষণ কৰা হোৱা নাই।<br><br>Admin Panel-ত প্ৰশ্ন Save কৰাৰ সময়ত <b>📚 পাঠ বাছনি কৰক</b>।</div>`;
+  if(r.error){
+    out.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;
+    return;
+  }
+  out.innerHTML=r.data.length
+    ?renderResults(r.data)
+    :`<div class="empty">📚 এই পাঠৰ বাবে এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষণ কৰা হোৱা নাই।<br><br>Admin Panel-ত প্ৰশ্ন Save কৰাৰ সময়ত <b>📚 পাঠ বাছনি কৰক</b>।</div>`;
 }
+
 function openSyllabusGroup(group){
   showPage("chapterView");
   const box=document.getElementById("chapterView");
@@ -801,7 +845,9 @@ async function saveQuestion(){
     loadAdminQuestions();return;
   }
   st.innerHTML=`<p class="success">✅ সফলভাৱে সংৰক্ষণ হৈছে।</p>`;
-  clearAdminForm();loadAdminQuestions();
+  clearAdminForm();
+  startLessonQuestionPreload();
+  loadAdminQuestions();
 }
 async function loadAdminQuestions(){
   const box=document.getElementById("adminQuestionList");
@@ -849,7 +895,7 @@ async function editQuestion(id){
   if(x.audio_url){aa.src=x.audio_url;aa.style.display="block"}else{aa.removeAttribute("src");aa.style.display="none"}
   window.scrollTo({top:0,behavior:"smooth"});
 }
-async function deleteQuestion(id){if(!confirm("এই প্ৰশ্নটো Delete কৰিবনে?"))return;const r=await supabaseClient.from("questions").delete().eq("id",id);if(r.error)alert("Delete নহ'ল: "+r.error.message);else{document.getElementById("adminSaveStatus").innerHTML=`<p class="success">✅ Delete কৰা হ'ল।</p>`;loadAdminQuestions()}}
+async function deleteQuestion(id){if(!confirm("এই প্ৰশ্নটো Delete কৰিবনে?"))return;const r=await supabaseClient.from("questions").delete().eq("id",id);if(r.error)alert("Delete নহ'ল: "+r.error.message);else{document.getElementById("adminSaveStatus").innerHTML=`<p class="success">✅ Delete কৰা হ'ল।</p>`;startLessonQuestionPreload();loadAdminQuestions()}}
 function clearAdminForm(){
   document.getElementById("editId").value="";
   ["adminQuestion","adminAnswer","adminTopic","adminOptionA","adminOptionB","adminOptionC","adminOptionD","adminCorrect","adminSource"].forEach(id=>document.getElementById(id).value="");
@@ -910,7 +956,11 @@ async function adminVoiceTo(targetId,buttonId){
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-  document.getElementById("adminContentSection") && adminContentSectionChanged();initSupabase();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
+  document.getElementById("adminContentSection") && adminContentSectionChanged();
+  initSupabase();
+  // App খোলাৰ লগে লগে সকলো প্ৰশ্নোত্তৰ একেলগে cache কৰোঁ।
+  startLessonQuestionPreload().catch(e=>console.warn("Preload error",e));
+  showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script>
 <script>
 /* ===== Recorded Question + Answer section ===== */

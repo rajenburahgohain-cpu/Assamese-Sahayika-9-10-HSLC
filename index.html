@@ -763,30 +763,53 @@ function getReferralCode(){
   return c;
 }
 function getReferralLink(){
-  const base=(REFERRAL_DOMAIN||location.origin+"/").replace(/\/$/,"");
-  return base+"/?ref="+encodeURIComponent(getReferralCode());
+  // Use the exact page URL currently hosting the app (including a GitHub Pages project path).
+  const url = new URL(location.href);
+  url.hash = "";
+  url.search = "";
+  url.searchParams.set("ref", getReferralCode());
+  return url.toString();
 }
 function referralShareText(){
   const c=getReferralCode(), link=getReferralLink();
   return `📚 অসমীয়া সহায়িকা — 10 & HSLC\nদশম শ্ৰেণী আৰু HSLC অসমীয়া বিষয়ৰ সহায়িকা।\n\n🔢 Referral Code: ${c}\n🔗 App Link: ${link}\n\nএই Referral Code-টো ব্যৱহাৰ কৰি App-ত যোগ দিয়ক।`;
 }
+async function copyReferralText(text, successMessage){
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      const ok=document.execCommand('copy'); ta.remove(); if(!ok) throw new Error('copy failed');
+    }
+    alert(successMessage || '✅ Copy হৈছে।');
+  } catch(e) { prompt('তলৰ লিখাখিনি Copy কৰক:', text); }
+}
 async function shareApp(){
-  const c=getReferralCode(), link=getReferralLink();
-  const text=referralShareText();
-  try{
-    if(navigator.share){await navigator.share({title:"অসমীয়া সহায়িকা — 10 & HSLC",text,url:link});}
-    else{await navigator.clipboard.writeText(text);alert("✅ Referral Code আৰু App Link copy হৈছে। WhatsApp-ত paste কৰিব পাৰিব।\n\nReferral Code: "+c);}
-  }catch(e){
-    try{await navigator.clipboard.writeText(text);alert("✅ Referral message copy হৈছে। WhatsApp-ত paste কৰক।\n\nReferral Code: "+c);}
-    catch(_){prompt("Referral message copy কৰক:",text);}
+  const c=getReferralCode(), link=getReferralLink(), text=referralShareText();
+  try {
+    if (navigator.share) {
+      await navigator.share({title:'অসমীয়া সহায়িকা — 10 + HSLC', text:text, url:link});
+    } else {
+      await copyReferralText(text, '✅ Referral Code আৰু App Link copy হৈছে। WhatsApp-ত paste কৰক।');
+    }
+  } catch(e) {
+    if (e && e.name === 'AbortError') return;
+    await copyReferralText(text, '✅ Referral message copy হৈছে। WhatsApp-ত paste কৰক।');
   }
 }
 function openReferralBox(){
-  const c=getReferralCode(), link=getReferralLink();
-  const old=document.getElementById("referralBox"); if(old){old.remove();return;}
-  const box=document.createElement("div"); box.id="referralBox"; box.className="card";
-  box.innerHTML=`<h2>📤 বন্ধুক Share & Invite কৰক</h2><p>আপোনাৰ Referral Code আৰু App Link তলত আছে।</p><label>🔢 Referral Code</label><input id="refCodeView" value="${esc(c)}" readonly><button class="secondary" style="margin-top:7px" onclick="navigator.clipboard.writeText(getReferralCode()).then(()=>alert('✅ Referral Code copy হৈছে।'))">📋 Code Copy</button><label style="display:block;margin-top:10px">🔗 Referral Link</label><input id="refLinkView" value="${esc(link)}" readonly><button class="secondary" style="margin-top:7px" onclick="navigator.clipboard.writeText(getReferralLink()).then(()=>alert('✅ Referral Link copy হৈছে।'))">📋 Link Copy</button><button class="main-btn" style="margin-top:10px" onclick="shareApp()">📤 Share Referral</button></div>`;
-  const home=document.getElementById("home"); if(home)home.insertBefore(box,home.firstChild);
+  // The referral panel must be visible even when the user is on the Lessons page.
+  const existing=document.getElementById('referralBox');
+  if(existing) existing.remove();
+  showPage('home').then(()=>{
+    const c=getReferralCode(), link=getReferralLink();
+    const box=document.createElement('div'); box.id='referralBox'; box.className='card';
+    box.innerHTML=`<h2>📤 বন্ধুক Share & Invite কৰক</h2><p>আপোনাৰ Referral Code আৰু App Link তলত আছে।</p><label>🔢 Referral Code</label><input id="refCodeView" value="${esc(c)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralCode(),'✅ Referral Code copy হৈছে।')">📋 Code Copy</button><label style="display:block;margin-top:10px">🔗 Referral Link</label><input id="refLinkView" value="${esc(link)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralLink(),'✅ Referral Link copy হৈছে।')">📋 Link Copy</button><button class="main-btn" style="margin-top:10px" onclick="shareApp()">📤 Share Referral</button>`;
+    const home=document.getElementById('home'); if(home) home.insertBefore(box,home.firstChild);
+    setTimeout(()=>{box.scrollIntoView({behavior:'smooth',block:'start'});},100);
+  });
 }
 async function adminLogin(){const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,status=document.getElementById("adminAuthStatus");if(!email||!password){status.innerHTML=`<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>`;return}status.innerHTML=`<p class="loading">🔐 Login কৰি থকা হৈছে...</p>`;const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return}status.innerHTML=`<p class="success">✅ Login সফল।</p>`;showAdminPanel()}
 async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}
@@ -860,8 +883,9 @@ async function applyAllVisibility(){
      document.querySelectorAll('[data-section-page="'+page+'"], [data-nav-section="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
      document.querySelectorAll('[data-open-page="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
    }
-   const buttons=[...document.querySelectorAll('.lesson-btn')];
-   for(const b of buttons){const m=b.getAttribute('onclick')?.match(/openLesson\('([^']+)'\)/);if(m){const on=await getLessonEnabled(m[1]);b.classList.toggle('section-disabled',!on);}}
+   // Keep every syllabus item visible in the lesson list. A stale OFF setting
+   // should never make lessons disappear after the list has rendered.
+   document.querySelectorAll('.lesson-btn').forEach(b=>b.classList.remove('section-disabled'));
  }catch(e){console.warn('visibility',e)}
 }
 

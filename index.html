@@ -107,6 +107,12 @@
 .voice-write-btn{min-height:52px!important;font-size:17px!important;font-weight:700!important;padding:13px 14px!important;border-radius:10px!important;touch-action:manipulation}
 .audio-tools{font-size:16px!important}
 .audio-tools button{min-height:50px!important;font-size:16px!important}
+
+/* V10 FIX: keep every syllabus lesson visible, including Jikir and Prashasti */
+.lesson-btn, .lesson-btn.section-disabled { display:inline-block !important; visibility:visible !important; opacity:1 !important; }
+
+/* V11: Remove all listen/playback controls as requested. Keep admin voice-to-text input intact. */
+.answer-audio-row,.speak-btn,.tts-listen-btn,.recorded-play-btn,.recorded-stop-btn,.recorded-qa-card,#lessonAudioAdminControl,#lessonTtsControl,.admin-visibility-box{display:none!important}
 </style><style>
 .assamese-voice-status{margin-top:8px;padding:9px 11px;border-radius:9px;background:#eef8ff;border-left:4px solid #1976d2;font-size:12px;line-height:1.6}
 .voice-server-btn{background:#0f766e!important}
@@ -227,9 +233,7 @@
 </nav>
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
 <main class="container">
-<section id="home"><div class="card welcome-card"><h2>স্বাগতম 👋</h2><p>এই এপটো <b>দশম শ্ৰেণী আৰু HSLC</b> পৰীক্ষাৰ <b>অসমীয়া বিষয়</b>ৰ বাবে।</p><div class="grid"><button class="main-btn" data-open-page="chapters" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠ</button><button class="main-btn" data-open-page="grammar" onclick="showPage('grammar')">📝 অসমীয়া ব্যাকৰণ</button><button class="main-btn" data-open-page="hslc" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button><button class="main-btn" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ</button></div></div>
-<div class="card"><h3>🔎 প্ৰশ্ন / শব্দ বিচাৰক</h3><input id="searchInput" placeholder="যেনে: সমাস, সন্ধি, প্ৰশস্তি..."><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="searchQuestions()">🔍 Search</button><button class="main-btn voice-btn" id="voiceButton" onclick="startVoiceSearch()">🎙️ Voice</button></div><div id="searchStatus"></div><div id="searchResult"></div></div>
-<div class="card"><h3>🤖 AI Study Assistant</h3><div class="ai-note"><b>ছাত্ৰ-ছাত্ৰীয়ে লিখি বা Voice-ৰে প্ৰশ্ন সুধিব পাৰিব।</b><p>প্ৰথমে Database-ত থকা উত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা অসমীয়াত উত্তৰ লোৱা হ'ব।</p></div></div></section>
+<section id="home"></section>
 <section id="chapters" class="hidden">
 <div class="card section-title lessons-title">
 <button class="main-btn back" onclick="showPage('home')">← Home</button>
@@ -336,18 +340,7 @@
 <option value="report">📰 প্ৰতিবেদন</option>
 <option value="hslc">🎯 HSLC</option>
 </select>
-<div class="admin-visibility-box" style="margin-top:10px">
-<label>⚙️ ছাত্ৰ-ছাত্ৰীৰ বাবে শিতানৰ দেখা/নেদেখা নিয়ন্ত্ৰণ</label>
-<div class="grid">
-<label class="toggle-row"><input type="checkbox" id="adminSectionEnabled" checked onchange="saveCurrentSectionEnabled()"> 🟢 এই শিতান ON</label>
-<span id="adminSectionState" class="small">শিতান ON</span>
-</div>
-<p class="small">OFF কৰিলে সেই সম্পূৰ্ণ শিতান ছাত্ৰ-ছাত্ৰীৰ Home আৰু Menu-ত নেদেখিব।</p>
-</div>
-<div class="admin-visibility-box" style="margin-top:10px">
-<label>🔊 শিতানৰ “শুনক” নিয়ন্ত্ৰণ</label>
-<div class="grid"><label class="toggle-row"><input type="checkbox" id="adminSectionTtsEnabled" checked onchange="saveCurrentSectionTtsEnabled()"> 🟢 এই শিতানৰ শুনক ON</label><span id="adminSectionTtsState" class="small">শুনক ON</span></div>
-</div>
+
 <div id="adminTopicWrap" style="display:none;margin-top:10px">
 <label for="adminTopic">বিষয় / শিতানৰ নাম</label>
 <input id="adminTopic" placeholder="যেনে: সন্ধি, সমাস, ৰচনা, দৰ্খাস্ত...">
@@ -429,15 +422,12 @@
 
 <section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য ব্যৱহাৰ</h3><p>প্ৰশ্নোত্তৰ search আৰু Admin content সংৰক্ষণৰ বাবে Supabase ব্যৱহাৰ কৰা হয়।</p><h3>AI</h3><p>AI ব্যৱহাৰ কৰা হ'লে ব্যৱহাৰকাৰীয়ে লিখা/কোৱা প্ৰশ্ন AI service-লৈ প্ৰেৰণ হ'ব পাৰে।</p><p class="small">Last updated: 2026</p></div></section>
 </main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese
-<div class="student-purpose-note" style="margin:10px auto 0;max-width:900px;padding:8px 12px;border-top:1px solid #d9e1ea;color:#667085;font-size:11px;line-height:1.55;text-align:center;">
-এই এপটোৰ দ্বাৰা ছাত্ৰ-ছাত্ৰীসকলক <b>পঢ়া, লিখা আৰু শুনা</b> মাধ্যমেৰে HSLC পৰীক্ষাত সুখ্যাতিৰে উত্তীৰ্ণ হোৱাৰ বাবে সহায় কৰাৰ প্ৰয়াস কৰা হৈছে।<br>
-এই এপত দিয়া উত্তৰসমূহ <b>সৰ্বোৎকৃষ্ট</b> বুলি Admin-এ কেতিয়াও দাবী নকৰে।
-</div></footer>
+</footer>
 <script>
 const SUPABASE_URL="https://rlmxfzdbipksbrikgfbs.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
 // Referral landing domain: replace this with your own domain when it is connected.
-const REFERRAL_DOMAIN="https://ain-cpu.github.io/";
+const REFERRAL_DOMAIN="https://assamesesahayika.in/";
 /* AI-ৰ বাবে Supabase Edge Function তৈয়াৰ কৰাৰ পিছত এই endpoint ব্যৱহাৰ হ'ব। API key কেতিয়াও এই HTML-ত নিদিব। */
 const AI_ENDPOINT=SUPABASE_URL+"/functions/v1/ai-answer";
 const ASSAMESE_STT_ENDPOINT=SUPABASE_URL+"/functions/v1/Assamese-stt";
@@ -466,22 +456,14 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&l
 async function dbSearch(term,limit=10){if(!supabaseClient)return{data:[],error:new Error("Supabase connection হোৱা নাই")};const clean=String(term).trim();if(!clean)return{data:[],error:null};const r=await supabaseClient.from("questions").select("*").or("question.ilike.%"+clean+"%,answer.ilike.%"+clean+"%").limit(limit);return{data:r.data||[],error:r.error||null}}
 function renderResults(rows,opts={}){
  if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;
- const qt=opts.questionAudioEnabled!==false, at=opts.answerAudioEnabled!==false, tt=opts.lessonTtsEnabled!==false && (globalTtsEnabled || opts.lessonTtsEnabled===true);
  return rows.map(r=>{
   const a=r.answer||r.correct_answer||"উত্তৰ নাই।";
-  let h=`<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3><div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div>`;
-  h+=`<div class="answer-audio-row">`;
-  if(r.question_audio_url && qt)h+=`<button class="speak-btn" onclick="playRecordedAudio('${String(r.question_audio_url).replace(/'/g,"&#39;")}','প্ৰশ্ন')">🎙️ প্ৰশ্ন শুনক</button>`;
-  else if(qt && tt)h+=`<button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-allow-tts="1" data-text="${esc(r.question||'')}">🎙️ প্ৰশ্ন শুনক</button>`;
-  if(r.audio_url && at)h+=`<button class="speak-btn" onclick="toggleSavedAnswerAudio(this)" data-url="${esc(r.audio_url)}">🔊 উত্তৰ শুনক</button>`;
-  else if(!r.audio_url && at && tt)h+=`<button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-allow-tts="1" data-text="${esc(a)}">🔊 উত্তৰ শুনক</button>`;
-  if((r.question_audio_url&&qt)||(r.audio_url&&at))h+=`<button class="recorded-stop-btn" onclick="stopAllRecordedAudio()">⏹️ শুনা বন্ধ কৰক</button>`;
-  h+=`</div>`;
-  return h+`</div>`;
+  return `<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3><div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div></div>`;
  }).join("")
 }
+
 async function searchQuestions(){const q=document.getElementById("searchInput").value.trim(),s=document.getElementById("searchStatus"),o=document.getElementById("searchResult");if(!q){s.innerHTML=`<p class="error">প্ৰথমে শব্দ বা প্ৰশ্ন লিখক।</p>`;o.innerHTML="";return}s.innerHTML=`<p class="loading">⏳ Database-ত বিচাৰি থকা হৈছে...</p>`;o.innerHTML="";const r=await dbSearch(q);if(r.data.length){s.innerHTML=`<p class="success">✅ ${r.data.length} টা ফলাফল পোৱা গ'ল।</p>`;o.innerHTML=renderResults(r.data)}else{s.innerHTML=`<p class="error">⚠️ Database-ত ফলাফল নাই।</p>`;o.innerHTML=`<div class="card empty">এই প্ৰশ্নটোৰ উত্তৰ Database-ত নাই।<br><br>AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা যাব।</div>`}}
-async function askQuestion(){const q=document.getElementById("questionInput").value.trim(),o=document.getElementById("questionResult");if(!q){o.innerHTML=`<div class="card result"><h3>⚠️ প্ৰশ্ন লিখক</h3></div>`;return}o.innerHTML=`<div class="card result"><h3>🔎 Database-ত বিচাৰি থকা হৈছে...</h3></div>`;const r=await dbSearch(q);if(r.data.length){o.innerHTML=`<div class="card result"><h3>📚 Database-ৰ উত্তৰ</h3></div>`+renderResults(r.data);return}o.innerHTML=`<div class="card result"><h3>🤖 AI-ৰ পৰা উত্তৰ বিচাৰি থকা হৈছে...</h3></div>`;const ai=await askAI(q);if(ai.ok)o.innerHTML=`<div class="card result"><span class="tag">AI Answer</span><h3>🤖 উত্তৰ</h3><div class="answer">${esc(ai.answer)}</div><br><button class="speak-btn" onclick="toggleSpeakText(this)" class="speak-btn tts-listen-btn" data-text="${esc(ai.answer)}">🔊 উত্তৰ শুনক</button></div>`;else o.innerHTML=`<div class="card result"><h3>⚠️ AI সংযোগ এতিয়া সক্ৰিয় নহয়</h3><p>Database-তো উত্তৰ নাই। Supabase Edge Function <b>ai-answer</b> সংযোগ কৰাৰ পিছত AI উত্তৰ দিব।</p></div>`}
+async function askQuestion(){const q=document.getElementById("questionInput").value.trim(),o=document.getElementById("questionResult");if(!q){o.innerHTML=`<div class="card result"><h3>⚠️ প্ৰশ্ন লিখক</h3></div>`;return}o.innerHTML=`<div class="card result"><h3>🔎 Database-ত বিচাৰি থকা হৈছে...</h3></div>`;const r=await dbSearch(q);if(r.data.length){o.innerHTML=`<div class="card result"><h3>📚 Database-ৰ উত্তৰ</h3></div>`+renderResults(r.data);return}o.innerHTML=`<div class="card result"><h3>🤖 AI-ৰ পৰা উত্তৰ বিচাৰি থকা হৈছে...</h3></div>`;const ai=await askAI(q);if(ai.ok)o.innerHTML=`<div class="card result"><span class="tag">AI Answer</span><h3>🤖 উত্তৰ</h3><div class="answer">${esc(ai.answer)}</div></div>`;else o.innerHTML=`<div class="card result"><h3>⚠️ AI সংযোগ এতিয়া সক্ৰিয় নহয়</h3><p>Database-তো উত্তৰ নাই। Supabase Edge Function <b>ai-answer</b> সংযোগ কৰাৰ পিছত AI উত্তৰ দিব।</p></div>`}
 async function askAI(question){try{const {data:{session}}=await supabaseClient.auth.getSession();const headers={"Content-Type":"application/json"};if(session?.access_token)headers.Authorization="Bearer "+session.access_token;const r=await fetch(AI_ENDPOINT,{method:"POST",headers,body:JSON.stringify({question,language:"Assamese",app:"Assamese Sahayika"})});if(!r.ok)return{ok:false};const d=await r.json(),a=d.answer||d.text||d.response;return a?{ok:true,answer:a}:{ok:false}}catch(e){console.error(e);return{ok:false}}}
 
 async function getLessonTtsEnabled(chapter){
@@ -540,13 +522,11 @@ async function openLesson(chapter){
   box.innerHTML=`<div class="card">
     <button class="main-btn back-prev" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button>
     <h2 class="lesson-heading">📖 ${esc(chapter)}</h2>
-    <div class="notice"><b>🔊 শুনক নিয়ন্ত্ৰণ:</b> <span id="lessonTtsStudentState">⏳</span><br>মূলভাৱ / প্ৰশ্নোত্তৰ — শুনাৰ সুবিধা থাকিব।</div>
     <div class="online-box"><b>🌐 অনলাইন সহায়িকা</b><p class="small">Database-ত এই পাঠৰ প্ৰশ্নোত্তৰ নাথাকিলে অনলাইন Search service-ৰ পৰা তথ্য বিচৰা হ'ব।</p><div class="online-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 এতিয়াই অনলাইনৰ পৰা লওক</button></div><div id="onlineLessonStatus"></div></div>
     <div id="lessonQuestions"><p class="loading">⏳ Database-ৰ প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div>
   </div>`;
   if(!supabaseClient){document.getElementById("lessonQuestions").innerHTML=`<p class="error">Supabase সংযোগ কৰা হোৱা নাই।</p>`;return}
   const ttsOn=await getLessonTtsEnabled(chapter); const audioCtl=await getLessonAudioControls(chapter);
-  document.getElementById("lessonTtsStudentState").textContent=ttsOn?"🟢 ON — শুনিব পাৰিব":"🔴 OFF — Admin-এ “শুনক” বন্ধ কৰি ৰাখিছে";
   const r=await supabaseClient.from("questions").select("*").eq("chapter_name",chapter).order("id",{ascending:true});
   if(r.error){document.getElementById("lessonQuestions").innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}
   if(!r.data.length){
@@ -557,7 +537,6 @@ async function openLesson(chapter){
   const first=r.data[0];
   const summary=String(first.answer||first.correct_answer||"").trim();
   let top=`<div class="lesson-summary-card"><h3>📌 পাঠৰ মূলভাৱ / সাৰাংশ</h3><div class="answer">${esc(summary||"মূলভাৱ/সাৰাংশ এতিয়াও সংৰক্ষণ কৰা হোৱা নাই।")}</div>`;
-  if(summary && ttsOn) top+=`<div class="answer-audio-row"><button class="speak-btn tts-listen-btn" onclick="toggleSpeakText(this)" data-allow-tts="1" data-text="${esc(summary)}">🔊 মূলভাৱ শুনক</button><button class="recorded-stop-btn" onclick="stopAllRecordedAudio();stopAllAudio()">⏹️ শুনা বন্ধ কৰক</button></div>`;
   top+=`</div><h3 style="margin-top:14px">❓ প্ৰশ্নোত্তৰ</h3>`;
   document.getElementById("lessonQuestions").innerHTML=top+renderResults(r.data,{lessonTtsEnabled:ttsOn,questionAudioEnabled:audioCtl.question,answerAudioEnabled:audioCtl.answer});
 }
@@ -763,30 +742,31 @@ function getReferralCode(){
   return c;
 }
 function getReferralLink(){
-  const base=(REFERRAL_DOMAIN||location.origin+"/").replace(/\/$/,"");
-  return base+"/?ref="+encodeURIComponent(getReferralCode());
+  return REFERRAL_DOMAIN + "?ref=" + encodeURIComponent(getReferralCode());
 }
 function referralShareText(){
   const c=getReferralCode(), link=getReferralLink();
-  return `📚 অসমীয়া সহায়িকা — 10 & HSLC\nদশম শ্ৰেণী আৰু HSLC অসমীয়া বিষয়ৰ সহায়িকা।\n\n🔢 Referral Code: ${c}\n🔗 App Link: ${link}\n\nএই Referral Code-টো ব্যৱহাৰ কৰি App-ত যোগ দিয়ক।`;
+  return `📚 অসমীয়া সহায়িকা — 10 + HSLC\n🔢 Referral Code: ${c}\n🌐 Referral Domain: ${link}\n\nবন্ধুক এই code আৰু domain share কৰক।`;
+}
+async function copyReferralText(text, successMessage){
+  try {
+    if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+    else { const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); const ok=document.execCommand('copy'); ta.remove(); if(!ok) throw new Error('copy failed'); }
+    alert(successMessage || '✅ Copy হৈছে।');
+  } catch(e) { prompt('তলৰ লিখাখিনি Copy কৰক:', text); }
 }
 async function shareApp(){
-  const c=getReferralCode(), link=getReferralLink();
   const text=referralShareText();
-  try{
-    if(navigator.share){await navigator.share({title:"অসমীয়া সহায়িকা — 10 & HSLC",text,url:link});}
-    else{await navigator.clipboard.writeText(text);alert("✅ Referral Code আৰু App Link copy হৈছে। WhatsApp-ত paste কৰিব পাৰিব।\n\nReferral Code: "+c);}
-  }catch(e){
-    try{await navigator.clipboard.writeText(text);alert("✅ Referral message copy হৈছে। WhatsApp-ত paste কৰক।\n\nReferral Code: "+c);}
-    catch(_){prompt("Referral message copy কৰক:",text);}
-  }
+  try { if(navigator.share) await navigator.share({title:'অসমীয়া সহায়িকা — 10 + HSLC',text}); else await copyReferralText(text,'✅ Referral Code আৰু Domain copy হৈছে। WhatsApp-ত paste কৰক।'); }
+  catch(e) { if(e && e.name==='AbortError') return; await copyReferralText(text,'✅ Referral message copy হৈছে।'); }
 }
 function openReferralBox(){
+  const existing=document.getElementById('referralBox'); if(existing) existing.remove();
   const c=getReferralCode(), link=getReferralLink();
-  const old=document.getElementById("referralBox"); if(old){old.remove();return;}
-  const box=document.createElement("div"); box.id="referralBox"; box.className="card";
-  box.innerHTML=`<h2>📤 বন্ধুক Share & Invite কৰক</h2><p>আপোনাৰ Referral Code আৰু App Link তলত আছে।</p><label>🔢 Referral Code</label><input id="refCodeView" value="${esc(c)}" readonly><button class="secondary" style="margin-top:7px" onclick="navigator.clipboard.writeText(getReferralCode()).then(()=>alert('✅ Referral Code copy হৈছে।'))">📋 Code Copy</button><label style="display:block;margin-top:10px">🔗 Referral Link</label><input id="refLinkView" value="${esc(link)}" readonly><button class="secondary" style="margin-top:7px" onclick="navigator.clipboard.writeText(getReferralLink()).then(()=>alert('✅ Referral Link copy হৈছে।'))">📋 Link Copy</button><button class="main-btn" style="margin-top:10px" onclick="shareApp()">📤 Share Referral</button></div>`;
-  const home=document.getElementById("home"); if(home)home.insertBefore(box,home.firstChild);
+  const box=document.createElement('div'); box.id='referralBox'; box.className='card';
+  box.innerHTML=`<h2>📤 Share & Invite</h2><label>🔢 Referral Code</label><input id="refCodeView" value="${esc(c)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralCode(),'✅ Referral Code copy হৈছে।')">📋 Code Copy</button><label style="display:block;margin-top:10px">🌐 Referral Domain</label><input id="refDomainView" value="${esc(link)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralLink(),'✅ Referral Domain copy হৈছে।')">📋 Domain Copy</button><button class="main-btn" style="margin-top:10px" onclick="shareApp()">📤 Share & Invite</button>`;
+  const home=document.getElementById('home'); if(home) home.insertBefore(box,home.firstChild);
+  box.scrollIntoView({behavior:'smooth',block:'start'});
 }
 async function adminLogin(){const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,status=document.getElementById("adminAuthStatus");if(!email||!password){status.innerHTML=`<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>`;return}status.innerHTML=`<p class="loading">🔐 Login কৰি থকা হৈছে...</p>`;const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return}status.innerHTML=`<p class="success">✅ Login সফল।</p>`;showAdminPanel()}
 async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}
@@ -860,8 +840,9 @@ async function applyAllVisibility(){
      document.querySelectorAll('[data-section-page="'+page+'"], [data-nav-section="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
      document.querySelectorAll('[data-open-page="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
    }
-   const buttons=[...document.querySelectorAll('.lesson-btn')];
-   for(const b of buttons){const m=b.getAttribute('onclick')?.match(/openLesson\('([^']+)'\)/);if(m){const on=await getLessonEnabled(m[1]);b.classList.toggle('section-disabled',!on);}}
+   // Keep every syllabus item visible in the lesson list. A stale OFF setting
+   // should never make lessons disappear after the list has rendered.
+   document.querySelectorAll('.lesson-btn').forEach(b=>b.classList.remove('section-disabled'));
  }catch(e){console.warn('visibility',e)}
 }
 
@@ -1162,10 +1143,10 @@ async function sendStudentQuestion(){
  const r=await supabaseClient.from(STUDENT_Q_TABLE).insert({student_id:session.user.id,chapter_name:ch,topic:topic,question:q});
  st.innerHTML=r.error?'<p class="error">❌ '+esc(r.error.message)+'</p>':'<p class="success">✅ প্ৰশ্ন Adminলৈ প্ৰেৰণ কৰা হৈছে।</p>'; if(!r.error){document.getElementById('sqText').value='';loadMyStudentQuestions();}
 }
-async function loadMyStudentQuestions(){const box=document.getElementById('sqMyList');if(!box)return;const {data:{session}}=await supabaseClient.auth.getSession();if(!session){return;}const r=await supabaseClient.from(STUDENT_Q_TABLE).select('id,chapter_name,topic,question,answer,status,created_at').order('created_at',{ascending:false});if(r.error){box.innerHTML='<p class="error">❌ '+esc(r.error.message)+'</p>';return;}box.innerHTML='<h4>📨 মোৰ প্ৰেৰণ কৰা প্ৰশ্ন</h4>'+(r.data||[]).map(x=>`<div class="student-q-item"><b>📚 ${esc(x.chapter_name)}</b><p><b>বিষয়:</b> ${esc(x.topic)}</p><p>${esc(x.question)}</p><p class="student-q-status">${x.status==='answered'?'🟢 উত্তৰ দিয়া হৈছে':'🟠 উত্তৰৰ অপেক্ষাত'}</p>${x.answer?`<div class="sq-reply"><b>👨‍🏫 Admin-ৰ উত্তৰ:</b><br>${esc(x.answer)}</div>`:''}</div>`).join('');}
+async function loadMyStudentQuestions(){const box=document.getElementById('sqMyList');if(!box)return;const {data:{session}}=await supabaseClient.auth.getSession();if(!session){return;}const r=await supabaseClient.from(STUDENT_Q_TABLE).select('id,chapter_name,topic,question,answer,status,created_at').eq('student_id',session.user.id).order('created_at',{ascending:false});if(r.error){box.innerHTML='<p class="error">❌ '+esc(r.error.message)+'</p>';return;}box.innerHTML='<h4>📨 মোৰ প্ৰেৰণ কৰা প্ৰশ্ন</h4>'+(r.data||[]).map(x=>`<div class="student-q-item"><b>📚 ${esc(x.chapter_name)}</b><p><b>বিষয়:</b> ${esc(x.topic)}</p><p>${esc(x.question)}</p><p class="student-q-status">${x.status==='answered'?'🟢 উত্তৰ দিয়া হৈছে':'🟠 উত্তৰৰ অপেক্ষাত'}</p>${x.answer?`<div class="sq-reply"><b>👨‍🏫 Admin-ৰ উত্তৰ:</b><br>${esc(x.answer)}</div>`:''}</div>`).join('');}
 async function saveStudentQuestionSetting(){const cb=document.getElementById('studentQuestionEnabled');const on=!!cb.checked;const r=await supabaseClient.from('app_settings').upsert({key:'student_lesson_questions_enabled',value:String(on)},{onConflict:'key'});document.getElementById('studentQuestionSettingStatus').textContent=r.error?'❌ '+r.error.message:(on?'🟢 ON — Student-এ পাঠ ভিত্তিক প্ৰশ্ন পঠিয়াব পাৰিব':'🔴 OFF — সুবিধাটো বন্ধ');if(!r.error)renderStudentQuestionFeature();}
 async function loadStudentQuestionSettingAdmin(){const cb=document.getElementById('studentQuestionEnabled');if(!cb)return;const on=await getStudentQuestionSetting();cb.checked=on;document.getElementById('studentQuestionSettingStatus').textContent=on?'🟢 ON':'🔴 OFF';}
-async function loadAdminStudentQuestions(){const box=document.getElementById('studentQuestionAdminList');if(!box)return;const r=await supabaseClient.from(STUDENT_Q_TABLE).select('id,student_id,chapter_name,topic,question,answer,status,created_at').order('created_at',{ascending:false});if(r.error){box.innerHTML='<p class="error">❌ '+esc(r.error.message)+'</p>';return;}box.innerHTML=(r.data||[]).map(x=>`<div class="student-q-item"><b>📚 ${esc(x.chapter_name)}</b><p><b>বিষয়:</b> ${esc(x.topic)}</p><p>${esc(x.question)}</p><textarea id="sqAns${x.id}" placeholder="Admin-ৰ উত্তৰ...">${esc(x.answer||'')}</textarea><button class="main-btn" onclick="answerStudentQuestion(${x.id})">💬 উত্তৰ প্ৰেৰণ</button><button class="danger" onclick="deleteStudentQuestion(${x.id})">🗑️ Delete</button></div>`).join('');}
+async function loadAdminStudentQuestions(){const box=document.getElementById('studentQuestionAdminList');if(!box)return;const r=await supabaseClient.from(STUDENT_Q_TABLE).select('id,student_id,chapter_name,topic,question,answer,status,created_at').order('created_at',{ascending:false});if(r.error){box.innerHTML='<p class="error">❌ '+esc(r.error.message)+'<br>প্ৰথমে ZIP-ৰ SQL ফাইল Supabase SQL Editor-ত Run কৰক।</p>';return;}box.innerHTML='<h4>📥 Student Message Inbox</h4>'+(r.data||[]).map(x=>`<div class="student-q-item"><b>📚 ${esc(x.chapter_name)}</b><p><b>Student ID:</b> ${esc(x.student_id)}</p><p><b>কথোপকথনৰ বিষয়:</b> ${esc(x.topic)}</p><div class="sq-reply"><b>❓ Student-ৰ প্ৰশ্ন:</b><br>${esc(x.question)}</div><label>💬 Admin-ৰ উত্তৰ</label><textarea id="sqAns${x.id}" placeholder="এই প্ৰশ্নৰ তলতে উত্তৰ লিখক...">${esc(x.answer||'')}</textarea><button class="main-btn" onclick="answerStudentQuestion('${x.id}')">💬 উত্তৰ প্ৰেৰণ</button><button class="danger" onclick="deleteStudentQuestion('${x.id}')">🗑️ প্ৰশ্ন আৰু উত্তৰ Delete</button><p class="small">${x.status==='answered'?'🟢 উত্তৰ দিয়া হৈছে':'🟠 উত্তৰৰ অপেক্ষাত'}</p></div>`).join('');}
 async function answerStudentQuestion(id){const a=document.getElementById('sqAns'+id)?.value.trim()||'';if(!a){alert('উত্তৰ লিখক।');return;}const r=await supabaseClient.from(STUDENT_Q_TABLE).update({answer:a,status:'answered',answered_at:new Date().toISOString()}).eq('id',id);if(r.error)alert(r.error.message);else{alert('✅ উত্তৰ প্ৰেৰণ কৰা হৈছে।');loadAdminStudentQuestions();}}
 async function deleteStudentQuestion(id){if(!confirm('এই প্ৰশ্নটো Delete কৰিবনে?'))return;const r=await supabaseClient.from(STUDENT_Q_TABLE).delete().eq('id',id);if(r.error)alert(r.error.message);else loadAdminStudentQuestions();}
 // Hook into existing admin panel and question page lifecycle
@@ -1202,24 +1183,10 @@ function playRecordedAudio(url, label){
   a.play().catch(()=>{});
 }
 function recordedQAHtml(q,lessonTtsEnabled){
-  const pq=String(q?.question_audio_url||q?.questionAudioUrl||'').trim();
-  const pa=String(q?.audio_url||q?.answer_audio_url||q?.answerAudioUrl||'').trim();
-  // Section 3 appears ONLY when at least one recorded audio exists.
-  if(!pq && !pa) return '';
-  const enabled = lessonTtsEnabled !== false;
-  const dis = enabled ? '' : ' disabled';
-  const offClass = enabled ? '' : ' tts-disabled';
-  const safeUrl = u => String(u).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  return `
-    <div class="recorded-qa-card" data-recorded-section="3">
-      <div class="recorded-qa-title">🎧 ৩। ৰেকৰ্ড কৰা প্ৰশ্ন আৰু উত্তৰ</div>
-      <div class="recorded-qa-question"><b>❓ প্ৰশ্ন:</b> ${escapeHtml(q.question||'')}</div>
-      ${pq ? `<button class="recorded-play-btn${offClass}"${dis} onclick="playRecordedAudio('${safeUrl(pq)}','প্ৰশ্ন')">🎙️ প্ৰশ্ন শুনক</button>` : ''}
-      <div class="recorded-qa-answer"><b>📝 উত্তৰ:</b> ${escapeHtml(q.answer||'')}</div>
-      ${pa ? `<button class="recorded-play-btn${offClass}"${dis} onclick="playRecordedAudio('${safeUrl(pa)}','উত্তৰ')">🔊 উত্তৰ শুনক</button>` : ''}
-      <button class="recorded-stop-btn" onclick="stopAllRecordedAudio()">⏹️ শুনা বন্ধ কৰক</button>
-    </div>`;
+  // Student-facing question/answer audio playback has been removed.
+  return '';
 }
+
 </script>
 
 
@@ -1296,6 +1263,19 @@ window.addEventListener('error', function(e){
   window.goPreviousPage=function(){
     if(typeof appBack==='function') appBack(); else window.showPage('home');
   };
+})();
+</script>
+<script>
+/* Ensure all curriculum buttons remain visible even if stale settings/classes exist. */
+(function keepSyllabusLessonsVisible(){
+  function reveal(){ document.querySelectorAll('#chapters .lesson-btn').forEach(function(btn){
+    btn.classList.remove('section-disabled');
+    btn.style.removeProperty('display');
+    btn.style.visibility='visible';
+    btn.style.opacity='1';
+  }); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',reveal); else reveal();
+  window.addEventListener('pageshow',reveal);
 })();
 </script>
 </body></html>

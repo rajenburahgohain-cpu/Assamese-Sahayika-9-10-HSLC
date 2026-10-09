@@ -112,7 +112,7 @@
 .lesson-btn, .lesson-btn.section-disabled { display:inline-block !important; visibility:visible !important; opacity:1 !important; }
 
 /* V11: Remove all listen/playback controls as requested. Keep admin voice-to-text input intact. */
-.answer-audio-row,.speak-btn,.tts-listen-btn,.recorded-play-btn,.recorded-stop-btn,.recorded-qa-card,#lessonAudioAdminControl,#lessonTtsControl,.admin-visibility-box{display:none!important}
+.answer-audio-row,.speak-btn,.tts-listen-btn,.recorded-play-btn,.recorded-stop-btn,.recorded-qa-card,#lessonAudioAdminControl,#lessonTtsControl,.admin-visibility-box,.lesson-tts-box{display:none!important}
 </style><style>
 .assamese-voice-status{margin-top:8px;padding:9px 11px;border-radius:9px;background:#eef8ff;border-left:4px solid #1976d2;font-size:12px;line-height:1.6}
 .voice-server-btn{background:#0f766e!important}
@@ -234,6 +234,7 @@
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
 <main class="container">
 <section id="home"></section>
+<section id="referralPage" class="hidden"></section>
 <section id="chapters" class="hidden">
 <div class="card section-title lessons-title">
 <button class="main-btn back" onclick="showPage('home')">← Home</button>
@@ -414,8 +415,6 @@
 <label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
 <select id="adminChapter" onchange="loadLessonTtsSetting();loadLessonAudioAdminControls()"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><div class="card student-q-admin" style="margin-top:18px">
 <h3>📩 Student → Admin: পাঠ ভিত্তিক প্ৰশ্ন</h3>
-<label><input type="checkbox" id="studentQuestionEnabled" onchange="saveStudentQuestionSetting()"> এই সুবিধা ON কৰক</label>
-<p id="studentQuestionSettingStatus" class="small">⏳ Setting লোড হৈ আছে...</p>
 <div id="studentQuestionAdminList"></div>
 </div>
 <h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
@@ -436,8 +435,7 @@ let supabaseClient=null;
 function initSupabase(){try{if(!window.supabase)return false;supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return true}catch(e){console.error(e);return false}}
 let pageHistory=[];let currentPage="home";
 async function showPage(id,fromBack=false){
-  const gate={chapters:'lesson',grammar:'grammar',hslc:'hslc'};
-  if(gate[id]){const on=await getSettingBool(sectionSettingKey(gate[id]),true);if(!on){alert('🔴 Admin-এ এই শিতানটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}}
+  // Admin ON/OFF gating removed: pages remain available.
   if(id===currentPage)return;
   if(!fromBack)pageHistory.push(currentPage);
   document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
@@ -516,7 +514,7 @@ async function getLessonAudioControls(chapter){
 }
 async function openLesson(chapter){
   const lessonOn=await getLessonEnabled(chapter);
-  if(!lessonOn){alert('🔴 Admin-এ এই পাঠটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}
+  if(!lessonOn && chapter!=='প্ৰশস্তি'){alert('🔴 Admin-এ এই পাঠটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card">
@@ -761,12 +759,11 @@ async function shareApp(){
   catch(e) { if(e && e.name==='AbortError') return; await copyReferralText(text,'✅ Referral message copy হৈছে।'); }
 }
 function openReferralBox(){
-  const existing=document.getElementById('referralBox'); if(existing) existing.remove();
+  const page=document.getElementById('referralPage');
+  if(!page) return;
   const c=getReferralCode(), link=getReferralLink();
-  const box=document.createElement('div'); box.id='referralBox'; box.className='card';
-  box.innerHTML=`<h2>📤 Share & Invite</h2><label>🔢 Referral Code</label><input id="refCodeView" value="${esc(c)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralCode(),'✅ Referral Code copy হৈছে।')">📋 Code Copy</button><label style="display:block;margin-top:10px">🌐 Referral Domain</label><input id="refDomainView" value="${esc(link)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralLink(),'✅ Referral Domain copy হৈছে।')">📋 Domain Copy</button><button class="main-btn" style="margin-top:10px" onclick="shareApp()">📤 Share & Invite</button>`;
-  const home=document.getElementById('home'); if(home) home.insertBefore(box,home.firstChild);
-  box.scrollIntoView({behavior:'smooth',block:'start'});
+  page.innerHTML=`<div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><div id="referralBox"><h2>📤 Share & Invite</h2><label>🔢 Referral Code</label><input id="refCodeView" value="${esc(c)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralCode(),'✅ Referral Code copy হৈছে।')">📋 Code Copy</button><label style="display:block;margin-top:10px">🌐 Referral Domain</label><input id="refDomainView" value="${esc(link)}" readonly><button class="secondary" style="margin-top:7px" onclick="copyReferralText(getReferralLink(),'✅ Referral Domain copy হৈছে।')">📋 Domain Copy</button><button class="main-btn" style="margin-top:10px" onclick="shareApp()">📤 Share & Invite</button></div></div>`;
+  showPage('referralPage');
 }
 async function adminLogin(){const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,status=document.getElementById("adminAuthStatus");if(!email||!password){status.innerHTML=`<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>`;return}status.innerHTML=`<p class="loading">🔐 Login কৰি থকা হৈছে...</p>`;const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return}status.innerHTML=`<p class="success">✅ Login সফল।</p>`;showAdminPanel()}
 async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}
@@ -833,17 +830,10 @@ async function saveLessonEnabled(){
  try{await setSettingBool(lessonEnabledKey(ch),on);const st=document.getElementById('adminLessonEnabledState');if(st)st.textContent=on?'🟢 পাঠ ON — তালিকাত দেখিব':'🔴 পাঠ OFF — তালিকাত নেদেখিব';await applyAllVisibility();alert(on?'✅ এই পাঠ ON কৰা হৈছে।':'🔴 এই পাঠ OFF কৰা হৈছে।')}catch(e){cb.checked=!on;alert('❌ Setting Save হোৱা নাই: '+e.message)}
 }
 async function applyAllVisibility(){
- try{
-   const navMap={chapters:'lesson',grammar:'grammar',hslc:'hslc'};
-   for(const [page,section] of Object.entries(navMap)){
-     const on=await getSettingBool(sectionSettingKey(section),true);
-     document.querySelectorAll('[data-section-page="'+page+'"], [data-nav-section="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
-     document.querySelectorAll('[data-open-page="'+page+'"]').forEach(x=>x.classList.toggle('section-disabled',!on));
-   }
-   // Keep every syllabus item visible in the lesson list. A stale OFF setting
-   // should never make lessons disappear after the list has rendered.
-   document.querySelectorAll('.lesson-btn').forEach(b=>b.classList.remove('section-disabled'));
- }catch(e){console.warn('visibility',e)}
+  // Admin ON/OFF controls are removed; keep all sections and lessons visible.
+  document.querySelectorAll('.lesson-btn,[data-section-page],[data-nav-section],[data-open-page]')
+    .forEach(x=>x.classList.remove('section-disabled'));
+
 }
 
 function sectionTtsKey(section){return 'section_tts_enabled_'+section;}
@@ -1124,7 +1114,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 // ===== Student -> Admin private lesson-based questions =====
 const STUDENT_Q_TABLE="student_lesson_questions";
 async function getStudentQuestionSetting(){
-  try{const r=await supabaseClient.from("app_settings").select("value").eq("key","student_lesson_questions_enabled").maybeSingle(); return !r.error && r.data ? r.data.value==="true" : false;}catch(e){return false}
+  // Feature is always enabled; Admin ON/OFF toggle has been removed.
+  return true;
 }
 async function renderStudentQuestionFeature(){
   const host=document.getElementById("studentQuestionFeature"); if(!host)return;
@@ -1144,8 +1135,8 @@ async function sendStudentQuestion(){
  st.innerHTML=r.error?'<p class="error">❌ '+esc(r.error.message)+'</p>':'<p class="success">✅ প্ৰশ্ন Adminলৈ প্ৰেৰণ কৰা হৈছে।</p>'; if(!r.error){document.getElementById('sqText').value='';loadMyStudentQuestions();}
 }
 async function loadMyStudentQuestions(){const box=document.getElementById('sqMyList');if(!box)return;const {data:{session}}=await supabaseClient.auth.getSession();if(!session){return;}const r=await supabaseClient.from(STUDENT_Q_TABLE).select('id,chapter_name,topic,question,answer,status,created_at').eq('student_id',session.user.id).order('created_at',{ascending:false});if(r.error){box.innerHTML='<p class="error">❌ '+esc(r.error.message)+'</p>';return;}box.innerHTML='<h4>📨 মোৰ প্ৰেৰণ কৰা প্ৰশ্ন</h4>'+(r.data||[]).map(x=>`<div class="student-q-item"><b>📚 ${esc(x.chapter_name)}</b><p><b>বিষয়:</b> ${esc(x.topic)}</p><p>${esc(x.question)}</p><p class="student-q-status">${x.status==='answered'?'🟢 উত্তৰ দিয়া হৈছে':'🟠 উত্তৰৰ অপেক্ষাত'}</p>${x.answer?`<div class="sq-reply"><b>👨‍🏫 Admin-ৰ উত্তৰ:</b><br>${esc(x.answer)}</div>`:''}</div>`).join('');}
-async function saveStudentQuestionSetting(){const cb=document.getElementById('studentQuestionEnabled');const on=!!cb.checked;const r=await supabaseClient.from('app_settings').upsert({key:'student_lesson_questions_enabled',value:String(on)},{onConflict:'key'});document.getElementById('studentQuestionSettingStatus').textContent=r.error?'❌ '+r.error.message:(on?'🟢 ON — Student-এ পাঠ ভিত্তিক প্ৰশ্ন পঠিয়াব পাৰিব':'🔴 OFF — সুবিধাটো বন্ধ');if(!r.error)renderStudentQuestionFeature();}
-async function loadStudentQuestionSettingAdmin(){const cb=document.getElementById('studentQuestionEnabled');if(!cb)return;const on=await getStudentQuestionSetting();cb.checked=on;document.getElementById('studentQuestionSettingStatus').textContent=on?'🟢 ON':'🔴 OFF';}
+async function saveStudentQuestionSetting(){renderStudentQuestionFeature();}
+async function loadStudentQuestionSettingAdmin(){return;}
 async function loadAdminStudentQuestions(){const box=document.getElementById('studentQuestionAdminList');if(!box)return;const r=await supabaseClient.from(STUDENT_Q_TABLE).select('id,student_id,chapter_name,topic,question,answer,status,created_at').order('created_at',{ascending:false});if(r.error){box.innerHTML='<p class="error">❌ '+esc(r.error.message)+'<br>প্ৰথমে ZIP-ৰ SQL ফাইল Supabase SQL Editor-ত Run কৰক।</p>';return;}box.innerHTML='<h4>📥 Student Message Inbox</h4>'+(r.data||[]).map(x=>`<div class="student-q-item"><b>📚 ${esc(x.chapter_name)}</b><p><b>Student ID:</b> ${esc(x.student_id)}</p><p><b>কথোপকথনৰ বিষয়:</b> ${esc(x.topic)}</p><div class="sq-reply"><b>❓ Student-ৰ প্ৰশ্ন:</b><br>${esc(x.question)}</div><label>💬 Admin-ৰ উত্তৰ</label><textarea id="sqAns${x.id}" placeholder="এই প্ৰশ্নৰ তলতে উত্তৰ লিখক...">${esc(x.answer||'')}</textarea><button class="main-btn" onclick="answerStudentQuestion('${x.id}')">💬 উত্তৰ প্ৰেৰণ</button><button class="danger" onclick="deleteStudentQuestion('${x.id}')">🗑️ প্ৰশ্ন আৰু উত্তৰ Delete</button><p class="small">${x.status==='answered'?'🟢 উত্তৰ দিয়া হৈছে':'🟠 উত্তৰৰ অপেক্ষাত'}</p></div>`).join('');}
 async function answerStudentQuestion(id){const a=document.getElementById('sqAns'+id)?.value.trim()||'';if(!a){alert('উত্তৰ লিখক।');return;}const r=await supabaseClient.from(STUDENT_Q_TABLE).update({answer:a,status:'answered',answered_at:new Date().toISOString()}).eq('id',id);if(r.error)alert(r.error.message);else{alert('✅ উত্তৰ প্ৰেৰণ কৰা হৈছে।');loadAdminStudentQuestions();}}
 async function deleteStudentQuestion(id){if(!confirm('এই প্ৰশ্নটো Delete কৰিবনে?'))return;const r=await supabaseClient.from(STUDENT_Q_TABLE).delete().eq('id',id);if(r.error)alert(r.error.message);else loadAdminStudentQuestions();}

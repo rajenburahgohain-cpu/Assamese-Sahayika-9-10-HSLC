@@ -233,7 +233,32 @@
 </nav>
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
 <main class="container">
-<section id="home"></section>
+<section id="home">
+<div class="card section-title">
+  <div class="title-icon">📚</div>
+  <h2>স্বাগতম — অসমীয়া সহায়িকা</h2>
+  <p>দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ প্ৰস্তুতিৰ বাবে পাঠ, ব্যাকৰণ আৰু অনুশীলন</p>
+</div>
+<div class="card">
+  <h3>🔎 প্ৰশ্ন বা বিষয় বিচাৰক</h3>
+  <input id="searchInput" type="search" placeholder="যেনে: সন্ধি, সমাস, বৰগীত..." aria-label="প্ৰশ্ন বা বিষয় বিচাৰক">
+  <div id="searchStatus" class="small" style="margin-top:8px"></div>
+  <button class="main-btn" style="margin-top:8px" onclick="searchQuestions()">🔍 বিচাৰক</button>
+  <div id="searchResult"></div>
+</div>
+<div class="card">
+  <h3>📖 পঢ়া আৰম্ভ কৰক</h3>
+  <div class="grid">
+    <button class="secondary" onclick="showPage('chapters')">📚 দশম শ্ৰেণীৰ পাঠসমূহ</button>
+    <button class="secondary" onclick="showPage('grammar')">📝 ব্যাকৰণ</button>
+    <button class="secondary" onclick="showPage('hslc')">🎯 HSLC প্ৰস্তুতি</button>
+    <button class="secondary" onclick="showPage('questions')">❓ প্ৰশ্নোত্তৰ সহায়িকা</button>
+    <button class="secondary" onclick="openReferralBox()">📤 Share & Invite</button>
+    <button class="secondary" onclick="showPage('privacy')">🔒 Privacy Policy</button>
+  </div>
+</div>
+<div class="card ai-note"><b>💡 অধ্যয়নৰ টিপছ</b><p style="margin-bottom:0">প্ৰতিটো পাঠ পঢ়াৰ পিছত প্ৰশ্নোত্তৰ অনুশীলন কৰক আৰু HSLC-ৰ বাবে নিয়মীয়াকৈ পুনৰাবৃত্তি কৰক।</p></div>
+</section>
 <section id="referralPage" class="hidden"></section>
 <section id="chapters" class="hidden">
 <div class="card section-title lessons-title">
@@ -460,10 +485,12 @@ async function showPage(id,fromBack=false){
     const bb=document.getElementById('appBackBtn');if(bb)bb.style.display='none';
     return;
   }
-  if(id===currentPage)return;
-  if(!fromBack)pageHistory.push(currentPage);
+  // Always render the requested page, even when it matches currentPage.
+  // This prevents a blank Home screen if another startup handler hid sections first.
+  if(!fromBack && id!==currentPage) pageHistory.push(currentPage);
   document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
-  const p=document.getElementById(id);if(p)p.classList.remove("hidden");
+  const p=document.getElementById(id);
+  if(p) p.classList.remove("hidden");
   currentPage=id;
   const bb=document.getElementById("appBackBtn");if(bb)bb.style.display=currentPage==="home"?"none":"block";
   window.scrollTo({top:0,behavior:"smooth"});
@@ -1257,6 +1284,8 @@ async function transcribeAssameseBlob(blob,targetId,afterCb){
 
 document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("adminContentSection") && adminContentSectionChanged();
+  // Ordinary users never see the Admin navigation button. It is revealed only after
+  // Supabase authentication confirms that the signed-in account is an authorized admin.
   initSupabase();setAdminNavVisible(false);loadGlobalTtsSetting();applyAllVisibility();showPage("home");
   if(window.__adminEntryEnabled){setAdminNavVisible(false);showPage('admin');}
   if(supabaseClient){supabaseClient.auth.onAuthStateChange(async(_event,session)=>{if(session?.user){const ok=await verifyAdminUser(session.user);window.__isAuthorizedAdmin=ok;setAdminNavVisible(ok);if(!ok&&currentPage==='admin'){document.getElementById('adminPanel').classList.add('hidden');document.getElementById('adminLoginBox').classList.remove('hidden');}}else{window.__isAuthorizedAdmin=false;setAdminNavVisible(false);}});}

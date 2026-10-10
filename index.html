@@ -227,7 +227,7 @@
 <button class="n-grammar" data-section-page="grammar" data-nav-section="grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
 <button class="n-hslc" data-section-page="hslc" data-nav-section="hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>
 <button class="n-qa" onclick="showPage('questions')"><span>❓</span>প্ৰশ্নোত্তৰ</button>
-<button class="n-admin" onclick="showPage('admin')"><span>👨‍🏫</span>Admin</button>
+<button id="adminNavButton" class="n-admin hidden" onclick="showPage('admin')" aria-hidden="true"><span>👨‍🏫</span>Admin</button>
 <button class="n-share" onclick="openReferralBox()"><span>📤</span>Share & Invite</button>
 <button class="n-privacy" onclick="showPage('privacy')"><span>🔒</span>Privacy</button>
 </nav>
@@ -451,7 +451,15 @@ let supabaseClient=null;
 function initSupabase(){try{if(!window.supabase)return false;supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);return true}catch(e){console.error(e);return false}}
 let pageHistory=[];let currentPage="home";
 async function showPage(id,fromBack=false){
-  // Admin ON/OFF gating removed: pages remain available.
+  // Admin section is reachable only through the admin entry route or a verified admin session.
+  if(id==='admin' && !window.__adminEntryEnabled && !window.__isAuthorizedAdmin){
+    const target=document.getElementById('home');
+    document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+    if(target)target.classList.remove('hidden');
+    currentPage='home';
+    const bb=document.getElementById('appBackBtn');if(bb)bb.style.display='none';
+    return;
+  }
   if(id===currentPage)return;
   if(!fromBack)pageHistory.push(currentPage);
   document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
@@ -811,10 +819,41 @@ async function loadReferralRewardsAdmin(){
 }
 async function approveReferralReward(id){if(!confirm('এই Student-ক ৩০ দিনৰ Premium Reward অনুমোদন কৰিবনে?'))return;const r=await supabaseClient.rpc('approve_referral_reward',{p_reward_id:id});if(r.error){alert('Approve নহ’ল: '+r.error.message);return;}alert('Reward অনুমোদন কৰা হৈছে। Premium entitlement backend-ত সংৰক্ষণ কৰা হৈছে।');loadReferralRewardsAdmin();}
 async function rejectReferralReward(id){if(!confirm('এই Reward reject কৰিবনে?'))return;const r=await supabaseClient.rpc('reject_referral_reward',{p_reward_id:id});if(r.error){alert('Reject নহ’ল: '+r.error.message);return;}loadReferralRewardsAdmin();}
-async function adminLogin(){const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,status=document.getElementById("adminAuthStatus");if(!email||!password){status.innerHTML=`<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>`;return}status.innerHTML=`<p class="loading">🔐 Login কৰি থকা হৈছে...</p>`;const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return}status.innerHTML=`<p class="success">✅ Login সফল।</p>`;showAdminPanel()}
-async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}
-async function checkAdminSession(){if(!supabaseClient)return;const {data}=await supabaseClient.auth.getSession();if(data.session)showAdminPanel();else{document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}}
-async function showAdminPanel(){document.getElementById("adminLoginBox").classList.add("hidden");document.getElementById("adminPanel").classList.remove("hidden");loadAdminQuestions()}
+window.__isAuthorizedAdmin = false;
+window.__adminEntryEnabled = new URLSearchParams(location.search).get('admin') === 'login';
+function setAdminNavVisible(visible){const b=document.getElementById('adminNavButton');if(!b)return;b.classList.toggle('hidden',!visible);b.setAttribute('aria-hidden',visible?'false':'true');}
+async function verifyAdminUser(user){
+  if(!supabaseClient||!user?.id)return false;
+  // Authorization is based on the authenticated Supabase user UUID, never on a client-entered email alone.
+  const r=await supabaseClient.from('app_admins').select('user_id').eq('user_id',user.id).maybeSingle();
+  if(r.error){console.error('Admin authorization check failed:',r.error.message);return false;}
+  return !!r.data;
+}
+async function adminLogin(){
+ const email=document.getElementById('adminEmail').value.trim(),password=document.getElementById('adminPassword').value,status=document.getElementById('adminAuthStatus');
+ if(!supabaseClient){status.innerHTML='<p class="error">Supabase সংযোগ হোৱা নাই। পৃষ্ঠাটো পুনৰ লোড কৰক।</p>';return;}
+ if(!email||!password){status.innerHTML='<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>';return;}
+ status.innerHTML='<p class="loading">🔐 Login আৰু Admin অনুমতি পৰীক্ষা কৰা হৈছে...</p>';
+ const r=await supabaseClient.auth.signInWithPassword({email,password});
+ if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return;}
+ const allowed=await verifyAdminUser(r.data.user);
+ if(!allowed){window.__isAuthorizedAdmin=false;setAdminNavVisible(false);document.getElementById('adminPanel').classList.add('hidden');status.innerHTML='<p class="error">⛔ এই একাউণ্টৰ Admin অনুমতি নাই। কেৱল অনুমোদিত Admin-এহে Admin Panel খুলিব পাৰে।</p>';await supabaseClient.auth.signOut();return;}
+ window.__isAuthorizedAdmin=true;window.__adminEntryEnabled=false;setAdminNavVisible(true);status.innerHTML='<p class="success">✅ অনুমোদিত Admin Login সফল।</p>';showAdminPanel();
+}
+async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();window.__isAuthorizedAdmin=false;window.__adminEntryEnabled=false;setAdminNavVisible(false);document.getElementById('adminPanel').classList.add('hidden');document.getElementById('adminLoginBox').classList.remove('hidden');showPage('home');}
+async function checkAdminSession(){
+ if(!supabaseClient)return;
+ const {data}=await supabaseClient.auth.getSession();
+ if(data.session && await verifyAdminUser(data.session.user)){
+   window.__isAuthorizedAdmin=true;setAdminNavVisible(true);showAdminPanel();return;
+ }
+ window.__isAuthorizedAdmin=false;setAdminNavVisible(false);document.getElementById('adminPanel').classList.add('hidden');document.getElementById('adminLoginBox').classList.remove('hidden');
+ if(!window.__adminEntryEnabled){showPage('home');return;}
+}
+async function showAdminPanel(){
+ if(!window.__isAuthorizedAdmin){document.getElementById('adminPanel').classList.add('hidden');return;}
+ document.getElementById('adminLoginBox').classList.add('hidden');document.getElementById('adminPanel').classList.remove('hidden');loadAdminQuestions();
+}
 
 function findLessonFromQuestion(question){
   const q=String(question||'').trim();
@@ -1217,7 +1256,11 @@ async function transcribeAssameseBlob(blob,targetId,afterCb){
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-  document.getElementById("adminContentSection") && adminContentSectionChanged();initSupabase();loadGlobalTtsSetting();applyAllVisibility();showPage("home");if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
+  document.getElementById("adminContentSection") && adminContentSectionChanged();
+  initSupabase();setAdminNavVisible(false);loadGlobalTtsSetting();applyAllVisibility();showPage("home");
+  if(window.__adminEntryEnabled){setAdminNavVisible(false);showPage('admin');}
+  if(supabaseClient){supabaseClient.auth.onAuthStateChange(async(_event,session)=>{if(session?.user){const ok=await verifyAdminUser(session.user);window.__isAuthorizedAdmin=ok;setAdminNavVisible(ok);if(!ok&&currentPage==='admin'){document.getElementById('adminPanel').classList.add('hidden');document.getElementById('adminLoginBox').classList.remove('hidden');}}else{window.__isAuthorizedAdmin=false;setAdminNavVisible(false);}});}
+  if("speechSynthesis"in window)window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();searchQuestions()}});document.getElementById("questionInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();askQuestion()}})});
 </script>
 <script>
 /* ===== Student -> Admin private lesson-based questions ===== */

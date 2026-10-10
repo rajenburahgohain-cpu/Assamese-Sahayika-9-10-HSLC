@@ -329,7 +329,7 @@
 </div><div class="notice"><b>📚 Database + AI</b><br><br>প্ৰথমে Supabase <b>questions</b> table-ত থকা প্ৰশ্নোত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা হ'ব।</div><br><textarea id="questionInput" placeholder="আপোনাৰ প্ৰশ্ন লিখক...&#10;উদাহৰণ: সমাস কাক বোলে?"></textarea><br><br><div class="grid"><button class="main-btn" onclick="askQuestion()">🔍 উত্তৰ বিচাৰক</button><button class="main-btn voice-btn" id="questionVoiceButton" onclick="startQuestionVoice()">🎙️ Voice</button></div><div id="questionResult"></div></div></section>
 
 <section id="admin" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>👨‍🏫 Admin Panel</h2><div id="adminLoginBox"><p>প্ৰশ্নোত্তৰ যোগ/সম্পাদনা কৰিবলৈ Admin account-ৰে Login কৰক।</p><input id="adminEmail" type="email" placeholder="Admin email"><input id="adminPassword" type="password" placeholder="Password" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="adminLogin()">🔐 Login</button><button class="secondary" onclick="adminLogout()">Logout</button></div><div id="adminAuthStatus"></div></div>
-<div id="adminPanel" class="hidden"><div class="card" style="border-top:4px solid #7c3aed"><h3>🎁 Referral Reward Inbox</h3><p>১০ জন বৈধ referral পূৰণ কৰা Student-ৰ ৩০ দিনৰ Premium reward ইয়াত পৰীক্ষা/অনুমোদন কৰক।</p><button class="secondary" onclick="loadReferralRewardsAdmin()">🔄 Referral Reward Refresh</button><div id="referralAdminList"></div></div><div class="admin-head"><div class="admin-content-box">
+<div id="adminPanel" class="hidden"><div class="admin-head"><div class="admin-content-box">
 <h3 style="margin:0 0 8px;color:#075985;">📚 Admin-ত শিক্ষামূলক বিষয়বস্তু যোগ কৰক</h3>
 <label for="adminContentSection">১। ক'ত সন্নিবিষ্ট কৰিব?</label>
 <select id="adminContentSection" onchange="adminContentSectionChanged()">
@@ -413,11 +413,27 @@
 </select><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"></div>
 <div class="admin-chapter-box">
 <label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
-<select id="adminChapter" onchange="loadLessonTtsSetting();loadLessonAudioAdminControls()"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><div class="card student-q-admin" style="margin-top:18px">
+<select id="adminChapter" onchange="adminChapterChanged()">
+<option value="">📚 পাঠ / বিভাগ বাছনি কৰক</option>
+<optgroup label="📚 Class 10 — পাঠসমূহ">
+<option data-section="lesson" value="বৰগীত">বৰগীত</option><option data-section="lesson" value="জিকিৰ">জিকিৰ</option><option data-section="lesson" value="প্ৰশস্তি">প্ৰশস্তি</option><option data-section="lesson" value="মই অসমীয়া">মই অসমীয়া</option><option data-section="lesson" value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option data-section="lesson" value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option data-section="lesson" value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option data-section="lesson" value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option data-section="lesson" value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option data-section="lesson" value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option data-section="lesson" value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option data-section="lesson" value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option data-section="lesson" value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option data-section="lesson" value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option data-section="lesson" value="বিষাদ যোগ">বিষাদ যোগ</option><option data-section="lesson" value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option>
+</optgroup>
+<optgroup label="📝 ব্যাকৰণ"><option data-section="grammar" value="সন্ধি">সন্ধি</option><option data-section="grammar" value="সমাস">সমাস</option><option data-section="grammar" value="উপসৰ্গ">উপসৰ্গ</option><option data-section="grammar" value="প্ৰত্যয়">প্ৰত্যয়</option><option data-section="grammar" value="অনুসৰ্গ">অনুসৰ্গ</option><option data-section="grammar" value="বিপৰীত শব্দ">বিপৰীত শব্দ</option><option data-section="grammar" value="সমাৰ্থক শব্দ">সমাৰ্থক শব্দ</option><option data-section="grammar" value="জতুৱা ঠাঁচ">জতুৱা ঠাঁচ</option><option data-section="grammar" value="ছন্দ">ছন্দ</option><option data-section="grammar" value="বাক্য শুদ্ধকৈ লিখা">বাক্য শুদ্ধকৈ লিখা</option><option data-section="grammar" value="বৰ্ণগীত">বৰ্ণগীত</option><option data-section="grammar" value="জিকিৰ">জিকিৰ (ব্যাকৰণ)</option></optgroup>
+<optgroup label="✍️ ৰচনা"><option data-section="writing" value="ৰচনা">ৰচনা — সাধাৰণ</option><option data-section="writing" value="পৰিৱেশ প্ৰদূষণ">পৰিৱেশ প্ৰদূষণ</option><option data-section="writing" value="ছাত্ৰ জীৱন">ছাত্ৰ জীৱন</option><option data-section="writing" value="বিজ্ঞান">বিজ্ঞান</option><option data-section="writing" value="অসমৰ বানপানী">অসমৰ বানপানী</option><option data-section="writing" value="মোৰ প্ৰিয় গ্ৰন্থ">মোৰ প্ৰিয় গ্ৰন্থ</option></optgroup>
+<optgroup label="📄 দৰ্খাস্ত"><option data-section="application" value="দৰ্খাস্ত">দৰ্খাস্ত — সাধাৰণ</option><option data-section="application" value="ছুটীৰ আবেদন">ছুটীৰ আবেদন</option><option data-section="application" value="প্ৰধান শিক্ষকলৈ আবেদন">প্ৰধান শিক্ষকলৈ আবেদন</option></optgroup>
+<optgroup label="💡 ভাব সম্প্ৰসাৰণ"><option data-section="expansion" value="ভাব সম্প্ৰসাৰণ">ভাব সম্প্ৰসাৰণ — সাধাৰণ</option><option data-section="expansion" value="সময়ৰ মূল্য">সময়ৰ মূল্য</option><option data-section="expansion" value="শ্ৰমেই উন্নতিৰ মূল">শ্ৰমেই উন্নতিৰ মূল</option></optgroup>
+<optgroup label="📰 প্ৰতিবেদন"><option data-section="report" value="প্ৰতিবেদন">প্ৰতিবেদন — সাধাৰণ</option><option data-section="report" value="বিদ্যালয়ৰ অনুষ্ঠানৰ প্ৰতিবেদন">বিদ্যালয়ৰ অনুষ্ঠানৰ প্ৰতিবেদন</option><option data-section="report" value="বাতৰি প্ৰতিবেদন">বাতৰি প্ৰতিবেদন</option></optgroup>
+<optgroup label="🎯 HSLC"><option data-section="hslc" value="HSLC">HSLC — সাধাৰণ</option><option data-section="hslc" value="HSLC মডেল প্ৰশ্ন">HSLC মডেল প্ৰশ্ন</option><option data-section="hslc" value="পূৰ্ববৰ্ষৰ প্ৰশ্ন">পূৰ্ববৰ্ষৰ প্ৰশ্ন</option><option data-section="hslc" value="MCQ">HSLC MCQ</option><option data-section="hslc" value="HSLC ৰচনা">HSLC ৰচনা</option></optgroup>
+</select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><div class="card student-q-admin" style="margin-top:18px">
 <h3>📩 Student → Admin: পাঠ ভিত্তিক প্ৰশ্ন</h3>
 <div id="studentQuestionAdminList"></div>
 </div>
-<h3 style="margin-top:20px">📋 প্ৰশ্নসমূহ</h3><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
+<h3 style="margin-top:20px">🗂️ সকলো পাঠ / বিভাগৰ প্ৰশ্নোত্তৰ পৰিচালনা</h3>
+<p class="small">বিভাগ বাছনি কৰি সেই বিভাগৰ প্ৰশ্নোত্তৰ চাওক। প্ৰতিটো প্ৰশ্নৰ বাবে Edit আৰু Delete উপলব্ধ।</p>
+<div class="grid" style="margin-top:8px">
+<select id="adminListSectionFilter" onchange="loadAdminQuestions()"><option value="all">📚 সকলো বিভাগ</option><option value="lesson">📖 পাঠসমূহৰ প্ৰশ্নোত্তৰ</option><option value="grammar">📝 ব্যাকৰণ</option><option value="writing">✍️ ৰচনা</option><option value="application">📄 দৰ্খাস্ত</option><option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option><option value="report">📰 প্ৰতিবেদন</option><option value="hslc">🎯 HSLC</option></select>
+<input id="adminListSearch" placeholder="🔍 পাঠ / প্ৰশ্ন / উত্তৰ বিচাৰক" oninput="filterAdminQuestionCards()">
+</div><button class="secondary" onclick="loadAdminQuestions()" style="margin-top:8px">🔄 Refresh</button><div id="adminQuestionList"></div></div></div></section>
 
 <section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য সংগ্ৰহ আৰু ব্যৱহাৰ</h3><p>Login-ৰ তথ্য, শিক্ষামূলক প্ৰশ্ন, পাঠ-সম্পৰ্কীয় কথোপকথন আৰু referral reward-ৰ গণনা চলাবলৈ প্ৰয়োজনীয় তথ্য Supabase-ত সংৰক্ষণ হ'ব পাৰে। তথ্য কেৱল একাউণ্ট পৰিচালনা, প্ৰশ্নৰ উত্তৰ, সুৰক্ষা আৰু App-ৰ সুবিধা চলোৱাৰ বাবে ব্যৱহাৰ কৰা হ'ব।</p><h3>Student ↔ Admin ব্যক্তিগত কথোপকথন</h3><p>Student-এ পঠোৱা প্ৰশ্ন আৰু Admin-ৰ উত্তৰ কেৱল সেই Student আৰু অনুমোদিত Admin-এ চাব পৰাকৈ access control ব্যৱস্থা থাকিব। আন Student-এ এই কথোপকথন চাব নোৱাৰিব।</p><h3>Referral Reward</h3><p>১০ জন বৈধ নতুন Student-এ referral code ব্যৱহাৰ কৰি account সৃষ্টি কৰিলে referral-দাতা Student-এ ৩০ দিনৰ Premium reward-ৰ বাবে যোগ্য হ'ব পাৰে। Duplicate বা ভুৱা account গণনা নহ'ব। Reward Admin-ৰ পৰীক্ষা আৰু অনুমোদনৰ অধীন।</p><h3>তৃতীয় পক্ষৰ সেৱা</h3><p>Supabase-ৰ দৰে backend সেৱা আৰু AI service সক্ৰিয় থাকিলে, প্ৰশ্ন/উত্তৰ প্ৰস্তুত কৰিবলৈ ব্যৱহাৰকাৰীয়ে দিয়া তথ্য সংশ্লিষ্ট সেৱালৈ যাব পাৰে। Ads বা Google Play Billing সক্ৰিয় কৰা হ'লে সিহঁতৰ নিজস্ব privacy আৰু payment policy-ও প্ৰযোজ্য হ'ব।</p><h3>তথ্য সুৰক্ষা আৰু মচা</h3><p>অননুমোদিত প্ৰৱেশ ৰোধ কৰিবলৈ authentication আৰু database access policies ব্যৱহাৰ কৰা উচিত। Account বা তথ্য মচিবলৈ App-ৰ উপলব্ধ account/data deletion ব্যৱস্থা ব্যৱহাৰ কৰক। আইনী বা সুৰক্ষাৰ প্ৰয়োজনত কিছুমান তথ্য সীমিত সময়ৰ বাবে ৰাখিবলগীয়া হ'ব পাৰে।</p><h3>Admin-ৰ পৰিচয়</h3><p>ব্যক্তিগত Admin login তথ্য, Gmail বা আন private account details এই Privacy Policy-ত প্ৰকাশ কৰা নহয়। Privacy-সম্পৰ্কীয় অনুৰোধ App-ৰ উপলব্ধ সহায়/যোগাযোগ ব্যৱস্থাৰ জৰিয়তে দাখিল কৰক।</p><p class="small">Last updated: 9 October 2026</p><p class="small">এই Policy-ত উল্লেখ কৰা সুবিধা App-ত সক্ৰিয় কৰাৰ লগতে backend security আৰু deletion ব্যৱস্থাও সঠিকভাৱে configure কৰিব লাগিব।</p></div></section>
 </main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese
@@ -798,7 +814,7 @@ async function rejectReferralReward(id){if(!confirm('এই Reward reject কৰ
 async function adminLogin(){const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,status=document.getElementById("adminAuthStatus");if(!email||!password){status.innerHTML=`<p class="error">Email আৰু Password দুয়োটা দিয়ক।</p>`;return}status.innerHTML=`<p class="loading">🔐 Login কৰি থকা হৈছে...</p>`;const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){status.innerHTML=`<p class="error">❌ Login নহ'ল: ${esc(r.error.message)}</p>`;return}status.innerHTML=`<p class="success">✅ Login সফল।</p>`;showAdminPanel()}
 async function adminLogout(){if(supabaseClient)await supabaseClient.auth.signOut();document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}
 async function checkAdminSession(){if(!supabaseClient)return;const {data}=await supabaseClient.auth.getSession();if(data.session)showAdminPanel();else{document.getElementById("adminPanel").classList.add("hidden");document.getElementById("adminLoginBox").classList.remove("hidden")}}
-async function showAdminPanel(){document.getElementById("adminLoginBox").classList.add("hidden");document.getElementById("adminPanel").classList.remove("hidden");loadAdminQuestions();if(typeof loadReferralRewardsAdmin==='function')loadReferralRewardsAdmin()}
+async function showAdminPanel(){document.getElementById("adminLoginBox").classList.add("hidden");document.getElementById("adminPanel").classList.remove("hidden");loadAdminQuestions()}
 
 function findLessonFromQuestion(question){
   const q=String(question||'').trim();
@@ -882,6 +898,9 @@ async function getSectionTtsEnabled(section){return getSettingBool(sectionTtsKey
 
 function adminContentSectionChanged(){
   const section=document.getElementById("adminContentSection").value;
+  const topicInput=document.getElementById("adminTopic");
+  const topicHints={grammar:"যেনে: সন্ধি, সমাস, প্ৰত্যয়, উপসৰ্গ, অনুসৰ্গ, বিপৰীত শব্দ, সমাৰ্থক শব্দ, জতুৱা ঠাঁচ, ছন্দ",writing:"যেনে: ৰচনা — পৰিৱেশ প্ৰদূষণ, ছাত্ৰ জীৱন, বিজ্ঞান",application:"যেনে: ছুটীৰ আবেদন, প্ৰধান শিক্ষকলৈ আবেদন",expansion:"যেনে: ভাব সম্প্ৰসাৰণৰ শিৰোনাম",report:"যেনে: বিদ্যালয়ৰ অনুষ্ঠানৰ প্ৰতিবেদন",hslc:"যেনে: HSLC 2025, মডেল প্ৰশ্ন, পূৰ্ববৰ্ষৰ প্ৰশ্ন"};
+  if(topicInput)topicInput.placeholder=topicHints[section]||"বিষয় / পাঠৰ নাম লিখক";
   const lessonBox=document.getElementById("lessonTtsControl");
   const topicWrap=document.getElementById("adminTopicWrap");
   lessonBox.style.display=section==="lesson"?"block":"none";
@@ -992,36 +1011,81 @@ async function saveQuestion(){
   st.innerHTML=`<p class="success">✅ সফলভাৱে সংৰক্ষণ হৈছে।</p>`;
   clearAdminForm();loadAdminQuestions();
 }
+const ADMIN_TOPIC_CATALOG={
+ lesson:["বৰগীত","জিকিৰ","প্ৰশস্তি","মই অসমীয়া","দৃশ্যান্তৰ","উদ্যোগী হওঁ আহাঁ","ভাৰতীয় সংস্কৃতি","অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি","ইণ্টাৰনেটৰ তিতা-মিঠা","অৰুণিমা সিনহা","অৰণ্যযাত্ৰা","পাৰস্যত এভুমুকি","কানাইৰ চাতুৰী","ধৰ ঝাড়ু ধৰ ভাই","বিষাদ যোগ","প্ৰাচীন ভাৰতীয় শিক্ষা"],
+ grammar:["সন্ধি","সমাস","উপসৰ্গ","প্ৰত্যয়","অনুসৰ্গ","বিপৰীত শব্দ","সমাৰ্থক শব্দ","জতুৱা ঠাঁচ","ছন্দ","বাক্য শুদ্ধকৈ লিখা","বৰ্ণগীত"],
+ writing:["ৰচনা","পৰিৱেশ প্ৰদূষণ","ছাত্ৰ জীৱন","বিজ্ঞান","অসমৰ বানপানী","মোৰ প্ৰিয় গ্ৰন্থ"],
+ application:["দৰ্খাস্ত","ছুটীৰ আবেদন","প্ৰধান শিক্ষকলৈ আবেদন"],
+ expansion:["ভাব সম্প্ৰসাৰণ","সময়ৰ মূল্য","শ্ৰমেই উন্নতিৰ মূল"],
+ report:["প্ৰতিবেদন","বিদ্যালয়ৰ অনুষ্ঠানৰ প্ৰতিবেদন","বাতৰি প্ৰতিবেদন"],
+ hslc:["HSLC","HSLC মডেল প্ৰশ্ন","পূৰ্ববৰ্ষৰ প্ৰশ্ন","MCQ","HSLC ৰচনা"]
+};
+const ADMIN_SECTION_LABELS={lesson:'📚 পাঠসমূহৰ প্ৰশ্নোত্তৰ',grammar:'📝 ব্যাকৰণ',writing:'✍️ ৰচনা',application:'📄 দৰ্খাস্ত',expansion:'💡 ভাব সম্প্ৰসাৰণ',report:'📰 প্ৰতিবেদন',hslc:'🎯 HSLC'};
+function adminChapterChanged(){
+ const sel=document.getElementById('adminChapter'),opt=sel?.selectedOptions?.[0];
+ if(!opt||!opt.value)return;
+ const section=opt.dataset.section||'lesson';
+ document.getElementById('adminContentSection').value=section;
+ adminContentSectionChanged();
+ if(section==='lesson'){
+   document.getElementById('adminTopic').value='';
+   loadLessonTtsSetting();loadLessonAudioAdminControls();
+ }else{
+   document.getElementById('adminTopic').value=opt.value;
+   const t=document.getElementById('adminTopic');if(t)t.value=opt.value;
+ }
+}
+function prepareQuestionForTopic(section,topic){
+ const select=document.getElementById('adminChapter');
+ let opt=Array.from(select.options).find(o=>o.value===topic&&(o.dataset.section||'lesson')===section);
+ if(!opt){
+   let group=Array.from(select.querySelectorAll('optgroup')).find(g=>g.dataset.section===section);
+   if(!group){group=document.createElement('optgroup');group.label=ADMIN_SECTION_LABELS[section]||section;group.dataset.section=section;select.appendChild(group)}
+   opt=document.createElement('option');opt.value=topic;opt.textContent=topic;opt.dataset.section=section;group.appendChild(opt);
+ }
+ select.value=topic;document.getElementById('adminContentSection').value=section;adminContentSectionChanged();
+ if(section==='lesson'){document.getElementById('adminTopic').value='';loadLessonTtsSetting();loadLessonAudioAdminControls();}
+ else document.getElementById('adminTopic').value=topic;
+ document.getElementById('editId').value='';
+ document.getElementById('adminQuestion').value='';document.getElementById('adminAnswer').value='';
+ document.getElementById('adminSaveStatus').innerHTML='';
+ document.getElementById('adminQuestion').focus();window.scrollTo({top:0,behavior:'smooth'});
+}
 async function loadAdminQuestions(){
-  const box=document.getElementById("adminQuestionList");
-  if(!box)return;
-  if(!supabaseClient){box.innerHTML='<p class="error">Supabase সংযোগ হোৱা নাই।</p>';return;}
-  box.innerHTML='<p class="loading">⏳ পাঠ আৰু ব্যাকৰণ অনুসৰি প্ৰশ্নসমূহ লোড হৈ আছে...</p>';
-  const r=await supabaseClient.from("questions").select("*").order("content_section",{ascending:true}).order("chapter_name",{ascending:true}).order("id",{ascending:false}).limit(1000);
-  if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return;}
-  if(!r.data || !r.data.length){box.innerHTML='<div class="empty">এতিয়াও কোনো প্ৰশ্নোত্তৰ যোগ কৰা হোৱা নাই।</div>';return;}
-  const groups=new Map();
-  for(const x of r.data){
-    const section=String(x.content_section||'lesson').toLowerCase();
-    const type=section==='grammar'?'📝 ব্যাকৰণ':section==='hslc'?'🎯 HSLC':section==='writing'?'✍️ লিখন': '📚 পাঠসমূহ';
-    const topic=String(x.chapter_name||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই').trim()||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই';
-    const key=type+'|||'+topic;
-    if(!groups.has(key))groups.set(key,{type,topic,items:[]});
-    groups.get(key).items.push(x);
-  }
-  const escAttr=v=>String(v??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  box.innerHTML=Array.from(groups.values()).map((g,idx)=>`
-    <details class="admin-topic-group" ${idx===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
-      <summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">${esc(g.type)} — ${esc(g.topic)} <span class="tag">${g.items.length} টা</span></summary>
-      <div style="padding:10px">
-        ${g.items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0">
-          <b>❓ ${esc(x.question||'')}</b>
-          <p style="white-space:pre-wrap;margin:8px 0">📝 ${esc(x.answer||'উত্তৰ দিয়া হোৱা নাই')}</p>
-          <p class="small">ধৰণ: ${esc(x.question_type||'Q&A')} • ID: ${esc(x.id)}</p>
-          <div class="grid"><button class="main-btn edit" onclick="editQuestion(${Number(x.id)})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${Number(x.id)})">🗑️ Delete</button></div>
-        </div>`).join('')}
-      </div>
-    </details>`).join('');
+ const box=document.getElementById('adminQuestionList');if(!box)return;
+ if(!supabaseClient){box.innerHTML='<p class="error">Supabase সংযোগ হোৱা নাই।</p>';return;}
+ box.innerHTML='<p class="loading">⏳ সকলো পাঠ, ব্যাকৰণ আৰু লিখনীৰ বিভাগ লোড হৈ আছে...</p>';
+ const r=await supabaseClient.from('questions').select('*').order('content_section',{ascending:true}).order('chapter_name',{ascending:true}).order('id',{ascending:false}).limit(1000);
+ if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return;}
+ const rows=r.data||[];const filter=document.getElementById('adminListSectionFilter')?.value||'all';
+ const visibleSections=filter==='all'?Object.keys(ADMIN_TOPIC_CATALOG):[filter];
+ const groups=new Map();
+ for(const section of visibleSections){
+   for(const topic of (ADMIN_TOPIC_CATALOG[section]||[])){
+     const key=section+'|||'+topic;groups.set(key,{section,topic,items:[]});
+   }
+ }
+ for(const x of rows){
+   const section=String(x.content_section||'lesson').toLowerCase();if(filter!=='all'&&section!==filter)continue;
+   const topic=String(x.chapter_name||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই').trim()||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই';
+   const key=section+'|||'+topic;
+   if(!groups.has(key))groups.set(key,{section,topic,items:[]});
+   groups.get(key).items.push(x);
+ }
+ const escAttr=v=>String(v??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+ box.innerHTML=Array.from(groups.values()).map((g,idx)=>{
+   const search=escAttr((ADMIN_SECTION_LABELS[g.section]||g.section)+' '+g.topic+' '+g.items.map(y=>(y.question||'')+' '+(y.answer||'')).join(' ')).toLowerCase();
+   const cards=g.items.length?g.items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0"><b>❓ ${esc(x.question||'')}</b><p style="white-space:pre-wrap;margin:8px 0">📝 ${esc(x.answer||'উত্তৰ দিয়া হোৱা নাই')}</p><p class="small">ধৰণ: ${esc(x.question_type||'Q&A')} • ID: ${esc(x.id)}</p><div class="grid"><button class="main-btn edit" onclick="editQuestion(${Number(x.id)})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${Number(x.id)})">🗑️ Delete</button></div></div>`).join(''):`<p class="small" style="padding:8px">এই বিষয়ত এতিয়াও প্ৰশ্নোত্তৰ যোগ কৰা হোৱা নাই।</p><button class="main-btn" onclick="prepareQuestionForTopic('${g.section}','${String(g.topic).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">➕ এই বিষয়ত প্ৰশ্নোত্তৰ যোগ কৰক</button>`;
+   return `<details class="admin-topic-group" data-search="${search}" ${idx===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden"><summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">${esc(ADMIN_SECTION_LABELS[g.section]||g.section)} — ${esc(g.topic)} <span class="tag">${g.items.length} টা</span></summary><div style="padding:10px">${cards}</div></details>`;
+ }).join('')||'<div class="empty">এই বিভাগত কোনো বিষয় নাই।</div>';
+}
+function filterAdminQuestionCards(){
+  const term=(document.getElementById("adminListSearch")?.value||"").trim().toLowerCase();
+  document.querySelectorAll("#adminQuestionList .admin-topic-group").forEach(card=>{
+    const hay=card.getAttribute("data-search")||"";
+    card.style.display=(!term||hay.includes(term))?"":"none";
+    if(term&&hay.includes(term))card.open=true;
+  });
 }
 async function editQuestion(id){
   const r=await supabaseClient.from("questions").select("*").eq("id",id).single();
@@ -1035,10 +1099,11 @@ async function editQuestion(id){
   document.getElementById("adminSubject").value=x.subject||"Assamese";
   document.getElementById("adminContentSection").value=x.content_section||"lesson";
   adminContentSectionChanged();
-  if((x.content_section||"lesson")==="lesson"){
-    document.getElementById("adminChapter").value=x.chapter_name||"";
-    await loadLessonTtsSetting();
-  }else document.getElementById("adminTopic").value=x.chapter_name||"";
+  prepareQuestionForTopic(x.content_section||"lesson",x.chapter_name||"");
+  document.getElementById("editId").value=x.id||"";
+  document.getElementById("adminQuestion").value=x.question||"";
+  document.getElementById("adminAnswer").value=x.answer||"";
+  if((x.content_section||"lesson")==="lesson") await loadLessonTtsSetting();
   document.getElementById("adminOptionA").value=x.option_a||"";
   document.getElementById("adminOptionB").value=x.option_b||"";
   document.getElementById("adminOptionC").value=x.option_c||"";

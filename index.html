@@ -412,7 +412,17 @@
 <option value="Long Answer">ৰচনাধৰ্মী উত্তৰ</option>
 </select><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"></div>
 <div class="admin-chapter-box">
-<label for="adminChapter">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
+<label for="adminContentSectionQuick">📚 <b>বিষয়বস্তুৰ বিভাগ বাছনি কৰক</b></label>
+<select id="adminContentSectionQuick" onchange="document.getElementById('adminContentSection').value=this.value;adminContentSectionChanged()">
+<option value="lesson">📖 পাঠসমূহ লগত</option>
+<option value="grammar">📝 ব্যাকৰণ</option>
+<option value="writing">✍️ ৰচনা</option>
+<option value="application">📄 দৰ্খাস্ত</option>
+<option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option>
+<option value="report">📰 প্ৰতিবেদন</option>
+<option value="hslc">🎯 HSLC</option>
+</select>
+<label for="adminChapter" style="display:block;margin-top:10px">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
 <select id="adminChapter" onchange="loadLessonTtsSetting();loadLessonAudioAdminControls()"><option value="">📚 পাঠ বাছনি কৰক</option><option value="বৰগীত">বৰগীত</option><option value="জিকিৰ">জিকিৰ</option><option value="প্ৰশস্তি">প্ৰশস্তি</option><option value="মই অসমীয়া">মই অসমীয়া</option><option value="দৃশ্যান্তৰ">দৃশ্যান্তৰ</option><option value="উদ্যোগী হওঁ আহাঁ">উদ্যোগী হওঁ আহাঁ</option><option value="ভাৰতীয় সংস্কৃতি">ভাৰতীয় সংস্কৃতি</option><option value="অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি">অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</option><option value="ইণ্টাৰনেটৰ তিতা-মিঠা">ইণ্টাৰনেটৰ তিতা-মিঠা</option><option value="অৰুণিমা সিনহা">অৰুণিমা সিনহা</option><option value="অৰণ্যযাত্ৰা">অৰণ্যযাত্ৰা</option><option value="পাৰস্যত এভুমুকি">পাৰস্যত এভুমুকি</option><option value="কানাইৰ চাতুৰী">কানাইৰ চাতুৰী</option><option value="ধৰ ঝাড়ু ধৰ ভাই">ধৰ ঝাড়ু ধৰ ভাই</option><option value="বিষাদ যোগ">বিষাদ যোগ</option><option value="প্ৰাচীন ভাৰতীয় শিক্ষা">প্ৰাচীন ভাৰতীয় শিক্ষা</option></select></div><div class="grid" style="margin-top:8px"><input id="adminOptionA" placeholder="বিকল্প A (বহু-বিকল্পী)"><input id="adminOptionB" placeholder="বিকল্প B (বহু-বিকল্পী)"><input id="adminOptionC" placeholder="বিকল্প C (বহু-বিকল্পী)"><input id="adminOptionD" placeholder="বিকল্প D (বহু-বিকল্পী)"></div><input id="adminCorrect" placeholder="শুদ্ধ উত্তৰ (বহু-বিকল্পী)" style="margin-top:8px"><input id="adminSource" placeholder="উৎস" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="saveQuestion()">💾 Save</button><button class="secondary" onclick="clearAdminForm()">🧹 Clear</button></div><div id="adminSaveStatus"></div><div class="card student-q-admin" style="margin-top:18px">
 <h3>📩 Student → Admin: পাঠ ভিত্তিক প্ৰশ্ন</h3>
 <div id="studentQuestionAdminList"></div>
@@ -892,6 +902,8 @@ async function getSectionTtsEnabled(section){return getSettingBool(sectionTtsKey
 
 function adminContentSectionChanged(){
   const section=document.getElementById("adminContentSection").value;
+  const quickSection=document.getElementById("adminContentSectionQuick");
+  if(quickSection && quickSection.value!==section) quickSection.value=section;
   const lessonBox=document.getElementById("lessonTtsControl");
   const topicWrap=document.getElementById("adminTopicWrap");
   lessonBox.style.display=section==="lesson"?"block":"none";
@@ -1091,6 +1103,7 @@ function clearAdminForm(){
   document.getElementById("adminClass").value="Class 10";
   document.getElementById("adminSubject").value="Assamese";
   document.getElementById("adminContentSection").value="lesson";
+  if(document.getElementById("adminContentSectionQuick"))document.getElementById("adminContentSectionQuick").value="lesson";
   document.getElementById("adminTopicWrap").style.display="none";
   document.getElementById("lessonTtsControl").style.display="block";
   document.getElementById("adminChapter").value="";

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="as">
-<!-- V21: Added all requested grammar topic links and Admin topic suggestions. -->
+<!-- V23: Seed all requested grammar topics in Admin question manager, including empty topics. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-<title>অসমীয়া সহায়িকা 10 + HSLC — V21 Grammar Topics</title>
+<title>অসমীয়া সহায়িকা 10 + HSLC — V23 Grammar Topics Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1034,6 +1034,11 @@ const ADMIN_LESSON_TOPICS=[
   'অৰুণিমা সিনহা','অৰণ্যযাত্ৰা','পাৰস্যত এভুমুকি','কানাইৰ চাতুৰী',
   'ধৰ ঝাড়ু ধৰ ভাই','বিষাদ যোগ','প্ৰাচীন ভাৰতীয় শিক্ষা'
 ];
+const ADMIN_GRAMMAR_TOPICS=[
+  'সন্ধি','সমাস','উপসৰ্গ','অনুসৰ্গ','প্ৰত্যয়','সমাৰ্থক শব্দ','বিপৰীত শব্দ',
+  'জতুৱা ঠাঁচ','বাক্য পৰিৱৰ্তন কৰা','ছন্দ','এটা শব্দত প্ৰকাশ কৰা',
+  'যতি চিহ্ন বহুৱা','বাক্য শুদ্ধকৈ লিখা'
+];
 function filterAdminQuestions(){
   const section=(document.getElementById('adminFilterSection')?.value||'').toLowerCase();
   const topic=(document.getElementById('adminFilterTopic')?.value||'').trim().toLocaleLowerCase();
@@ -1057,6 +1062,9 @@ function filterAdminQuestions(){
     // Seed all lesson topics first so even lessons with zero saved Q&A appear in Admin.
     if(sec==='lesson'){
       ADMIN_LESSON_TOPICS.forEach(topicName=>groups.set(topicName,[]));
+    }else if(sec==='grammar'){
+      // Show every requested grammar topic even before its first Q&A is saved.
+      ADMIN_GRAMMAR_TOPICS.forEach(topicName=>groups.set(topicName,[]));
     }
     for(const x of sectionRows){
       const topicName=String(x.chapter_name||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই').trim()||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই';
@@ -1090,7 +1098,7 @@ async function loadAdminQuestions(){
   const r=await supabaseClient.from('questions').select('*').order('content_section',{ascending:true}).order('chapter_name',{ascending:true}).order('id',{ascending:false}).limit(1000);
   if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return;}
   adminQuestionCache=r.data||[];
-  if(!adminQuestionCache.length){box.innerHTML='<div class="empty">এতিয়াও কোনো প্ৰশ্নোত্তৰ যোগ কৰা হোৱা নাই।</div>';const c=document.getElementById('adminQuestionCount');if(c)c.textContent='';return;}
+  // Keep all known lesson and grammar topics visible even if the database is empty.
   filterAdminQuestions();
 }
 async function editQuestion(id){

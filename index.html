@@ -428,7 +428,7 @@
 <div id="studentQuestionAdminList"></div>
 </div>
 <h3 style="margin-top:20px">📋 বিভাগ অনুসৰি প্ৰশ্নোত্তৰ পৰিচালনা</h3>
-<p class="small">প্ৰতিটো পাঠ/ব্যাকৰণ/লিখন বিভাগৰ প্ৰশ্নোত্তৰ পৃথকে চাওক। প্ৰয়োজন অনুসৰি Search, Edit বা Delete কৰক।</p>
+<p class="small">পাঠসমূহ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC — সকলো বিভাগ ইয়াত পৃথকে দেখিব। প্ৰশ্ন নাথাকিলেও বিভাগৰ নাম থাকিব; প্ৰশ্নোত্তৰ যোগ কৰিলে ইয়াত দেখুৱাব আৰু Edit/Delete কৰিব পাৰিব।</p>
 <div class="admin-list-filters" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin:10px 0">
   <select id="adminFilterSection" aria-label="বিভাগ অনুসৰি ফিল্টাৰ" onchange="filterAdminQuestions()">
     <option value="">সকলো বিভাগ</option><option value="lesson">📚 পাঠসমূহ</option><option value="grammar">📝 ব্যাকৰণ</option><option value="writing">✍️ ৰচনা</option><option value="application">📄 দৰ্খাস্ত</option><option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option><option value="report">📰 প্ৰতিবেদন</option><option value="hslc">🎯 HSLC</option>
@@ -1019,6 +1019,7 @@ function adminSectionLabel(section){
   const labels={lesson:'📚 পাঠসমূহ',grammar:'📝 ব্যাকৰণ',writing:'✍️ ৰচনা',application:'📄 দৰ্খাস্ত',expansion:'💡 ভাব সম্প্ৰসাৰণ',report:'📰 প্ৰতিবেদন',hslc:'🎯 HSLC'};
   return labels[String(section||'lesson').toLowerCase()]||'📚 '+String(section||'অন্যান্য');
 }
+const ADMIN_SECTION_ORDER=['lesson','grammar','writing','application','expansion','report','hslc'];
 function filterAdminQuestions(){
   const section=(document.getElementById('adminFilterSection')?.value||'').toLowerCase();
   const topic=(document.getElementById('adminFilterTopic')?.value||'').trim().toLocaleLowerCase();
@@ -1032,24 +1033,33 @@ function filterAdminQuestions(){
   const count=document.getElementById('adminQuestionCount');
   if(count)count.textContent=`মুঠ ${adminQuestionCache.length} টা প্ৰশ্নোত্তৰৰ ভিতৰত ${rows.length} টা দেখুওৱা হৈছে।`;
   const box=document.getElementById('adminQuestionList');if(!box)return;
-  if(!rows.length){box.innerHTML='<div class="empty">এই Filter-ত কোনো প্ৰশ্নোত্তৰ পোৱা নগ’ল।</div>';return;}
-  const groups=new Map();
-  for(const x of rows){
-    const sec=String(x.content_section||'lesson').toLowerCase();
-    const topicName=String(x.chapter_name||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই').trim()||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই';
-    const key=sec+'|||'+topicName;
-    if(!groups.has(key))groups.set(key,{section:sec,label:adminSectionLabel(sec),topic:topicName,items:[]});
-    groups.get(key).items.push(x);
-  }
-  box.innerHTML=Array.from(groups.values()).map((g,idx)=>`
-    <details class="admin-topic-group" ${idx===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
-      <summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">${esc(g.label)} — ${esc(g.topic)} <span class="tag">${g.items.length} টা</span></summary>
-      <div style="padding:10px">${g.items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0">
-        <b>❓ ${esc(x.question||'')}</b><p style="white-space:pre-wrap;margin:8px 0">📝 ${esc(x.answer||'উত্তৰ দিয়া হোৱা নাই')}</p>
-        <p class="small">বিভাগ: ${esc(g.label)} • ধৰণ: ${esc(x.question_type||'Q&A')} • ID: ${esc(x.id)}</p>
-        <div class="grid"><button class="main-btn edit" onclick="editQuestion(${Number(x.id)})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${Number(x.id)})">🗑️ Delete</button></div>
-      </div>`).join('')}</div>
-    </details>`).join('');
+  // Show every supported section in the manager, even when it has no records yet.
+  // If the user searches by topic/question, only show matching records and their section.
+  if((topic||query)&&!rows.length){box.innerHTML='<div class="empty">এই Search/Filter-ত কোনো প্ৰশ্নোত্তৰ পোৱা নগ’ল।</div>';return;}
+  const sectionsToShow=section?[section]:(topic||query?[...new Set(rows.map(x=>String(x.content_section||'lesson').toLowerCase()))]:ADMIN_SECTION_ORDER);
+  const sectionBlocks=sectionsToShow.map((sec,sectionIndex)=>{
+    const sectionRows=rows.filter(x=>String(x.content_section||'lesson').toLowerCase()===sec);
+    const groups=new Map();
+    for(const x of sectionRows){
+      const topicName=String(x.chapter_name||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই').trim()||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই';
+      if(!groups.has(topicName))groups.set(topicName,[]);
+      groups.get(topicName).push(x);
+    }
+    const groupHtml=Array.from(groups.entries()).map(([topicName,items],idx)=>`
+      <details class="admin-topic-group" ${sectionIndex===0&&idx===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
+        <summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">📚 ${esc(topicName)} <span class="tag">${items.length} টা</span></summary>
+        <div style="padding:10px">${items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0">
+          <b>❓ ${esc(x.question||'')}</b><p style="white-space:pre-wrap;margin:8px 0">📝 ${esc(x.answer||'উত্তৰ দিয়া হোৱা নাই')}</p>
+          <p class="small">বিভাগ: ${esc(adminSectionLabel(sec))} • ধৰণ: ${esc(x.question_type||'Q&A')} • ID: ${esc(x.id)}</p>
+          <div class="grid"><button class="main-btn edit" onclick="editQuestion(${Number(x.id)})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${Number(x.id)})">🗑️ Delete</button></div>
+        </div>`).join('')}</div>
+      </details>`).join('');
+    return `<details class="admin-section-group" ${section||sectionIndex===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
+      <summary style="padding:13px;background:#eaf6fb;cursor:pointer;font-weight:700;line-height:1.7">${esc(adminSectionLabel(sec))} <span class="tag">${sectionRows.length} টা</span></summary>
+      <div style="padding:8px">${groupHtml||'<div class="empty">এই বিভাগত এতিয়াও প্ৰশ্নোত্তৰ যোগ কৰা হোৱা নাই। ওপৰৰ ফৰ্মত এই বিভাগ বাছি প্ৰশ্নোত্তৰ Save কৰক।</div>'}</div>
+    </details>`;
+  }).join('');
+  box.innerHTML=sectionBlocks||'<div class="empty">এই Filter-ত কোনো প্ৰশ্নোত্তৰ পোৱা নগ’ল।</div>';
 }
 function resetAdminQuestionFilters(){
   ['adminFilterSection','adminFilterTopic','adminFilterText'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});

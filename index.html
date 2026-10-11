@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="as">
+<!-- V21: Added all requested grammar topic links and Admin topic suggestions. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-<title>অসমীয়া সহায়িকা 10 + HSLC</title>
+<title>অসমীয়া সহায়িকা 10 + HSLC — V21 Grammar Topics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -297,18 +298,19 @@
 <h2>📝 অসমীয়া ব্যাকৰণ</h2>
 <p>Admin Panel-ৰ পৰা যোগ কৰা ব্যাকৰণৰ প্ৰশ্নোত্তৰ ইয়াত দেখা যাব।</p>
 <div class="grid">
-<button class="secondary" onclick="openContentTopic('grammar','সন্ধি')">সন্ধি</button>
-<button class="secondary" onclick="openContentTopic('grammar','সমাস')">সমাস</button>
-<button class="secondary" onclick="openContentTopic('grammar','উপসৰ্গ')">উপসৰ্গ</button>
-<button class="secondary" onclick="openContentTopic('grammar','প্ৰত্যয়')">প্ৰত্যয়</button>
-<button class="secondary" onclick="openContentTopic('grammar','সমাৰ্থক শব্দ')">সমাৰ্থক শব্দ</button>
-<button class="secondary" onclick="openContentTopic('grammar','বিপৰীত শব্দ')">বিপৰীত শব্দ</button>
-<button class="secondary" onclick="openContentTopic('grammar','জতুৱা ঠাঁচ')">জতুৱা ঠাঁচ</button>
-<button class="secondary" onclick="openContentTopic('grammar','বাক্য')">বাক্য</button>
-<button class="secondary" onclick="openContentTopic('grammar','ৰচনা')">ৰচনা</button>
-<button class="secondary" onclick="openContentTopic('grammar','দৰ্খাস্ত')">দৰ্খাস্ত</button>
-<button class="secondary" onclick="openContentTopic('grammar','ভাব সম্প্ৰসাৰণ')">ভাব সম্প্ৰসাৰণ</button>
-<button class="secondary" onclick="openContentTopic('grammar','প্ৰতিবেদন')">প্ৰতিবেদন</button>
+<button class="secondary" onclick="openContentTopic('grammar','সন্ধি')">🔤 সন্ধি</button>
+<button class="secondary" onclick="openContentTopic('grammar','সমাস')">📚 সমাস</button>
+<button class="secondary" onclick="openContentTopic('grammar','উপসৰ্গ')">🧩 উপসৰ্গ</button>
+<button class="secondary" onclick="openContentTopic('grammar','অনুসৰ্গ')">🧩 অনুসৰ্গ</button>
+<button class="secondary" onclick="openContentTopic('grammar','প্ৰত্যয়')">📝 প্ৰত্যয়</button>
+<button class="secondary" onclick="openContentTopic('grammar','সমাৰ্থক শব্দ')">🔁 সমাৰ্থক শব্দ</button>
+<button class="secondary" onclick="openContentTopic('grammar','বিপৰীত শব্দ')">↔️ বিপৰীত শব্দ</button>
+<button class="secondary" onclick="openContentTopic('grammar','জতুৱা ঠাঁচ')">💬 জতুৱা ঠাঁচ</button>
+<button class="secondary" onclick="openContentTopic('grammar','বাক্য পৰিৱৰ্তন কৰা')">🔄 বাক্য পৰিৱৰ্তন কৰা</button>
+<button class="secondary" onclick="openContentTopic('grammar','ছন্দ')">🎵 ছন্দ</button>
+<button class="secondary" onclick="openContentTopic('grammar','এটা শব্দত প্ৰকাশ কৰা')">📌 এটা শব্দত প্ৰকাশ কৰা</button>
+<button class="secondary" onclick="openContentTopic('grammar','যতি চিহ্ন বহুৱা')">✒️ যতি চিহ্ন বহুৱা</button>
+<button class="secondary" onclick="openContentTopic('grammar','বাক্য শুদ্ধকৈ লিখা')">✅ বাক্য শুদ্ধকৈ লিখা</button>
 </div>
 <div style="margin-top:12px"><button class="main-btn" onclick="openContentSection('grammar','📝 সকলো ব্যাকৰণ')">📚 সকলো যোগ কৰা ব্যাকৰণ</button></div>
 </div></section>
@@ -344,7 +346,12 @@
 
 <div id="adminTopicWrap" style="display:none;margin-top:10px">
 <label for="adminTopic">বিষয় / শিতানৰ নাম</label>
-<input id="adminTopic" placeholder="যেনে: সন্ধি, সমাস, ৰচনা, দৰ্খাস্ত...">
+<input id="adminTopic" list="adminTopicSuggestions" placeholder="বিষয় / শিতান বাছক বা লিখক">
+<datalist id="adminTopicSuggestions">
+<option value="সন্ধি"><option value="সমাস"><option value="উপসৰ্গ"><option value="অনুসৰ্গ"><option value="প্ৰত্যয়"><option value="সমাৰ্থক শব্দ"><option value="বিপৰীত শব্দ"><option value="জতুৱা ঠাঁচ"><option value="বাক্য পৰিৱৰ্তন কৰা"><option value="ছন্দ"><option value="এটা শব্দত প্ৰকাশ কৰা"><option value="যতি চিহ্ন বহুৱা"><option value="বাক্য শুদ্ধকৈ লিখা">
+<option value="ৰচনা"><option value="দৰ্খাস্ত"><option value="ভাব সম্প্ৰসাৰণ"><option value="প্ৰতিবেদন"><option value="MCQ"><option value="ব্যাকৰণ">
+</datalist>
+<p class="small">ব্যাকৰণৰ বাবে সন্ধি, সমাস, উপসৰ্গ, অনুসৰ্গ, প্ৰত্যয়, সমাৰ্থক শব্দ, বিপৰীত শব্দ, জতুৱা ঠাঁচ, বাক্য পৰিৱৰ্তন, ছন্দ, এটা শব্দত প্ৰকাশ, যতি চিহ্ন আৰু বাক্য শুদ্ধকৈ লিখা বাছনি কৰিব পাৰিব।</p>
 </div>
 </div>
 
@@ -1020,6 +1027,13 @@ function adminSectionLabel(section){
   return labels[String(section||'lesson').toLowerCase()]||'📚 '+String(section||'অন্যান্য');
 }
 const ADMIN_SECTION_ORDER=['lesson','grammar','writing','application','expansion','report','hslc'];
+// Complete Class 10 Assamese lesson list shown on the student Chapters page.
+const ADMIN_LESSON_TOPICS=[
+  'বৰগীত','জিকিৰ','প্ৰশস্তি','মই অসমীয়া','দৃশ্যান্তৰ','উদ্যোগী হওঁ আহাঁ',
+  'ভাৰতীয় সংস্কৃতি','অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি','ইণ্টাৰনেটৰ তিতা-মিঠা',
+  'অৰুণিমা সিনহা','অৰণ্যযাত্ৰা','পাৰস্যত এভুমুকি','কানাইৰ চাতুৰী',
+  'ধৰ ঝাড়ু ধৰ ভাই','বিষাদ যোগ','প্ৰাচীন ভাৰতীয় শিক্ষা'
+];
 function filterAdminQuestions(){
   const section=(document.getElementById('adminFilterSection')?.value||'').toLowerCase();
   const topic=(document.getElementById('adminFilterTopic')?.value||'').trim().toLocaleLowerCase();
@@ -1040,6 +1054,10 @@ function filterAdminQuestions(){
   const sectionBlocks=sectionsToShow.map((sec,sectionIndex)=>{
     const sectionRows=rows.filter(x=>String(x.content_section||'lesson').toLowerCase()===sec);
     const groups=new Map();
+    // Seed all lesson topics first so even lessons with zero saved Q&A appear in Admin.
+    if(sec==='lesson'){
+      ADMIN_LESSON_TOPICS.forEach(topicName=>groups.set(topicName,[]));
+    }
     for(const x of sectionRows){
       const topicName=String(x.chapter_name||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই').trim()||'নাম নিৰ্ধাৰণ কৰা হোৱা নাই';
       if(!groups.has(topicName))groups.set(topicName,[]);
@@ -1047,12 +1065,12 @@ function filterAdminQuestions(){
     }
     const groupHtml=Array.from(groups.entries()).map(([topicName,items],idx)=>`
       <details class="admin-topic-group" ${sectionIndex===0&&idx===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
-        <summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">📚 ${esc(topicName)} <span class="tag">${items.length} টা</span></summary>
-        <div style="padding:10px">${items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0">
+        <summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">${sec==='lesson'?'📚':'📌'} ${esc(topicName)} <span class="tag">${items.length} টা</span></summary>
+        <div style="padding:10px">${items.length?items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0">
           <b>❓ ${esc(x.question||'')}</b><p style="white-space:pre-wrap;margin:8px 0">📝 ${esc(x.answer||'উত্তৰ দিয়া হোৱা নাই')}</p>
           <p class="small">বিভাগ: ${esc(adminSectionLabel(sec))} • ধৰণ: ${esc(x.question_type||'Q&A')} • ID: ${esc(x.id)}</p>
           <div class="grid"><button class="main-btn edit" onclick="editQuestion(${Number(x.id)})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${Number(x.id)})">🗑️ Delete</button></div>
-        </div>`).join('')}</div>
+        </div>`).join(''):`<div class="empty">এই পাঠত এতিয়াও প্ৰশ্নোত্তৰ যোগ কৰা হোৱা নাই। ওপৰৰ ফৰ্মত এই পাঠ বাছনি কৰি প্ৰশ্নোত্তৰ Save কৰক।</div>`}</div>
       </details>`).join('');
     return `<details class="admin-section-group" ${section||sectionIndex===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
       <summary style="padding:13px;background:#eaf6fb;cursor:pointer;font-weight:700;line-height:1.7">${esc(adminSectionLabel(sec))} <span class="tag">${sectionRows.length} টা</span></summary>

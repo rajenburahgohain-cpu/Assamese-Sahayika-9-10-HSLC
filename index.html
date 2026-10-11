@@ -559,10 +559,9 @@ async function openLesson(chapter){
     loadOnlineLesson(chapter);
     return;
   }
-  const first=r.data[0];
-  const summary=String(first.answer||first.correct_answer||"").trim();
-  let top=`<div class="lesson-summary-card"><h3>📌 পাঠৰ মূলভাৱ / সাৰাংশ</h3><div class="answer">${esc(summary||"মূলভাৱ/সাৰাংশ এতিয়াও সংৰক্ষণ কৰা হোৱা নাই।")}</div>`;
-  top+=`</div><h3 style="margin-top:14px">❓ প্ৰশ্নোত্তৰ</h3>`;
+  // V24: Do not repeat the first database answer in a separate summary card.
+  // Show each saved Q&A only once in the normal question-answer list.
+  const top=`<h3 style="margin-top:14px">❓ প্ৰশ্নোত্তৰ</h3>`;
   document.getElementById("lessonQuestions").innerHTML=top+renderResults(r.data,{lessonTtsEnabled:ttsOn,questionAudioEnabled:audioCtl.question,answerAudioEnabled:audioCtl.answer});
 }
 

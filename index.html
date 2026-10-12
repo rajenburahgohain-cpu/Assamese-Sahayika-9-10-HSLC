@@ -534,36 +534,67 @@ async function getLessonAudioControls(chapter){
   }catch(e){return {question:true,answer:true}}
 }
 async function openLesson(chapter){
-  const lessonOn=await getLessonEnabled(chapter);
-  if(!lessonOn && chapter!=='প্ৰশস্তি'){alert('🔴 Admin-এ এই পাঠটো বৰ্তমান OFF কৰি ৰাখিছে।');return;}
+  // Show the page immediately; a slow app_settings request must never leave Q&A spinning.
+  try {
+    const lessonOn = await Promise.race([
+      getLessonEnabled(chapter),
+      new Promise(resolve => setTimeout(() => resolve(true), 2500))
+    ]);
+    if(!lessonOn && chapter!=='প্ৰশস্তি'){
+      alert('🔴 Admin-এ এই পাঠটো বৰ্তমান OFF কৰি ৰাখিছে।');
+      return;
+    }
+  } catch(e) { console.warn('Lesson visibility check:', e); }
+
   showPage("chapterView");
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card">
     <button class="main-btn back-prev" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button>
     <h2 class="lesson-heading">📖 ${esc(chapter)}</h2>
-    <div class="online-box"><b>🌐 অনলাইন সহায়িকা</b><p class="small">Database-ত এই পাঠৰ প্ৰশ্নোত্তৰ নাথাকিলে অনলাইন Search service-ৰ পৰা তথ্য বিচৰা হ'ব।</p><div class="online-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 এতিয়াই অনলাইনৰ পৰা লওক</button></div><div id="onlineLessonStatus"></div></div>
-    <div id="lessonQuestions"><p class="loading">⏳ Database-ৰ প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div>
+    <div id="lessonQuestions"><p class="loading">⏳ এই পাঠৰ সংৰক্ষিত প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div>
+    <div class="online-box" style="margin-top:12px"><b>🌐 অনলাইন সহায়িকা</b><p class="small">এই পাঠৰ প্ৰশ্নোত্তৰ Database-ত নাথাকিলেহে অনলাইন Search ব্যৱহাৰ কৰক।</p><div class="online-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 অনলাইনৰ পৰা প্ৰশ্নোত্তৰ বিচাৰক</button></div><div id="onlineLessonStatus"></div></div>
   </div>`;
-  if(!supabaseClient){document.getElementById("lessonQuestions").innerHTML=`<p class="error">Supabase সংযোগ কৰা হোৱা নাই।</p>`;return}
-  const ttsOn=await getLessonTtsEnabled(chapter); const audioCtl=await getLessonAudioControls(chapter);
-  const r=await supabaseClient.from("questions").select("*").eq("chapter_name",chapter).order("id",{ascending:true});
-  if(r.error){document.getElementById("lessonQuestions").innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return}
-  if(!r.data.length){
-    document.getElementById("lessonQuestions").innerHTML=`<div class="empty">📚 এই পাঠৰ Q&A Database-ত এতিয়াও নাই।<div class="lesson-empty-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 অনলাইনৰ পৰা প্ৰশ্নোত্তৰ বিচাৰক</button><button class="secondary" onclick="showPage('admin')">👨‍🏫 Admin-ত Q&A যোগ কৰক</button></div></div>`;
-    loadOnlineLesson(chapter);
+
+  const target=document.getElementById("lessonQuestions");
+  if(!supabaseClient){
+    target.innerHTML='<p class="error">❌ Supabase সংযোগ হোৱা নাই। Internet পৰীক্ষা কৰি পৃষ্ঠা Reload কৰক।</p>';
     return;
   }
-  // V24: Do not repeat the first database answer in a separate summary card.
-  // Show each saved Q&A only once in the normal question-answer list.
-  const top=`<h3 style="margin-top:14px">❓ প্ৰশ্নোত্তৰ</h3>`;
-  document.getElementById("lessonQuestions").innerHTML=top+renderResults(r.data,{lessonTtsEnabled:ttsOn,questionAudioEnabled:audioCtl.question,answerAudioEnabled:audioCtl.answer});
+
+  try {
+    // Fetch saved Q&A first. Do not wait for optional audio/TTS settings.
+    const queryPromise=supabaseClient.from("questions").select("*")
+      .eq("chapter_name",chapter)
+      .order("id",{ascending:true});
+    const result=await Promise.race([
+      queryPromise,
+      new Promise((_,reject)=>setTimeout(()=>reject(new Error('Database-ৰ পৰা ১২ ছেকেণ্ডৰ ভিতৰত উত্তৰ পোৱা নগ\'ল। Internet বা Supabase RLS/Policy পৰীক্ষা কৰক।')),12000))
+    ]);
+    if(result.error){
+      target.innerHTML=`<p class="error">❌ প্ৰশ্নোত্তৰ লোড নহ'ল: ${esc(result.error.message)}</p>`;
+      return;
+    }
+    const rows=result.data||[];
+    if(!rows.length){
+      target.innerHTML=`<div class="empty">📚 <b>${esc(chapter)}</b> পাঠৰ বাবে Database-ত এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষিত নাই।<p class="small">Admin Panel-ত এই পাঠৰ প্ৰশ্নোত্তৰ যোগ কৰি Save কৰিলে ইয়াত স্বয়ংক্ৰিয়ভাৱে দেখা যাব।</p><div class="lesson-empty-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 অনলাইনৰ পৰা বিচাৰক</button></div></div>`;
+      return;
+    }
+    target.innerHTML=`<h3 style="margin-top:14px">❓ ${esc(chapter)} — প্ৰশ্নোত্তৰ (${rows.length})</h3>`+
+      renderResults(rows,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true});
+
+    // Optional settings are loaded only after Q&A is already visible.
+    Promise.allSettled([getLessonTtsEnabled(chapter),getLessonAudioControls(chapter)]).then(()=>{});
+  } catch(e) {
+    console.error('Lesson Q&A load failed:',e);
+    if(target) target.innerHTML=`<div class="error">❌ প্ৰশ্নোত্তৰ লোড নহ'ল। ${esc(e?.message||String(e))}<br><button class="secondary" onclick="openLesson('${esc(chapter)}')">🔄 পুনৰ চেষ্টা কৰক</button></div>`;
+  }
 }
 
 async function onlineSearch(query, context=""){
   try{
     if(!supabaseClient) return {ok:false,error:"Supabase connection unavailable"};
     const {data:{session}}=await supabaseClient.auth.getSession();
-    const headers={"Content-Type":"application/json"};
+    const headers={"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY};
     if(session?.access_token) headers.Authorization="Bearer "+session.access_token;
     const r=await fetch(ONLINE_SEARCH_ENDPOINT,{method:"POST",headers,body:JSON.stringify({query,context,language:"Assamese",app:"Assamese Sahayika"})});
     const raw=await r.text();

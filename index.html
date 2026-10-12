@@ -552,7 +552,7 @@ async function openLesson(chapter){
     <button class="main-btn back-prev" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button>
     <h2 class="lesson-heading">📖 ${esc(chapter)}</h2>
     <div id="lessonQuestions"><p class="loading">⏳ এই পাঠৰ সংৰক্ষিত প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div>
-    <div class="online-box" style="margin-top:12px"><b>🌐 অনলাইন সহায়িকা</b><p class="small">এই পাঠৰ প্ৰশ্নোত্তৰ Database-ত নাথাকিলেহে অনলাইন Search ব্যৱহাৰ কৰক।</p><div class="online-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 অনলাইনৰ পৰা প্ৰশ্নোত্তৰ বিচাৰক</button></div><div id="onlineLessonStatus"></div></div>
+    <div class="online-box" style="margin-top:12px"><b>🌐 অনলাইন প্ৰশ্নোত্তৰ Search</b><p class="small">ইয়াত পাঠৰ প্ৰশ্ন বা বিষয় লিখি অনলাইনত বিচাৰক। ফলাফলৰ উৎসৰ লিংক খোলিব পাৰিব।</p><label for="onlineLessonQuery" class="small">প্ৰশ্ন বা Search বিষয়</label><input id="onlineLessonQuery" type="search" placeholder="যেনে: ${esc(chapter)} পাঠৰ গুৰুত্বপূৰ্ণ প্ৰশ্নোত্তৰ" style="width:100%;box-sizing:border-box;margin-top:6px;padding:11px;border:1px solid #cbd5e1;border-radius:9px" onkeydown="if(event.key==='Enter'){event.preventDefault();loadOnlineLesson('${esc(chapter)}')}"/><div class="online-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🔎 অনলাইনত প্ৰশ্নোত্তৰ বিচাৰক</button></div><div id="onlineLessonStatus" aria-live="polite"></div><div id="onlineLessonResults"></div></div>
   </div>`;
 
   const target=document.getElementById("lessonQuestions");
@@ -612,17 +612,21 @@ function renderOnlineResults(results){
 
 async function loadOnlineLesson(chapter){
   const status=document.getElementById("onlineLessonStatus");
-  const target=document.getElementById("lessonQuestions");
-  if(status) status.innerHTML='<p class="loading">🌐 অনলাইনৰ পৰা তথ্য বিচাৰি থকা হৈছে...</p>';
-  const q=`অসমীয়া দশম শ্ৰেণী পাঠ "${chapter}" প্ৰশ্নোত্তৰ মূলভাৱ গুৰুত্বপূৰ্ণ প্ৰশ্ন`; 
+  const resultsBox=document.getElementById("onlineLessonResults");
+  const input=document.getElementById("onlineLessonQuery");
+  const typedQuery=(input?.value||"").trim();
+  const q=typedQuery || `অসমীয়া দশম শ্ৰেণী পাঠ "${chapter}" প্ৰশ্নোত্তৰ মূলভাৱ গুৰুত্বপূৰ্ণ প্ৰশ্ন`;
+  if(!typedQuery && input) input.value=q;
+  if(status) status.innerHTML='<p class="loading">🌐 অনলাইনত আপোনাৰ প্ৰশ্ন বিচাৰি থকা হৈছে...</p>';
+  if(resultsBox) resultsBox.innerHTML='';
   const r=await onlineSearch(q,chapter);
   if(!r.ok){
-    if(status) status.innerHTML=`<p class="error">❌ Online Search সংযোগ সক্ৰিয় নহয়। ${esc(r.error||"")}<br><span class="small">Supabase Edge Function <b>online-search</b> deploy কৰিব লাগিব।</span></p>`;
+    if(status) status.innerHTML=`<p class="error">❌ Search কৰিব পৰা নগ'ল: ${esc(r.error||"অজ্ঞাত সমস্যা")}<br>Internet সংযোগ পৰীক্ষা কৰি পুনৰ চেষ্টা কৰক।</p>`;
     return;
   }
-  if(status) status.innerHTML="<p class='success'>✅ Online result পোৱা গ'ল।</p>";
-  const html=renderOnlineResults(r.results||r.data||[]);
-  if(target) target.insertAdjacentHTML("afterbegin",`<div class="card"><h3>🌐 Online Search Result</h3>${html}</div>`);
+  const rows=r.results||r.data||[];
+  if(status) status.innerHTML=rows.length?`<p class="success">✅ ${rows.length}টা অনলাইন ফলাফল পোৱা গ'ল (${esc(r.provider||"Online Search")})।</p>`:`<p class="error">এই প্ৰশ্নৰ বাবে অনলাইন ফলাফল পোৱা নগ'ল। প্ৰশ্নটো অলপ সলনি কৰি পুনৰ বিচাৰক।</p>`;
+  if(resultsBox) resultsBox.innerHTML=renderOnlineResults(rows);
 }
 
 async function openSyllabusGroup(group){

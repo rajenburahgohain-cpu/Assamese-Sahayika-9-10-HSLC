@@ -227,7 +227,6 @@
 <button class="n-lessons" data-section-page="chapters" data-nav-section="chapters" onclick="showPage('chapters')"><span>📚</span>পাঠসমূহ</button>
 <button class="n-grammar" data-section-page="grammar" data-nav-section="grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
 <button class="n-hslc" data-section-page="hslc" data-nav-section="hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>
-<button class="n-qa" onclick="showPage('questions')"><span>❓</span>প্ৰশ্নোত্তৰ</button>
 <button class="n-admin" onclick="showPage('admin')"><span>👨‍🏫</span>Admin</button>
 <button class="n-share" onclick="openReferralBox()"><span>📤</span>Share & Invite</button>
 <button class="n-privacy" onclick="showPage('privacy')"><span>🔒</span>Privacy</button>
@@ -330,14 +329,14 @@
 <button class="main-btn" onclick="openContentTopic('hslc','ৰচনা')">✍️ ৰচনা</button>
 <button class="main-btn" onclick="openContentTopic('hslc','ব্যাকৰণ')">📝 ব্যাকৰণ</button>
 </div></div></section>
-<section id="questions" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>❓ প্ৰশ্নোত্তৰ সহায়িকা</h2>
+<section id="admin" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>👨‍🏫 Admin Panel</h2><div id="adminLoginBox"><p>প্ৰশ্নোত্তৰ যোগ/সম্পাদনা কৰিবলৈ Admin account-ৰে Login কৰক।</p><input id="adminEmail" type="email" placeholder="Admin email"><input id="adminPassword" type="password" placeholder="Password" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="adminLogin()">🔐 Login</button><button class="secondary" onclick="adminLogout()">Logout</button></div><div id="adminAuthStatus"></div></div>
+<div id="adminPanel" class="hidden">
+<div class="card" id="adminQuestionHelperFeature" style="border-top:5px solid #1976d2"><h2>❓ প্ৰশ্নোত্তৰ সহায়িকা</h2>
 <div class="card student-q-card">
 <h3>📩 শিক্ষকলৈ পাঠ ভিত্তিক প্ৰশ্ন প্ৰেৰণ</h3>
 <div id="studentQuestionFeature"></div>
-</div><div class="notice"><b>📚 Database + AI</b><br><br>প্ৰথমে Supabase <b>questions</b> table-ত থকা প্ৰশ্নোত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা হ'ব।</div><br><textarea id="questionInput" placeholder="আপোনাৰ প্ৰশ্ন লিখক...&#10;উদাহৰণ: সমাস কাক বোলে?"></textarea><br><br><div class="grid"><button class="main-btn" onclick="askQuestion()">🔍 উত্তৰ বিচাৰক</button><button class="main-btn voice-btn" id="questionVoiceButton" onclick="startQuestionVoice()">🎙️ Voice</button></div><div id="questionResult"></div></div></section>
-
-<section id="admin" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>👨‍🏫 Admin Panel</h2><div id="adminLoginBox"><p>প্ৰশ্নোত্তৰ যোগ/সম্পাদনা কৰিবলৈ Admin account-ৰে Login কৰক।</p><input id="adminEmail" type="email" placeholder="Admin email"><input id="adminPassword" type="password" placeholder="Password" style="margin-top:8px"><div class="grid" style="margin-top:10px"><button class="main-btn" onclick="adminLogin()">🔐 Login</button><button class="secondary" onclick="adminLogout()">Logout</button></div><div id="adminAuthStatus"></div></div>
-<div id="adminPanel" class="hidden"><div class="card" style="border-top:4px solid #7c3aed"><h3>🎁 Referral Reward Inbox</h3><p>১০ জন বৈধ referral পূৰণ কৰা Student-ৰ ৩০ দিনৰ Premium reward ইয়াত পৰীক্ষা/অনুমোদন কৰক।</p><button class="secondary" onclick="loadReferralRewardsAdmin()">🔄 Referral Reward Refresh</button><div id="referralAdminList"></div></div><div class="admin-head"><div class="admin-content-box">
+</div><div class="notice"><b>📚 Database + AI</b><br><br>প্ৰথমে Supabase <b>questions</b> table-ত থকা প্ৰশ্নোত্তৰ বিচৰা হ'ব। নাপালে AI সংযোগ সক্ৰিয় থাকিলে AI-ৰ পৰা উত্তৰ বিচৰা হ'ব।</div><br><textarea id="questionInput" placeholder="আপোনাৰ প্ৰশ্ন লিখক...&#10;উদাহৰণ: সমাস কাক বোলে?"></textarea><br><br><div class="grid"><button class="main-btn" onclick="askQuestion()">🔍 উত্তৰ বিচাৰক</button><button class="main-btn voice-btn" id="questionVoiceButton" onclick="startQuestionVoice()">🎙️ Voice</button></div><div id="questionResult"></div></div>
+<div class="card" style="border-top:4px solid #7c3aed"><h3>🎁 Referral Reward Inbox</h3><p>১০ জন বৈধ referral পূৰণ কৰা Student-ৰ ৩০ দিনৰ Premium reward ইয়াত পৰীক্ষা/অনুমোদন কৰক।</p><button class="secondary" onclick="loadReferralRewardsAdmin()">🔄 Referral Reward Refresh</button><div id="referralAdminList"></div></div><div class="admin-head"><div class="admin-content-box">
 <h3 style="margin:0 0 8px;color:#075985;">📚 Admin-ত শিক্ষামূলক বিষয়বস্তু যোগ কৰক</h3>
 <label for="adminContentSection">১। ক'ত সন্নিবিষ্ট কৰিব?</label>
 <select id="adminContentSection" onchange="adminContentSectionChanged()">

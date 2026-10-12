@@ -604,10 +604,12 @@ async function onlineSearch(query, context=""){
   }catch(e){return {ok:false,error:e.message||String(e)}}
 }
 
-function renderOnlineResults(results){
+function renderOnlineResults(results, directAnswer=""){
   const rows=Array.isArray(results)?results:[];
-  if(!rows.length) return '<div class="empty">অনলাইন Search-ৰ পৰা ফলাফল পোৱা নগ\'ল।</div>';
-  return rows.map(x=>`<div class="online-source"><h3>🌐 ${esc(x.title||"Online result")}</h3><p class="answer">${esc(x.snippet||x.answer||"")}</p>${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">🔗 Source খুলক</a>`:""}</div>`).join("");
+  const answerHtml=directAnswer?`<div class="online-source" style="border-left:4px solid #0d9488"><h3>✅ পোনপটীয়া উত্তৰ / সংক্ষিপ্ত তথ্য</h3><p class="answer">${esc(directAnswer)}</p></div>`:"";
+  if(!rows.length && !answerHtml) return '<div class="empty">অনলাইন Search-ৰ পৰা ফলাফল পোৱা নগ\'ল। Google বা Bing-ত পুনৰ বিচাৰক।</div>';
+  const linksHtml=rows.map(x=>`<div class="online-source"><h3>🌐 ${esc(x.title||"Online result")}</h3><p class="answer">${esc(x.snippet||x.answer||"")}</p>${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">🔗 Source / Search ফলাফল খুলক</a>`:""}</div>`).join("");
+  return answerHtml+linksHtml;
 }
 
 async function loadOnlineLesson(chapter){
@@ -626,7 +628,7 @@ async function loadOnlineLesson(chapter){
   }
   const rows=r.results||r.data||[];
   if(status) status.innerHTML=rows.length?`<p class="success">✅ ${rows.length}টা অনলাইন ফলাফল পোৱা গ'ল (${esc(r.provider||"Online Search")})।</p>`:`<p class="error">এই প্ৰশ্নৰ বাবে অনলাইন ফলাফল পোৱা নগ'ল। প্ৰশ্নটো অলপ সলনি কৰি পুনৰ বিচাৰক।</p>`;
-  if(resultsBox) resultsBox.innerHTML=renderOnlineResults(rows);
+  if(resultsBox) resultsBox.innerHTML=renderOnlineResults(rows,r.answer||"");
 }
 
 async function openSyllabusGroup(group){

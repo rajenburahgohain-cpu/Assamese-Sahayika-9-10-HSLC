@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="as">
-<!-- V23: Seed all requested grammar topics in Admin question manager, including empty topics. -->
+<!-- V31: Remove Home navigation and display main sections vertically. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-<title>অসমীয়া সহায়িকা 10 + HSLC — V23 Grammar Topics Manager</title>
+<title>অসমীয়া সহায়িকা 10 + HSLC — V31 Vertical Navigation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -215,10 +215,44 @@
 
 <style>
 .student-q-card{border-top:5px solid #1976d2;background:#f8fbff}.student-q-item{border:1px solid #d8e3ef;border-radius:12px;padding:12px;margin-top:10px;background:#fff}.student-q-admin{border-top:5px solid #7c3aed}.student-q-status{font-size:12px;font-weight:700}.sq-reply{background:#f0fdf4;border-left:4px solid #16a34a;padding:9px;margin-top:9px;border-radius:8px}.sq-off{background:#fff7ed;border-left:4px solid #f97316;padding:10px;border-radius:8px}</style>
+
+<style id="vertical-navigation-update">
+/* V31: Remove Home navigation and show the six main sections vertically. */
+.big-nav{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  gap:6px !important;
+  padding:7px !important;
+  position:relative !important;
+  top:auto !important;
+}
+.big-nav button{
+  width:100% !important;
+  min-height:52px !important;
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:12px !important;
+  padding:7px 14px !important;
+  font-size:15px !important;
+  text-align:left !important;
+}
+.big-nav button span{
+  display:inline-block !important;
+  width:38px !important;
+  flex:0 0 38px !important;
+  font-size:27px !important;
+  line-height:32px !important;
+  text-align:center !important;
+}
+</style>
+
 </head><body>
 <header><h1>অসমীয়া সহায়িকা 10 + HSLC</h1><p>SEBA.দশম শ্ৰেণী. HSLC পৰীক্ষাৰ্থীৰ বাবে উপযোগী</p></header>
 <nav class="big-nav">
-<button class="n-home" onclick="showPage('home')"><span>🏠</span>Home</button>
+
 <button class="n-lessons" data-section-page="chapters" data-nav-section="chapters" onclick="showPage('chapters')"><span>📚</span>পাঠসমূহ</button>
 <button class="n-grammar" data-section-page="grammar" data-nav-section="grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
 <button class="n-hslc" data-section-page="hslc" data-nav-section="hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>

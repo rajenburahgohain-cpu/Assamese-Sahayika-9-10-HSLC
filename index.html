@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="as">
-<!-- V33: Assamese spelling checked dashboard with a separate Writing section. -->
+<!-- V34: Hide top navigation menu and keep colorful dashboard visible on opening. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-<title>অসমীয়া সহায়িকা 10 + HSLC — V33 Assamese Spelling Checked Home</title>
+<title>অসমীয়া সহায়িকা 10 + HSLC — V34 Top Menu Removed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -290,6 +290,34 @@
 .dash-writing{border:2px solid #0ea5e9;background:linear-gradient(145deg,#eefaff,#fff)}
 .writing-action{background:#0284c7}
 </style>
+
+
+
+
+
+
+
+
+<style id="hide-circled-menu-final">
+/* আঁকি দিয়া ওপৰৰ মেনু-শাৰীটোহে আঁতৰোৱা হৈছে; বাকী পৃষ্ঠা একে থাকিব। */
+header + nav.big-nav,
+nav.big-nav {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+</style>
+<script id="remove-circled-menu-final">
+document.addEventListener('DOMContentLoaded', function () {
+  const topMenu = document.querySelector('header + nav.big-nav') || document.querySelector('nav.big-nav');
+  if (topMenu) topMenu.remove();
+});
+</script>
 
 </head><body>
 <header><h1>অসমীয়া সহায়িকা 10 + HSLC</h1><p>SEBA.দশম শ্ৰেণী. HSLC পৰীক্ষাৰ্থীৰ বাবে উপযোগী</p></header>

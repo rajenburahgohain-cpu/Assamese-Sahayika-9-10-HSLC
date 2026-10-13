@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-<title>অসমীয়া সহায়িকা 10 + HSLC — V34 Top Menu Removed</title>
+<title>অসমীয়া সহায়িকা 10 + HSLC — Privacy Policy & Larger Text</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -319,6 +319,29 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+
+<style id="larger-assamese-learning-text">
+/* Larger, more readable text for lessons, grammar, writing and HSLC */
+body{font-size:17px;line-height:1.7}
+.container{font-size:17px}
+.card p,.card li,.card .answer,.result,.content-meta{font-size:17px;line-height:1.85}
+.card h2{font-size:25px;line-height:1.55}
+.card h3{font-size:21px;line-height:1.6}
+.dash-item{font-size:clamp(15px,3.8vw,19px)!important;line-height:1.65!important}
+.dash-heading h2{font-size:clamp(22px,5.4vw,29px)!important}
+.dash-heading p{font-size:15px!important;line-height:1.6}
+.dash-all,.dash-wide-action,.dash-bottom{font-size:16px!important;line-height:1.6}
+.main-btn,.secondary,nav button{font-size:16px;line-height:1.6}
+.tag,.small{font-size:14px;line-height:1.65}
+.answer{font-size:18px!important;line-height:1.95!important;white-space:pre-wrap}
+.lesson-heading{font-size:26px!important;line-height:1.6}
+#chapters button,#grammar button,#hslc button{font-size:17px;line-height:1.65;min-height:48px}
+#privacy .privacy-card p,#privacy .privacy-card li{font-size:14px;line-height:1.75}
+#privacy .privacy-card h2{font-size:20px;line-height:1.5}
+#privacy .privacy-card h3{font-size:17px;line-height:1.55;margin-top:16px}
+@media(max-width:420px){body,.container{font-size:17px}.dash-item{font-size:15.5px!important}.card p,.card li,.card .answer{font-size:17px}.main-btn,.secondary{font-size:16px}}
+</style>
+
 </head><body>
 <header><h1>অসমীয়া সহায়িকা 10 + HSLC</h1><p>SEBA.দশম শ্ৰেণী. HSLC পৰীক্ষাৰ্থীৰ বাবে উপযোগী</p></header>
 <nav class="big-nav">
@@ -618,7 +641,22 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="grid"><button class="secondary" onclick="resetAdminQuestionFilters()">🧹 Filter আঁতৰাওক</button><button class="secondary" onclick="loadAdminQuestions()">🔄 Refresh</button></div>
 <div id="adminQuestionCount" class="small" style="margin:8px 0"></div><div id="adminQuestionList"></div></div></div></section>
 
-<section id="privacy" class="hidden"><div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>🔒 Privacy Policy</h2><p><b>অসমীয়া সহায়িকা — 10 & HSLC</b> এটা শিক্ষামূলক application।</p><h3>তথ্য সংগ্ৰহ আৰু ব্যৱহাৰ</h3><p>Login-ৰ তথ্য, শিক্ষামূলক প্ৰশ্ন, পাঠ-সম্পৰ্কীয় কথোপকথন আৰু referral reward-ৰ গণনা চলাবলৈ প্ৰয়োজনীয় তথ্য Supabase-ত সংৰক্ষণ হ'ব পাৰে। তথ্য কেৱল একাউণ্ট পৰিচালনা, প্ৰশ্নৰ উত্তৰ, সুৰক্ষা আৰু App-ৰ সুবিধা চলোৱাৰ বাবে ব্যৱহাৰ কৰা হ'ব।</p><h3>Student ↔ Admin ব্যক্তিগত কথোপকথন</h3><p>Student-এ পঠোৱা প্ৰশ্ন আৰু Admin-ৰ উত্তৰ কেৱল সেই Student আৰু অনুমোদিত Admin-এ চাব পৰাকৈ access control ব্যৱস্থা থাকিব। আন Student-এ এই কথোপকথন চাব নোৱাৰিব।</p><h3>Referral Reward</h3><p>২০ জন বৈধ নতুন Student-এ Referral Code ব্যৱহাৰ কৰি account সৃষ্টি কৰিলে referral-দাতা Student-এ ৩০ দিনৰ Premium reward-ৰ বাবে যোগ্য হ'ব পাৰে। Duplicate বা ভুৱা account গণনা নহ'ব। Reward Admin-ৰ পৰীক্ষা আৰু অনুমোদনৰ অধীন।</p><h3>তৃতীয় পক্ষৰ সেৱা</h3><p>Supabase-ৰ দৰে backend সেৱা আৰু AI service সক্ৰিয় থাকিলে, প্ৰশ্ন/উত্তৰ প্ৰস্তুত কৰিবলৈ ব্যৱহাৰকাৰীয়ে দিয়া তথ্য সংশ্লিষ্ট সেৱালৈ যাব পাৰে। Ads বা Google Play Billing সক্ৰিয় কৰা হ'লে সিহঁতৰ নিজস্ব privacy আৰু payment policy-ও প্ৰযোজ্য হ'ব।</p><h3>তথ্য সুৰক্ষা আৰু মচা</h3><p>অননুমোদিত প্ৰৱেশ ৰোধ কৰিবলৈ authentication আৰু database access policies ব্যৱহাৰ কৰা উচিত। Account বা তথ্য মচিবলৈ App-ৰ উপলব্ধ account/data deletion ব্যৱস্থা ব্যৱহাৰ কৰক। আইনী বা সুৰক্ষাৰ প্ৰয়োজনত কিছুমান তথ্য সীমিত সময়ৰ বাবে ৰাখিবলগীয়া হ'ব পাৰে।</p><h3>Admin-ৰ পৰিচয়</h3><p>ব্যক্তিগত Admin login তথ্য, Gmail বা আন private account details এই Privacy Policy-ত প্ৰকাশ কৰা নহয়। Privacy-সম্পৰ্কীয় অনুৰোধ App-ৰ উপলব্ধ সহায়/যোগাযোগ ব্যৱস্থাৰ জৰিয়তে দাখিল কৰক।</p><p class="small">Last updated: 9 October 2026</p><p class="small">এই Policy-ত উল্লেখ কৰা সুবিধা App-ত সক্ৰিয় কৰাৰ লগতে backend security আৰু deletion ব্যৱস্থাও সঠিকভাৱে configure কৰিব লাগিব।</p></div></section>
+<section id="privacy" class="hidden"><div class="card privacy-card"><button class="main-btn back" onclick="showPage('home')">← Home</button>
+<h2>🔒 গোপনীয়তা নীতি (Privacy Policy)</h2>
+<p><b>এপৰ নাম:</b> অসমীয়া সহায়িকা 10 + HSLC</p>
+<p><b>কাৰ্যকৰী/শেহতীয়া সংশোধনৰ তাৰিখ:</b> ১৩ অক্টোবৰ, ২০২৬</p>
+<p>এই এপটো দশম শ্ৰেণীৰ অসমীয়া বিষয় আৰু HSLC পৰীক্ষাৰ প্ৰস্তুতিৰ বাবে শিক্ষামূলক সহায়িকা। এই নীতিত এপৰ ব্যৱহাৰৰ সময়ত তথ্য কেনেদৰে সংগ্ৰহ, ব্যৱহাৰ, সংৰক্ষণ আৰু সুৰক্ষিত কৰা হ’ব তাৰ বিৱৰণ দিয়া হৈছে।</p>
+<h3>১. এপত থকা সুবিধাসমূহ</h3><p>এপত পাঠসমূহ, অসমীয়া ব্যাকৰণ, লিখন বিভাগ, HSLC পৰীক্ষাৰ প্ৰস্তুতি, প্ৰশ্নোত্তৰ, অনলাইন Search আৰু Admin-এ বিষয়বস্তু পৰিচালনা কৰাৰ সুবিধা থাকিব পাৰে। উপলব্ধ সুবিধা এপৰ সংস্কৰণ অনুসৰি সলনি হ’ব পাৰে।</p>
+<h3>২. আমি কি তথ্য ল’ব পাৰোঁ?</h3><ul><li><b>একাউণ্টৰ তথ্য:</b> লগইন বা একাউণ্ট সৃষ্টি ব্যৱহাৰ কৰিলে ইমেইল ঠিকনা আৰু authentication-সম্পৰ্কীয় তথ্য।</li><li><b>শিক্ষামূলক তথ্য:</b> আপুনি পঠোৱা প্ৰশ্ন, উত্তৰ, পাঠ/ব্যাকৰণৰ বিষয়বস্তু, আৰু Admin-লৈ প্ৰেৰণ কৰা বাৰ্তা।</li><li><b>কাৰিকৰী তথ্য:</b> সেৱা চলোৱা, সুৰক্ষা বজাই ৰখা বা ত্ৰুটি সমাধানৰ বাবে backend বা সংযুক্ত সেৱাই সৃষ্টি/সংৰক্ষণ কৰা প্ৰয়োজনীয় তথ্য, যদিহে সংগ্ৰহ কৰা হয়।</li></ul><p>এপৰ কোনো সুবিধাই যদি কোনো তথ্য সংগ্ৰহ নকৰে, সেই তথ্য সংগ্ৰহ কৰা হয় বুলি এই নীতিয়ে দাবী নকৰে।</p>
+<h3>৩. তথ্য কিয় ব্যৱহাৰ কৰা হয়?</h3><p>লগইন আৰু একাউণ্ট পৰিচালনা, শিক্ষামূলক প্ৰশ্নোত্তৰ সংৰক্ষণ/প্ৰদৰ্শন, Admin-লৈ প্ৰশ্ন প্ৰেৰণ, অনলাইন Search চলোৱা, এপৰ সুৰক্ষা বজাই ৰখা আৰু সমস্যা সমাধানৰ বাবে প্ৰয়োজনীয় তথ্য ব্যৱহাৰ কৰা হ’ব পাৰে।</p>
+<h3>৪. তথ্য ক’ত সংৰক্ষণ হয় আৰু কাৰ সৈতে ভাগ হ’ব পাৰে?</h3><p>এপৰ অনলাইন সুবিধাৰ বাবে Supabase backend ব্যৱহাৰ কৰা হয়। আপুনি অনলাইন Search বা অন্য সংযুক্ত সুবিধা ব্যৱহাৰ কৰিলে সেই সুবিধা চলাবলৈ প্ৰয়োজনীয় প্ৰশ্ন বা তথ্য সংযুক্ত সেৱালৈ প্ৰেৰণ হ’ব পাৰে। সেই সেৱাসমূহে নিজৰ চৰ্ত আৰু গোপনীয়তা নীতি অনুসৰি তথ্য প্ৰক্ৰিয়াকৰণ কৰিব পাৰে।</p><p>আমি ব্যক্তিগত তথ্য বিক্ৰী কৰাৰ উদ্দেশ্যে ব্যৱহাৰ নকৰোঁ। সেৱা চলোৱা, সুৰক্ষা, আইনী বাধ্যবাধকতা বা ব্যৱহাৰকাৰীয়ে নিজে আৰম্ভ কৰা শ্বেয়াৰিংৰ বাবে প্ৰয়োজন হ’লে তথ্য সীমিতভাৱে প্ৰেৰণ হ’ব পাৰে।</p>
+<h3>৫. ইমেইল আৰু Admin-ৰ গোপনীয়তা</h3><p>ব্যৱহাৰকাৰীৰ ইমেইল আৰু একাউণ্ট-সম্পৰ্কীয় তথ্য সাধাৰণ শিক্ষাৰ্থীৰ বাবে ৰাজহুৱা কৰা উচিত নহয়। Admin-ৰ ব্যক্তিগত লগইন ইমেইল, পাছৱৰ্ড বা আন private account details এই নীতিত প্ৰকাশ কৰা নহয়। Admin-ৰ তথ্য সুৰক্ষিত ৰখাৰ বাবে সঠিক authentication আৰু database access control প্ৰয়োজন।</p>
+<h3>৬. তথ্যৰ সুৰক্ষা</h3><p>তথ্য সুৰক্ষিত ৰাখিবলৈ উপযুক্ত কাৰিকৰী আৰু প্ৰশাসনিক ব্যৱস্থা ব্যৱহাৰ কৰাৰ চেষ্টা কৰা হয়। তথাপি ইণ্টাৰনেট বা অনলাইন সংৰক্ষণৰ কোনো ব্যৱস্থাই সম্পূৰ্ণ সুৰক্ষাৰ নিশ্চয়তা দিব নোৱাৰে। ব্যৱহাৰকাৰীয়ে নিজৰ পাছৱৰ্ড আনৰ সৈতে ভাগ নকৰিব।</p>
+<h3>৭. তথ্য সংৰক্ষণ আৰু মচি পেলোৱা</h3><p>তথ্য এপৰ সুবিধা চলোৱা, সুৰক্ষা বজাই ৰখা আৰু প্ৰযোজ্য আইনী প্ৰয়োজন পূৰণ কৰিবলৈ প্ৰয়োজন হোৱা সময়লৈ সংৰক্ষণ কৰা হ’ব পাৰে। একাউণ্ট বা ব্যক্তিগত তথ্য মচিবলৈ এপত উপলব্ধ deletion সুবিধা ব্যৱহাৰ কৰক অথবা Google Play-ত দিয়া developer contact-ৰ জৰিয়তে অনুৰোধ কৰক। অনুৰোধৰ পিছত প্ৰযোজ্য নিয়ম আৰু আইনী বাধ্যবাধকতা অনুসৰি তথ্য মচা বা সংৰক্ষণ সীমিত কৰা হ’ব।</p>
+<h3>৮. শিশুৰ/শিক্ষাৰ্থীৰ গোপনীয়তা</h3><p>এই এপ শিক্ষাৰ্থীৰ বাবে। ব্যৱহাৰকাৰীৰ বয়স আৰু প্ৰযোজ্য নীতি অনুসৰি তথ্য সংগ্ৰহ সীমিত ৰখা আৰু প্ৰয়োজনীয় সুৰক্ষা ব্যৱস্থা গ্ৰহণ কৰাটো গুৰুত্বপূৰ্ণ। প্ৰয়োজন নোহোৱা ব্যক্তিগত তথ্য এপত নিদিব।</p>
+<h3>৯. এই নীতিৰ পৰিৱৰ্তন</h3><p>এপৰ সুবিধা বা তথ্য ব্যৱহাৰৰ পদ্ধতি সলনি হ’লে এই নীতি সংশোধন কৰা হ’ব। সংশোধিত নীতি এপৰ ভিতৰত আৰু/বা প্ৰকাশিত Privacy Policy পৃষ্ঠাত উপলব্ধ কৰা হ’ব।</p>
+<h3>১০. যোগাযোগ</h3><p>গোপনীয়তা সম্পৰ্কীয় প্ৰশ্ন বা তথ্য মচাৰ অনুৰোধৰ বাবে এপৰ Google Play Store listing-ত দিয়া developer contact email ব্যৱহাৰ কৰক। প্ৰকাশ কৰাৰ আগতে সেই যোগাযোগৰ ইমেইল ঠিকনা সক্ৰিয় আৰু পৰীক্ষিত হোৱাটো নিশ্চিত কৰক।</p>
+<p class="small">টোকা: এই নীতি এপৰ প্ৰকৃত data collection, Supabase policies, অনলাইন Search আৰু account deletion ব্যৱস্থাৰ সৈতে মিলাই ৰখা প্ৰয়োজন।</p></div></section>
 </main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese
 </footer>
 <script>

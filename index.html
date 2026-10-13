@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="as">
-<!-- V31: Remove Home navigation and display main sections vertically. -->
+<!-- V33: Assamese spelling checked dashboard with a separate Writing section. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
-<title>অসমীয়া সহায়িকা 10 + HSLC — V31 Vertical Navigation</title>
+<title>অসমীয়া সহায়িকা 10 + HSLC — V33 Assamese Spelling Checked Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -249,6 +249,48 @@
 }
 </style>
 
+
+<style id="home-dashboard-style">
+/* V32: Colorful Assamese home dashboard inspired by the supplied reference. */
+.home-dashboard{display:grid;gap:16px;margin-top:4px}
+.dash-card{padding:14px;border-radius:18px;background:#fff;border:2px solid #dbe7ef;box-shadow:0 5px 15px rgba(23,32,51,.08)}
+.dash-lessons{border-color:#10a37f;background:linear-gradient(145deg,#f0fff7,#fff)}
+.dash-grammar{border-color:#c026d3;background:linear-gradient(145deg,#fff4ff,#fff)}
+.dash-hslc{border-color:#f97316;background:linear-gradient(145deg,#fff7e9,#fff)}
+.dash-heading{display:flex;align-items:center;gap:10px;margin-bottom:13px;flex-wrap:wrap}
+.dash-big-icon{font-size:38px;line-height:1.1}
+.dash-heading h2{margin:0;color:#12345a;font-size:clamp(21px,5vw,28px);font-weight:800}
+.dash-heading p{margin:3px 0 0;color:#64748b;font-size:12px}
+.dash-all{margin-left:auto;border:0;border-radius:25px;padding:9px 13px;background:#087f70;color:#fff;font-weight:800;font-size:13px}
+.dash-grid{display:grid;gap:8px}
+.dash-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dash-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.dash-item{position:relative;display:flex;align-items:center;gap:7px;min-width:0;min-height:60px;padding:10px 9px;border:1px solid #dce5ed;border-radius:16px;color:#102d5d;font-family:"Noto Sans Assamese",sans-serif;font-size:clamp(13px,3.4vw,17px);font-weight:800;text-align:left;line-height:1.5;box-shadow:0 2px 4px rgba(0,0,0,.04);transition:transform .12s,filter .12s}
+.dash-item:active{transform:scale(.98);filter:brightness(.98)}
+.dash-item span{font-size:clamp(21px,6vw,31px);flex:0 0 auto;line-height:1}
+.dash-item b{flex:1;overflow-wrap:anywhere}
+.dash-item i{font-style:normal;font-family:Arial,sans-serif;font-size:27px;font-weight:800;line-height:1}
+.dash-item.pink{background:#fde7f4;border-color:#f4b6db}.dash-item.pink i{color:#c026d3}
+.dash-item.blue{background:#e7f3ff;border-color:#b9d9f5}.dash-item.blue i{color:#1769aa}
+.dash-item.cream{background:#fff3d7;border-color:#f2d99c}.dash-item.cream i{color:#e87513}
+.dash-item.mint{background:#e0fbe8;border-color:#a7e8bb}.dash-item.mint i{color:#078044}
+.dash-item.lilac{background:#eee9ff;border-color:#cbc0fa}.dash-item.lilac i{color:#6d28d9}
+.dash-item.aqua{background:#ddf8fc;border-color:#a7e8f0}.dash-item.aqua i{color:#0e7490}
+.dash-wide-action{width:100%;margin-top:11px;padding:13px;border:0;border-radius:13px;background:#087f70;color:#fff;font-family:inherit;font-size:15px;font-weight:800}
+.purple-action{background:#a000d4}.orange-action{background:#f97316}
+.dash-bottom-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dash-bottom{display:flex;align-items:center;gap:9px;min-height:60px;padding:10px 12px;border:0;border-radius:14px;color:#fff;font-family:inherit;font-size:clamp(14px,3.6vw,18px);font-weight:800;text-align:left;box-shadow:0 3px 7px rgba(0,0,0,.12)}
+.dash-bottom span{font-size:30px}.dash-bottom i{font-style:normal;margin-left:auto;font:800 28px Arial}
+.admin-action{background:linear-gradient(120deg,#ef233c,#c91825)}.share-action{background:linear-gradient(120deg,#10b94d,#009b57)}.privacy-action{background:linear-gradient(120deg,#47718a,#31556d);grid-column:1/-1}
+@media(max-width:420px){.dash-card{padding:10px}.dash-heading{gap:7px}.dash-big-icon{font-size:32px}.dash-heading h2{font-size:20px}.dash-all{padding:8px 10px;font-size:12px}.dash-grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}.dash-item{min-height:58px;padding:9px 7px;border-radius:13px}.dash-item span{font-size:24px}.dash-item i{font-size:22px}}
+</style>
+
+
+<style id="writing-dashboard-style">
+.dash-writing{border:2px solid #0ea5e9;background:linear-gradient(145deg,#eefaff,#fff)}
+.writing-action{background:#0284c7}
+</style>
+
 </head><body>
 <header><h1>অসমীয়া সহায়িকা 10 + HSLC</h1><p>SEBA.দশম শ্ৰেণী. HSLC পৰীক্ষাৰ্থীৰ বাবে উপযোগী</p></header>
 <nav class="big-nav">
@@ -262,7 +304,80 @@
 </nav>
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
 <main class="container">
-<section id="home"></section>
+
+<section id="home">
+  <div class="home-dashboard">
+    <section class="dash-card dash-lessons">
+      <div class="dash-heading"><span class="dash-big-icon">📚</span><div><h2>পাঠসমূহ</h2><p>দশম শ্ৰেণীৰ অসমীয়া পাঠ্যক্ৰম</p></div><button onclick="showPage('chapters')" class="dash-all">সকলো পাঠ →</button></div>
+      <div class="dash-grid two">
+        <button class="dash-item pink" onclick="openLesson('বৰগীত')"><span>🎵</span><b>১। বৰগীত</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openLesson('জিকিৰ')"><span>🎵</span><b>২। জিকিৰ</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openLesson('প্ৰশস্তি')"><span>📜</span><b>৩। প্ৰশস্তি</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openLesson('মই অসমীয়া')"><span>🌿</span><b>৪। মই অসমীয়া</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openLesson('দৃশ্যান্তৰ')"><span>📖</span><b>৫। দৃশ্যান্তৰ</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openLesson('উদ্যোগী হওঁ আহাঁ')"><span>📘</span><b>৬। উদ্যোগী হওঁ আহাঁ</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openLesson('ভাৰতীয় সংস্কৃতি')"><span>📘</span><b>৭। ভাৰতীয় সংস্কৃতি</b><i>›</i></button>
+        <button class="dash-item pink" onclick="openLesson('অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি')"><span>📘</span><b>৮। অসমৰ জনগোষ্ঠীয় গাঁথনি আৰু সংস্কৃতি</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openLesson('ইণ্টাৰনেটৰ তিতা-মিঠা')"><span>🌐</span><b>৯। ইণ্টাৰনেটৰ তিতা-মিঠা</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openLesson('অৰুণিমা সিনহা')"><span>📘</span><b>১০। অৰুণিমা সিনহা</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openLesson('অৰণ্যযাত্ৰা')"><span>🌳</span><b>১১। অৰণ্যযাত্ৰা</b><i>›</i></button>
+        <button class="dash-item pink" onclick="openLesson('পাৰস্যত এভুমুকি')"><span>📘</span><b>১২। পাৰস্যত এভুমুকি</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openLesson('কানাইৰ চাতুৰী')"><span>📗</span><b>১৩। কানাইৰ চাতুৰী</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openLesson('ধৰ ঝাড়ু ধৰ ভাই')"><span>📗</span><b>১৪। ধৰ ঝাড়ু ধৰ ভাই</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openLesson('বিষাদ যোগ')"><span>📗</span><b>১৫। বিষাদ যোগ</b><i>›</i></button>
+        <button class="dash-item pink" onclick="openLesson('প্ৰাচীন ভাৰতীয় শিক্ষা')"><span>📗</span><b>১৬। প্ৰাচীন ভাৰতীয় শিক্ষা</b><i>›</i></button>
+      </div>
+      <button class="dash-wide-action" onclick="openSyllabusGroup('দ্ৰুতপাঠ')">📖 দ্ৰুতপাঠ</button>
+    </section>
+
+    <section class="dash-card dash-grammar">
+      <div class="dash-heading"><span class="dash-big-icon">📝</span><div><h2>ব্যাকৰণ</h2><p>অসমীয়া ব্যাকৰণৰ গুৰুত্বপূৰ্ণ বিষয়সমূহ</p></div><button onclick="showPage('grammar')" class="dash-all">সকলো ব্যাকৰণ →</button></div>
+      <div class="dash-grid three">
+        <button class="dash-item blue" onclick="openContentTopic('grammar','সন্ধি')"><span>🔗</span><b>সন্ধি</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openContentTopic('grammar','সমাস')"><span>📚</span><b>সমাস</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openContentTopic('grammar','প্ৰত্যয়')"><span>✒️</span><b>প্ৰত্যয়</b><i>›</i></button>
+        <button class="dash-item pink" onclick="openContentTopic('grammar','উপসৰ্গ')"><span>📕</span><b>উপসৰ্গ</b><i>›</i></button>
+        <button class="dash-item lilac" onclick="openContentTopic('grammar','অনুসৰ্গ')"><span>🔗</span><b>অনুসৰ্গ</b><i>›</i></button>
+        <button class="dash-item aqua" onclick="openContentTopic('grammar','সমাৰ্থক শব্দ')"><span>📖</span><b>সমাৰ্থক শব্দ</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openContentTopic('grammar','বিপৰীত শব্দ')"><span>↔️</span><b>বিপৰীত শব্দ</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openContentTopic('grammar','জতুৱা ঠাঁচ')"><span>💬</span><b>জতুৱা ঠাঁচ</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openContentTopic('grammar','বাক্য পৰিৱৰ্তন কৰা')"><span>🔄</span><b>বাক্য পৰিৱৰ্তন</b><i>›</i></button>
+        <button class="dash-item pink" onclick="openContentTopic('grammar','ছন্দ')"><span>🎵</span><b>ছন্দ</b><i>›</i></button>
+        <button class="dash-item lilac" onclick="openContentTopic('grammar','এটা শব্দত প্ৰকাশ কৰা')"><span>📌</span><b>এটা শব্দত প্ৰকাশ</b><i>›</i></button>
+        <button class="dash-item aqua" onclick="openContentTopic('grammar','যতি চিহ্ন বহুৱা')"><span>✒️</span><b>যতি চিহ্ন</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openContentTopic('grammar','বাক্য শুদ্ধকৈ লিখা')"><span>✅</span><b>বাক্য শুদ্ধকৈ লিখা</b><i>›</i></button>
+      </div>
+      <button class="dash-wide-action purple-action" onclick="openContentSection('grammar','📝 সকলো ব্যাকৰণ')">☷ সকলো ব্যাকৰণৰ বিষয়</button>
+    </section>
+
+
+    <section class="dash-card dash-writing">
+      <div class="dash-heading"><span class="dash-big-icon">✍️</span><div><h2>লিখন বিভাগ</h2><p>লিখিত উত্তৰ আৰু ৰচনাৰ অনুশীলন</p></div><button onclick="showPage('grammar')" class="dash-all writing-action">সকলো →</button></div>
+      <div class="dash-grid two">
+        <button class="dash-item pink" onclick="openContentTopic('writing','ৰচনা')"><span>✍️</span><b>ৰচনা</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openContentTopic('application','দৰ্খাস্ত')"><span>📄</span><b>দৰ্খাস্ত</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openContentTopic('expansion','ভাব সম্প্ৰসাৰণ')"><span>💡</span><b>ভাব সম্প্ৰসাৰণ</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openContentTopic('report','প্ৰতিবেদন')"><span>📰</span><b>প্ৰতিবেদন</b><i>›</i></button>
+      </div>
+    </section>
+
+    <section class="dash-card dash-hslc">
+      <div class="dash-heading"><span class="dash-big-icon">🎯</span><div><h2>HSLC পৰীক্ষাৰ প্ৰস্তুতি</h2><p>অনুশীলন আৰু পৰীক্ষাৰ সহায়িকা</p></div><button onclick="showPage('hslc')" class="dash-all orange-action">HSLC →</button></div>
+      <div class="dash-grid two">
+        <button class="dash-item pink" onclick="openContentSection('hslc','🎯 সকলো HSLC')"><span>📄</span><b>আৰ্হি উত্তৰ</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openContentTopic('hslc','MCQ')"><span>📋</span><b>বহু-বিকল্পী প্ৰশ্ন</b><i>›</i></button>
+        <button class="dash-item mint" onclick="openContentTopic('hslc','ব্যাকৰণ')"><span>✏️</span><b>ব্যাকৰণৰ অনুশীলন</b><i>›</i></button>
+        <button class="dash-item cream" onclick="openContentTopic('hslc','ৰচনা')"><span>⭐</span><b>ৰচনা অনুশীলন</b><i>›</i></button>
+      </div>
+    </section>
+
+    <div class="dash-bottom-actions">
+      <button class="dash-bottom admin-action" onclick="showPage('admin')"><span>👨‍🏫</span> প্ৰশাসক (Admin) <i>›</i></button>
+      <button class="dash-bottom share-action" onclick="openReferralBox()"><span>📤</span> Share &amp; Invite <i>›</i></button>
+      <button class="dash-bottom privacy-action" onclick="showPage('privacy')"><span>🔒</span> গোপনীয়তা নীতি <i>›</i></button>
+    </div>
+  </div>
+</section>
 <section id="referralPage" class="hidden"></section>
 <section id="chapters" class="hidden">
 <div class="card section-title lessons-title">

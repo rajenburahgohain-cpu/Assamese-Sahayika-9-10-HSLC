@@ -1404,7 +1404,7 @@ function setAdminVoiceButton(targetId,buttonId,txt,disabled=false){const b=docum
 function stopAdminVoice(buttonId){
   const v=activeCloudVoice;
   if(v.buttonId!==buttonId)return;
-  if(v.silenceTimer)clearTimeout(v.silenceTimer);
+  if(v.silenceTimer)clearInterval(v.silenceTimer);
   try{if(v.recorder&&v.recorder.state!=="inactive")v.recorder.stop()}catch(e){}
   if(v.stream)v.stream.getTracks().forEach(t=>t.stop());
 }
@@ -1431,32 +1431,30 @@ async function adminVoiceTo(targetId,buttonId){
     recorder.start(250);
     setAdminVoiceButton(targetId,buttonId,'🔴 অসমীয়া মাত শুনি আছে... ⏹️',true);
     document.getElementById(buttonId).disabled=false;
-    // Separate stop button also works.
-    try{
-      const AC=window.AudioContext||window.webkitAudioContext;
-      if(AC){
-        const ctx=new AC(),source=ctx.createMediaStreamSource(stream),an=ctx.createAnalyser();an.fftSize=2048;source.connect(an);activeCloudVoice.audioContext=ctx;activeCloudVoice.analyser=an;
-        const data=new Uint8Array(an.fftSize);let speechSeen=false,lastLoud=Date.now();
-        const tick=()=>{
-          if(!activeCloudVoice.recorder)return;
-          an.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const x=(data[i]-128)/128;sum+=x*x}const rms=Math.sqrt(sum/data.length);
-          const now=Date.now();if(rms>0.025){speechSeen=true;lastLoud=now}
-          if(speechSeen && now-activeCloudVoice.startedAt>1200 && now-lastLoud>1400){stopAdminVoice(buttonId);return}
-          requestAnimationFrame(tick);
-        };requestAnimationFrame(tick);
-      }
-    }catch(e){}
+    // V41: Assamese speech recording is manual-stop only. Do not stop on silence or time limit.
+    // Keep the microphone active until the admin presses the same button / stop control.
+    // Show elapsed time so the admin can see that recording is still running.
+    const startedAt=activeCloudVoice.startedAt;
+    activeCloudVoice.silenceTimer=setInterval(()=>{
+      if(!activeCloudVoice.recorder || activeCloudVoice.buttonId!==buttonId) return;
+      const seconds=Math.floor((Date.now()-startedAt)/1000);
+      const mm=String(Math.floor(seconds/60)).padStart(2,'0');
+      const ss=String(seconds%60).padStart(2,'0');
+      setAdminVoiceButton(targetId,buttonId,'🔴 ৰেকৰ্ডিং চলি আছে '+mm+':'+ss+' — বন্ধ কৰিবলৈ টিপক',false);
+    },1000);
   }catch(e){
     setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক',false);
     alert('🎤 Microphone permission দিব লাগিব। Chrome → Site settings → Microphone → Allow কৰক।\n\nকাৰণ: '+(e.message||e));
   }
 }
-async function transcribeAssameseBlob(blob,targetId,afterCb){
+async function transcribeAssameseBlob(blob,targetId,afterCb,retryCount=0){
   const el=document.getElementById(targetId);if(!el)return;
-  const old=el.value;el.dataset.voiceStatus='processing';
+  const old=el.value;
+  el.dataset.voiceStatus='processing';
   const b=targetId==='adminQuestion'?document.getElementById('adminQuestionVoiceBtn'):document.getElementById('adminAnswerVoiceBtn');
-  if(b)b.innerText='⏳ অসমীয়াত লিখনী তৈয়াৰ কৰি আছে...';
+  if(b)b.innerText='⏳ আপোনাৰ অসমীয়া মাত লিখনীলৈ সলনি কৰি আছে...';
   try{
+    if(!supabaseClient)throw new Error('Supabase আৰম্ভ হোৱা নাই। পৃষ্ঠা Reload কৰি পুনৰ চেষ্টা কৰক।');
     const {data:{session}}=await supabaseClient.auth.getSession();
     const arrayBuffer=await blob.arrayBuffer();
     const bytes=new Uint8Array(arrayBuffer);
@@ -1464,18 +1462,46 @@ async function transcribeAssameseBlob(blob,targetId,afterCb){
     const chunkSize=0x8000;
     for(let i=0;i<bytes.length;i+=chunkSize){binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+chunkSize,bytes.length)));}
     const audioBase64=btoa(binary);
-    const headers={'Content-Type':'application/json'};if(session?.access_token)headers.Authorization='Bearer '+session.access_token;
-    const r=await fetch(ASSAMESE_STT_ENDPOINT,{method:'POST',headers,body:JSON.stringify({audioBase64})});
+    const headers={'Content-Type':'application/json'};
+    if(session?.access_token)headers.Authorization='Bearer '+session.access_token;
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),90000);
+    let r;
+    try{
+      r=await fetch(ASSAMESE_STT_ENDPOINT,{method:'POST',headers,signal:controller.signal,body:JSON.stringify({audioBase64,audioMimeType:blob.type||'audio/webm'})});
+    }finally{clearTimeout(timeout)}
     const d=await r.json().catch(()=>({}));
-    if(!r.ok || !d.transcript)throw new Error(d.error||'Assamese STT server-এ লিখনী দিব পৰা নাই।');
-    el.value=old?(old+'\n'+d.transcript.trim()):d.transcript.trim();
+    if(!r.ok || !d.transcript){
+      let detail=d.error||d.message||d.details||'';
+      if(typeof detail==='object')detail=JSON.stringify(detail);
+      if(!detail)detail='HTTP '+r.status+' — server-এ লিখনী ঘূৰাই দিয়া নাই।';
+      if(r.status===401||r.status===403)detail='লগইন session শেষ হৈছে বা অনুমতি নাই। Admin-ৰ পৰা Logout কৰি পুনৰ Login কৰক। ('+detail+')';
+      throw new Error(String(detail));
+    }
+    const transcript=String(d.transcript).trim();
+    if(!transcript)throw new Error('কথা স্পষ্টকৈ শুনা নগ’ল। ৰেকৰ্ডিং পুনৰ চেষ্টা কৰক।');
+    el.value=old?(old+'\n'+transcript):transcript;
     el.dispatchEvent(new Event('input',{bubbles:true}));
     if(typeof afterCb==='function')afterCb();
     if(b)b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';
+    el.dataset.voiceStatus='done';
+    window.lastFailedAssameseVoice=null;
+    document.getElementById('retryAssameseVoiceBtn')?.remove();
   }catch(e){
-    if(b)b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';
-    alert('❌ অসমীয়া Voice-to-Text সংযোগ হোৱা নাই।\n\nপ্ৰথমে Supabase Edge Function “Assamese-stt” deploy কৰক।\n\n'+(e.message||e));
+    window.lastFailedAssameseVoice={blob,targetId};
+    if(b){b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';document.getElementById('retryAssameseVoiceBtn')?.remove();b.insertAdjacentHTML('afterend','<button type="button" id="retryAssameseVoiceBtn" onclick="retryLastFailedAssameseVoice()" style="display:block;margin:8px 0;padding:10px 14px;border:1px solid #147d64;border-radius:10px;background:#e8fff6;color:#075b48;font-weight:700">🔁 আগৰ ৰেকৰ্ড কৰা অসমীয়া মাত পুনৰ চেষ্টা কৰক</button>');}
+    const raw=e?.name==='AbortError'?'সেৱাৰ পৰা উত্তৰ আহিবলৈ ৯০ ছেকেণ্ডতকৈ বেছি সময় লাগিল। আপোনাৰ ৰেকৰ্ডিং ৰখা হৈছে।':(e?.message||String(e));
+    const message=String(raw).replace(/\[object Object\]/g,'Server-এ ভুলৰ তথ্য object হিচাপে পঠিয়াইছে।');
+    const retry=retryCount===0 && confirm('❌ অসমীয়া মাতৰ লিখনী তৈয়াৰ নহ’ল।\n\nৰেকৰ্ড কৰা মাতটো মচি যোৱা নাই; এইটো পুনৰ চেষ্টা কৰিবনে?\n\nকাৰণ: '+message);
+    if(retry){await transcribeAssameseBlob(blob,targetId,afterCb,1);return;}
+    alert('❌ অসমীয়া Voice-to-Text সম্পূৰ্ণ নহ’ল। আপোনাৰ মাতটো এই পৃষ্ঠাত সাময়িকভাৱে ৰখা হৈছে।\n\nকাৰণ: '+message+'\n\nপ্ৰয়োজন হ’লে পৃষ্ঠাটো বন্ধ নকৰি পুনৰ চেষ্টা কৰক।');
   }
+}
+async function retryLastFailedAssameseVoice(){
+  const saved=window.lastFailedAssameseVoice;
+  if(!saved?.blob){alert('পুনৰ চেষ্টা কৰিব পৰা ৰেকৰ্ডিং পোৱা নগ’ল।');return;}
+  document.getElementById('retryAssameseVoiceBtn')?.remove();
+  await transcribeAssameseBlob(saved.blob,saved.targetId,undefined,1);
 }
 
 document.addEventListener("DOMContentLoaded",()=>{

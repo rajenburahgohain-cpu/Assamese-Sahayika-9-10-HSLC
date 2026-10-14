@@ -689,18 +689,11 @@ async function showPage(id,fromBack=false){
 }
 function appBack(){
   stopAllAudio();
-  // Always return to the exact page from which the current page was opened.
-  // Do not special-case Admin, Share, Privacy, or lesson detail pages.
-  while(pageHistory.length){
-    const prev=pageHistory.pop();
-    if(prev && prev!==currentPage && document.getElementById(prev)){
-      showPage(prev,true);
-      return;
-    }
+  // Back button always returns to the app's Home dashboard.
+  if(currentPage !== "home"){
+    pageHistory=[];
+    showPage("home",true);
   }
-  // A safe fallback for a fresh launch or an empty navigation stack.
-  if(currentPage!=="home") showPage("home",true);
-  else showPage("chapters",true);
 }
 
 // Android/browser Back button follows the same in-app navigation history.
@@ -818,22 +811,22 @@ async function openLesson(chapter){
       target.innerHTML=`<div class="empty">📚 <b>${esc(chapter)}</b> পাঠৰ বাবে Database-ত এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষিত নাই।<p class="small">Admin Panel-ত এই পাঠৰ প্ৰশ্নোত্তৰ যোগ কৰি Save কৰিলে ইয়াত স্বয়ংক্ৰিয়ভাৱে দেখা যাব।</p><div class="lesson-empty-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 অনলাইনৰ পৰা বিচাৰক</button></div></div>`;
       return;
     }
-    const typeLabels={
-      "Very Short Answer":"অতি চমু প্ৰশ্নোত্তৰ",
-      "Short Answer":"চমু প্ৰশ্নোত্তৰ",
-      "Long Answer":"ৰচনাধৰ্মী প্ৰশ্নোত্তৰ",
-      "গদ্যাংশৰ মূলভাৱ":"গদ্যাংশৰ মূলভাৱ",
-      "MCQ":"বহু-বিকল্পী প্ৰশ্নোত্তৰ",
-      "Q&A":"প্ৰশ্নোত্তৰ"
-    };
-    const groups=new Map();
-    rows.forEach(row=>{
-      const key=String(row.question_type||"Q&A").trim()||"Q&A";
-      if(!groups.has(key))groups.set(key,[]);
-      groups.get(key).push(row);
-    });
-    target.innerHTML=`<h3 style="margin-top:14px">❓ ${esc(chapter)} — প্ৰশ্নোত্তৰ (${rows.length})</h3>`+
-      Array.from(groups.entries()).map(([key,items])=>`<section class="lesson-summary-card"><h3>📚 ${esc(typeLabels[key]||key)} (${items.length})</h3>${renderResults(items,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true})}</section>`).join("");
+    // Admin can arrange all question types in one mixed list; students see that exact order.
+    const orderKey=lessonQuestionOrderKey(chapter);
+    try{
+      const orderResult=await supabaseClient.from("app_settings").select("value").eq("key",orderKey).maybeSingle();
+      const ids=orderResult?.data?.value ? JSON.parse(orderResult.data.value) : [];
+      if(Array.isArray(ids) && ids.length){
+        const rank=new Map(ids.map((id,i)=>[String(id),i]));
+        rows.sort((a,b)=>{
+          const ar=rank.has(String(a.id))?rank.get(String(a.id)):Number.MAX_SAFE_INTEGER;
+          const br=rank.has(String(b.id))?rank.get(String(b.id)):Number.MAX_SAFE_INTEGER;
+          return ar-br || (Number(a.id)-Number(b.id));
+        });
+      }
+    }catch(e){console.warn("Question order setting unavailable",e)}
+    target.innerHTML=`<h3 style="margin-top:14px">❓ ${esc(chapter)} — সকলো প্ৰশ্নোত্তৰ (${rows.length})</h3>`+
+      renderResults(rows,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true});
 
     // Optional settings are loaded only after Q&A is already visible.
     Promise.allSettled([getLessonTtsEnabled(chapter),getLessonAudioControls(chapter)]).then(()=>{});
@@ -1310,6 +1303,27 @@ async function saveQuestion(){
   st.innerHTML=`<p class="success">✅ সফলভাৱে সংৰক্ষণ হৈছে।</p>`;
   clearAdminForm();loadAdminQuestions();
 }
+let adminQuestionOrders={};
+function lessonQuestionOrderKey(chapter){return "lesson_question_order_"+encodeURIComponent(String(chapter||""));}
+async function moveLessonQuestion(chapter,id,direction){
+  if(!supabaseClient){alert("Supabase সংযোগ হোৱা নাই।");return;}
+  const items=adminQuestionCache.filter(x=>(x.content_section||"lesson")==="lesson" && String(x.chapter_name||"")===String(chapter||""));
+  const saved=adminQuestionOrders[chapter]||[];
+  items.sort((a,b)=>{
+    const ai=saved.indexOf(String(a.id)),bi=saved.indexOf(String(b.id));
+    return (ai<0?999999:ai)-(bi<0?999999:bi) || Number(a.id)-Number(b.id);
+  });
+  const i=items.findIndex(x=>String(x.id)===String(id));
+  const j=i+direction;
+  if(i<0||j<0||j>=items.length)return;
+  [items[i],items[j]]=[items[j],items[i]];
+  const ids=items.map(x=>String(x.id));
+  const r=await supabaseClient.from("app_settings").upsert({key:lessonQuestionOrderKey(chapter),value:JSON.stringify(ids)});
+  if(r.error){alert("প্ৰশ্নৰ ক্ৰম Save নহ'ল: "+r.error.message);return;}
+  adminQuestionOrders[chapter]=ids;
+  filterAdminQuestions();
+  const status=document.getElementById("adminSaveStatus");if(status)status.innerHTML='<p class="success">✅ এই পাঠৰ প্ৰশ্নৰ ক্ৰম সংৰক্ষণ হৈছে। শিক্ষাৰ্থীয়ে পাঠ খুলিলে এই ক্ৰমতে দেখিব।</p>';
+}
 let adminQuestionCache=[];
 function adminSectionLabel(section){
   const labels={lesson:'📚 পাঠসমূহ',grammar:'📝 ব্যাকৰণ',writing:'✍️ ৰচনা',application:'📄 দৰ্খাস্ত',expansion:'💡 ভাব সম্প্ৰসাৰণ',report:'📰 প্ৰতিবেদন',hslc:'🎯 HSLC'};
@@ -1360,12 +1374,19 @@ function filterAdminQuestions(){
       if(!groups.has(topicName))groups.set(topicName,[]);
       groups.get(topicName).push(x);
     }
+    if(sec==='lesson'){
+      for(const [topicName,items] of groups.entries()){
+        const saved=adminQuestionOrders[topicName]||[];
+        items.sort((a,b)=>{const ai=saved.indexOf(String(a.id)),bi=saved.indexOf(String(b.id));return (ai<0?999999:ai)-(bi<0?999999:bi)||Number(a.id)-Number(b.id)});
+      }
+    }
     const groupHtml=Array.from(groups.entries()).map(([topicName,items],idx)=>`
       <details class="admin-topic-group" ${sectionIndex===0&&idx===0?'open':''} style="border:1px solid #cbd5e1;border-radius:12px;margin:10px 0;background:#fff;overflow:hidden">
         <summary style="padding:13px;background:#eef6ff;cursor:pointer;font-weight:700;line-height:1.7">${sec==='lesson'?'📚':'📌'} ${esc(topicName)} <span class="tag">${items.length} টা</span></summary>
         <div style="padding:10px">${items.length?items.map(x=>`<div class="admin-row" style="border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin:9px 0">
           <b>❓ ${esc(x.question||'')}</b><p style="white-space:pre-wrap;margin:8px 0">📝 ${esc(x.answer||'উত্তৰ দিয়া হোৱা নাই')}</p>
           <p class="small">বিভাগ: ${esc(adminSectionLabel(sec))} • ধৰণ: ${esc(x.question_type||'Q&A')} • ID: ${esc(x.id)}</p>
+          ${sec==='lesson'?`<div class="grid" style="margin-bottom:7px"><button class="secondary" onclick="moveLessonQuestion('${esc(topicName)}',${JSON.stringify(String(x.id))},-1)">⬆️ ওপৰলৈ</button><button class="secondary" onclick="moveLessonQuestion('${esc(topicName)}',${JSON.stringify(String(x.id))},1)">⬇️ তললৈ</button></div>`:''}
           <div class="grid"><button class="main-btn edit" onclick="editQuestion(${Number(x.id)})">✏️ Edit</button><button class="main-btn danger" onclick="deleteQuestion(${Number(x.id)})">🗑️ Delete</button></div>
         </div>`).join(''):`<div class="empty">এই পাঠত এতিয়াও প্ৰশ্নোত্তৰ যোগ কৰা হোৱা নাই। ওপৰৰ ফৰ্মত এই পাঠ বাছনি কৰি প্ৰশ্নোত্তৰ Save কৰক।</div>`}</div>
       </details>`).join('');
@@ -1387,6 +1408,11 @@ async function loadAdminQuestions(){
   const r=await supabaseClient.from('questions').select('*').order('content_section',{ascending:true}).order('chapter_name',{ascending:true}).order('id',{ascending:false}).limit(1000);
   if(r.error){box.innerHTML=`<p class="error">❌ ${esc(r.error.message)}</p>`;return;}
   adminQuestionCache=r.data||[];
+  adminQuestionOrders={};
+  try{
+    const settings=await supabaseClient.from("app_settings").select("key,value").like("key","lesson_question_order_%");
+    if(!settings.error)(settings.data||[]).forEach(x=>{try{const chapter=decodeURIComponent(String(x.key).replace("lesson_question_order_",""));const parsed=JSON.parse(x.value||"[]");if(Array.isArray(parsed))adminQuestionOrders[chapter]=parsed.map(String)}catch(e){}});
+  }catch(e){console.warn("Could not load saved question order",e)}
   // Keep all known lesson and grammar topics visible even if the database is empty.
   filterAdminQuestions();
 }

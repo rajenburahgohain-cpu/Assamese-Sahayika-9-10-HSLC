@@ -409,6 +409,7 @@ body{font-size:17px;line-height:1.7}
         <button class="dash-item blue" onclick="openContentTopic('application','দৰ্খাস্ত')"><span>📄</span><b>দৰ্খাস্ত</b><i>›</i></button>
         <button class="dash-item mint" onclick="openContentTopic('expansion','ভাব সম্প্ৰসাৰণ')"><span>💡</span><b>ভাব সম্প্ৰসাৰণ</b><i>›</i></button>
         <button class="dash-item cream" onclick="openContentTopic('report','প্ৰতিবেদন')"><span>📰</span><b>প্ৰতিবেদন</b><i>›</i></button>
+        <button class="dash-item blue" onclick="openSyllabusGroup('গদ্যাংশৰ মূলভাৱ লিখা')"><span>📝</span><b>গদ্যাংশৰ মূলভাৱ</b><i>›</i></button>
       </div>
     </section>
 
@@ -416,7 +417,6 @@ body{font-size:17px;line-height:1.7}
       <div class="dash-heading"><span class="dash-big-icon">🎯</span><div><h2>HSLC পৰীক্ষাৰ প্ৰস্তুতি</h2><p>অনুশীলন আৰু পৰীক্ষাৰ সহায়িকা</p></div><button onclick="showPage('hslc')" class="dash-all orange-action">HSLC →</button></div>
       <div class="dash-grid two">
         <button class="dash-item pink" onclick="openContentSection('hslc','🎯 সকলো HSLC')"><span>📄</span><b>আৰ্হি উত্তৰ</b><i>›</i></button>
-        <button class="dash-item blue" onclick="openSyllabusGroup('গদ্যাংশৰ মূলভাৱ লিখা')"><span>📝</span><b>গদ্যাংশৰ মূলভাৱ</b><i>›</i></button>
         <button class="dash-item mint" onclick="openContentTopic('hslc','ব্যাকৰণ')"><span>✏️</span><b>ব্যাকৰণৰ অনুশীলন</b><i>›</i></button>
         <button class="dash-item cream" onclick="openContentTopic('hslc','ৰচনা')"><span>⭐</span><b>ৰচনা অনুশীলন</b><i>›</i></button>
       </div>
@@ -536,6 +536,8 @@ body{font-size:17px;line-height:1.7}
 <option value="application">📄 দৰ্খাস্ত</option>
 <option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option>
 <option value="report">📰 প্ৰতিবেদন</option>
+<option value="prose_summary">📝 গদ্যাংশৰ মূলভাৱ</option>
+<option value="quick_read">📖 দ্ৰুতপাঠ</option>
 <option value="hslc">🎯 HSLC</option>
 </select>
 
@@ -544,7 +546,7 @@ body{font-size:17px;line-height:1.7}
 <input id="adminTopic" list="adminTopicSuggestions" placeholder="বিষয় / শিতান বাছক বা লিখক">
 <datalist id="adminTopicSuggestions">
 <option value="সন্ধি"><option value="সমাস"><option value="উপসৰ্গ"><option value="অনুসৰ্গ"><option value="প্ৰত্যয়"><option value="সমাৰ্থক শব্দ"><option value="বিপৰীত শব্দ"><option value="জতুৱা ঠাঁচ"><option value="বাক্য পৰিৱৰ্তন কৰা"><option value="ছন্দ"><option value="এটা শব্দত প্ৰকাশ কৰা"><option value="যতি চিহ্ন বহুৱা"><option value="বাক্য শুদ্ধকৈ লিখা">
-<option value="ৰচনা"><option value="দৰ্খাস্ত"><option value="ভাব সম্প্ৰসাৰণ"><option value="প্ৰতিবেদন"><option value="MCQ"><option value="ব্যাকৰণ">
+<option value="ৰচনা"><option value="দৰ্খাস্ত"><option value="ভাব সম্প্ৰসাৰণ"><option value="প্ৰতিবেদন"><option value="গদ্যাংশৰ মূলভাৱ লিখা"><option value="দ্ৰুতপাঠ"><option value="MCQ"><option value="ব্যাকৰণ">
 </datalist>
 <p class="small">ব্যাকৰণৰ বাবে সন্ধি, সমাস, উপসৰ্গ, অনুসৰ্গ, প্ৰত্যয়, সমাৰ্থক শব্দ, বিপৰীত শব্দ, জতুৱা ঠাঁচ, বাক্য পৰিৱৰ্তন, ছন্দ, এটা শব্দত প্ৰকাশ, যতি চিহ্ন আৰু বাক্য শুদ্ধকৈ লিখা বাছনি কৰিব পাৰিব।</p>
 </div>
@@ -622,6 +624,8 @@ body{font-size:17px;line-height:1.7}
 <option value="application">📄 দৰ্খাস্ত</option>
 <option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option>
 <option value="report">📰 প্ৰতিবেদন</option>
+<option value="prose_summary">📝 গদ্যাংশৰ মূলভাৱ</option>
+<option value="quick_read">📖 দ্ৰুতপাঠ</option>
 <option value="hslc">🎯 HSLC</option>
 </select>
 <label for="adminChapter" style="display:block;margin-top:10px">📚 <b>এই প্ৰশ্নটো কোনটো পাঠৰ?</b></label>
@@ -630,10 +634,10 @@ body{font-size:17px;line-height:1.7}
 <div id="studentQuestionAdminList"></div>
 </div>
 <h3 style="margin-top:20px">📋 বিভাগ অনুসৰি প্ৰশ্নোত্তৰ পৰিচালনা</h3>
-<p class="small">পাঠসমূহ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC — সকলো বিভাগ ইয়াত পৃথকে দেখিব। প্ৰশ্ন নাথাকিলেও বিভাগৰ নাম থাকিব; প্ৰশ্নোত্তৰ যোগ কৰিলে ইয়াত দেখুৱাব আৰু Edit/Delete কৰিব পাৰিব।</p>
+<p class="small">পাঠসমূহ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন, গদ্যাংশৰ মূলভাৱ, দ্ৰুতপাঠ আৰু HSLC — সকলো বিভাগ ইয়াত পৃথকে দেখিব। প্ৰশ্ন নাথাকিলেও বিভাগৰ নাম থাকিব; প্ৰশ্নোত্তৰ যোগ কৰিলে ইয়াত দেখুৱাব আৰু Edit/Delete কৰিব পাৰিব।</p>
 <div class="admin-list-filters" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin:10px 0">
   <select id="adminFilterSection" aria-label="বিভাগ অনুসৰি ফিল্টাৰ" onchange="filterAdminQuestions()">
-    <option value="">সকলো বিভাগ</option><option value="lesson">📚 পাঠসমূহ</option><option value="grammar">📝 ব্যাকৰণ</option><option value="writing">✍️ ৰচনা</option><option value="application">📄 দৰ্খাস্ত</option><option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option><option value="report">📰 প্ৰতিবেদন</option><option value="hslc">🎯 HSLC</option>
+    <option value="">সকলো বিভাগ</option><option value="lesson">📚 পাঠসমূহ</option><option value="grammar">📝 ব্যাকৰণ</option><option value="writing">✍️ ৰচনা</option><option value="application">📄 দৰ্খাস্ত</option><option value="expansion">💡 ভাব সম্প্ৰসাৰণ</option><option value="report">📰 প্ৰতিবেদন</option><option value="prose_summary">📝 গদ্যাংশৰ মূলভাৱ</option><option value="quick_read">📖 দ্ৰুতপাঠ</option><option value="hslc">🎯 HSLC</option>
   </select>
   <input id="adminFilterTopic" placeholder="পাঠ / বিষয়ৰ নাম বিচাৰক" oninput="filterAdminQuestions()">
   <input id="adminFilterText" placeholder="প্ৰশ্ন বা উত্তৰ বিচাৰক" oninput="filterAdminQuestions()">
@@ -680,9 +684,11 @@ async function showPage(id,fromBack=false){
   currentPage=id;
   const bb=document.getElementById("appBackBtn");
   if(bb){
-    bb.style.display="block";
-    bb.textContent=currentPage==="home"?"← পাঠসমূহলৈ":"← Back";
-    bb.setAttribute("aria-label",currentPage==="home"?"পাঠসমূহলৈ উভতি যাওক":"আগৰ পৃষ্ঠালৈ উভতি যাওক");
+    // The floating Back button is only shown on sub-pages. It always returns
+    // to the initial Home dashboard, matching the requested app navigation.
+    bb.style.display=currentPage==="home"?"none":"block";
+    bb.textContent="← Home";
+    bb.setAttribute("aria-label","Home পৃষ্ঠালৈ উভতি যাওক");
   }
   window.scrollTo({top:0,behavior:"smooth"});
   if(id==="admin"){checkAdminSession()}
@@ -705,7 +711,8 @@ function renderResults(rows,opts={}){
  if(!rows?.length)return`<div class="card empty">কোনো ফলাফল পোৱা নগ'ল।</div>`;
  return rows.map(r=>{
   const a=r.answer||r.correct_answer||"উত্তৰ নাই।";
-  return `<div class="card result"><span class="tag">${esc(r.question_type||"Q&A")}</span><h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3><div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div></div>`;
+  const typeTag=opts.hideTypeLabels?"":`<span class="tag">${esc(r.question_type||"Q&A")}</span>`;
+  return `<div class="card result">${typeTag}<h3>${esc(r.question||"প্ৰশ্ন নাই")}</h3><div class="answer"><b>উত্তৰ:</b> ${esc(a)}</div></div>`;
  }).join("")
 }
 
@@ -826,7 +833,7 @@ async function openLesson(chapter){
       }
     }catch(e){console.warn("Question order setting unavailable",e)}
     target.innerHTML=`<h3 style="margin-top:14px">❓ ${esc(chapter)} — সকলো প্ৰশ্নোত্তৰ (${rows.length})</h3>`+
-      renderResults(rows,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true});
+      renderResults(rows,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true,hideTypeLabels:true});
 
     // Optional settings are loaded only after Q&A is already visible.
     Promise.allSettled([getLessonTtsEnabled(chapter),getLessonAudioControls(chapter)]).then(()=>{});
@@ -884,7 +891,7 @@ async function openSyllabusGroup(group){
   if(!supabaseClient)return;
   const ttsOn=await getSectionTtsEnabled('lesson');
   const r=await supabaseClient.from("questions").select("*").eq("chapter_name",group).order("id",{ascending:true});
-  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn}):`<div class="empty">এই অংশৰ প্ৰশ্নোত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।</div>`);
+  document.getElementById("groupResults").innerHTML=r.error?`<p class="error">❌ ${esc(r.error.message)}</p>`:(r.data.length?renderResults(r.data,{lessonTtsEnabled:ttsOn,hideTypeLabels:true}):`<div class="empty">এই অংশৰ প্ৰশ্নোত্তৰ এতিয়াও যোগ কৰা হোৱা নাই।</div>`);
 }
 async function openContentTopic(section,topic){
   showPage("chapterView");
@@ -1136,7 +1143,7 @@ function adminPayload(){
     language:"Assamese"
   }
 }
-const CONTENT_SECTIONS={lesson:'পাঠসমূহ',grammar:'ব্যাকৰণ',writing:'ৰচনা',application:'দৰ্খাস্ত',expansion:'ভাব সম্প্ৰসাৰণ',report:'প্ৰতিবেদন',hslc:'HSLC'};
+const CONTENT_SECTIONS={lesson:'পাঠসমূহ',grammar:'ব্যাকৰণ',writing:'ৰচনা',application:'দৰ্খাস্ত',expansion:'ভাব সম্প্ৰসাৰণ',report:'প্ৰতিবেদন',prose_summary:'গদ্যাংশৰ মূলভাৱ',quick_read:'দ্ৰুতপাঠ',hslc:'HSLC'};
 function sectionSettingKey(section){return 'section_enabled_'+section;}
 function lessonEnabledKey(chapter){return 'lesson_enabled_'+encodeURIComponent(chapter);}
 async function getSettingBool(key,defaultValue=true){
@@ -1197,6 +1204,12 @@ function adminContentSectionChanged(){
   const topicWrap=document.getElementById("adminTopicWrap");
   lessonBox.style.display=section==="lesson"?"block":"none";
   topicWrap.style.display=section==="lesson"?"none":"block";
+  const topicInput=document.getElementById("adminTopic");
+  if(topicInput && (section==="prose_summary" || section==="quick_read")){
+    const desired=section==="prose_summary"?"গদ্যাংশৰ মূলভাৱ লিখা":"দ্ৰুতপাঠ";
+    topicInput.value=desired;
+    topicInput.dataset.autofilled="true";
+  } else if(topicInput){topicInput.dataset.autofilled="false";}
   loadCurrentSectionEnabled();
   loadCurrentSectionTtsEnabled();
   if(section==="lesson") loadLessonTtsSetting();
@@ -1326,10 +1339,10 @@ async function moveLessonQuestion(chapter,id,direction){
 }
 let adminQuestionCache=[];
 function adminSectionLabel(section){
-  const labels={lesson:'📚 পাঠসমূহ',grammar:'📝 ব্যাকৰণ',writing:'✍️ ৰচনা',application:'📄 দৰ্খাস্ত',expansion:'💡 ভাব সম্প্ৰসাৰণ',report:'📰 প্ৰতিবেদন',hslc:'🎯 HSLC'};
+  const labels={lesson:'📚 পাঠসমূহ',grammar:'📝 ব্যাকৰণ',writing:'✍️ ৰচনা',application:'📄 দৰ্খাস্ত',expansion:'💡 ভাব সম্প্ৰসাৰণ',report:'📰 প্ৰতিবেদন',prose_summary:'📝 গদ্যাংশৰ মূলভাৱ',quick_read:'📖 দ্ৰুতপাঠ',hslc:'🎯 HSLC'};
   return labels[String(section||'lesson').toLowerCase()]||'📚 '+String(section||'অন্যান্য');
 }
-const ADMIN_SECTION_ORDER=['lesson','grammar','writing','application','expansion','report','hslc'];
+const ADMIN_SECTION_ORDER=['lesson','grammar','writing','application','expansion','report','prose_summary','quick_read','hslc'];
 // Complete Class 10 Assamese lesson list shown on the student Chapters page.
 const ADMIN_LESSON_TOPICS=[
   'বৰগীত','জিকিৰ','প্ৰশস্তি','মই অসমীয়া','দৃশ্যান্তৰ','উদ্যোগী হওঁ আহাঁ',

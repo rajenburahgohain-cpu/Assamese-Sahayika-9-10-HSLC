@@ -3,8 +3,10 @@ name: Build Assamese Sahayika APK and AAB
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - '**'
+      - '.github/workflows/android-build.yml'
 
 permissions:
   contents: read
@@ -12,69 +14,83 @@ permissions:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: package-lock.json
+        continue-on-error: true
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      # Set up the SDK tools only; install SDK packages in the next step.
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          cmdline-tools-version: 12266719
-
-      - name: Accept licenses and install Android SDK packages
+      - name: Check project files
+        shell: bash
         run: |
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          echo "Repository root:"
+          ls -la
+          if [ ! -f index.html ]; then
+            echo "::error::index.html was not found in the repository root."
+            exit 1
+          fi
 
-      - name: Prepare Web App
+      - name: Prepare Capacitor project
+        shell: bash
         run: |
-          mkdir -p www
-          cp index.html www/index.html
-
-      - name: Create Capacitor Project
-        run: |
-          npm init -y
-          npm install @capacitor/core@latest @capacitor/android@latest
-          npm install --save-dev @capacitor/cli@latest
-          cat > capacitor.config.json <<'EOF'
+          if [ ! -f package.json ]; then
+            npm init -y
+          fi
+          npm install --save-exact @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          if [ ! -f capacitor.config.json ] && [ ! -f capacitor.config.ts ] && [ ! -f capacitor.config.js ]; then
+            cat > capacitor.config.json <<'EOF'
           {
             "appId": "com.rbg.assamesesahayika",
             "appName": "Assamese Sahayika",
             "webDir": "www"
           }
           EOF
+          fi
+          mkdir -p www
+          cp -R index.html www/
+          for item in assets css js images; do
+            if [ -e "$item" ]; then cp -R "$item" www/; fi
+          done
+          node -e "const fs=require('fs'); const p=require('./package.json'); p.scripts=p.scripts||{}; p.scripts['build:android']='cap sync android'; fs.writeFileSync('package.json', JSON.stringify(p,null,2));"
           npx cap add android
-          npx cap sync android
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
 
       - name: Build Debug APK
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        working-directory: android
+        run: ./gradlew assembleDebug
 
       - name: Build Release AAB
-        run: |
-          cd android
-          ./gradlew bundleRelease
+        working-directory: android
+        run: ./gradlew bundleRelease
 
       - name: Upload APK and AAB
         uses: actions/upload-artifact@v4
         with:
           name: Assamese-Sahayika-APK-AAB
           path: |
-            android/app/build/outputs/apk/debug/app-debug.apk
-            android/app/build/outputs/bundle/release/app-release.aab
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/bundle/release/*.aab
           if-no-files-found: error

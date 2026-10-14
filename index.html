@@ -608,10 +608,10 @@ body{font-size:17px;line-height:1.7}
 </div>
 </div>
 <div class="grid" style="margin-top:8px"><select id="adminType">
-<option value="Q&A">প্ৰশ্নোত্তৰ</option>
-<option value="MCQ">বহু-বিকল্পী (MCQ)</option>
+<option value="Very Short Answer">অতি চমু প্ৰশ্নোত্তৰ</option>
+<option value="গদ্যাংশৰ মূলভাৱ">গদ্যাংশৰ মূলভাৱ</option>
 <option value="Short Answer">চমু প্ৰশ্নোত্তৰ</option>
-<option value="Long Answer">ৰচনাধৰ্মী উত্তৰ</option>
+<option value="Long Answer">ৰচনাধৰ্মী প্ৰশ্নোত্তৰ</option>
 </select><input id="adminClass" value="Class 10" placeholder="দশম শ্ৰেণী / HSLC"></div><div class="grid" style="margin-top:8px"><input id="adminSubject" value="Assamese" placeholder="বিষয়"></div>
 <div class="admin-chapter-box">
 <label for="adminContentSectionQuick">📚 <b>বিষয়বস্তুৰ বিভাগ বাছনি কৰক</b></label>
@@ -689,21 +689,22 @@ async function showPage(id,fromBack=false){
 }
 function appBack(){
   stopAllAudio();
-  // Admin, Share & Invite and Privacy return to the home menu.
-  if(["admin","referralPage","privacy"].includes(currentPage)){
-    pageHistory.length=0;
-    showPage("home",true);
-    return;
+  // Always return to the exact page from which the current page was opened.
+  // Do not special-case Admin, Share, Privacy, or lesson detail pages.
+  while(pageHistory.length){
+    const prev=pageHistory.pop();
+    if(prev && prev!==currentPage && document.getElementById(prev)){
+      showPage(prev,true);
+      return;
+    }
   }
-  // The home menu's Back button returns to the main lesson page instead of
-  // forcing users to close the app. Chapters is the default starting study page.
-  if(currentPage==="home"){
-    pageHistory.length=0;
-    showPage("chapters",true);
-    return;
-  }
-  if(pageHistory.length){const prev=pageHistory.pop();showPage(prev,true)}else showPage("chapters",true);
+  // A safe fallback for a fresh launch or an empty navigation stack.
+  if(currentPage!=="home") showPage("home",true);
+  else showPage("chapters",true);
 }
+
+// Android/browser Back button follows the same in-app navigation history.
+window.addEventListener("popstate",()=>{appBack();});
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
 async function dbSearch(term,limit=10){if(!supabaseClient)return{data:[],error:new Error("Supabase connection হোৱা নাই")};const clean=String(term).trim();if(!clean)return{data:[],error:null};const r=await supabaseClient.from("questions").select("*").or("question.ilike.%"+clean+"%,answer.ilike.%"+clean+"%").limit(limit);return{data:r.data||[],error:r.error||null}}
@@ -798,13 +799,41 @@ async function openLesson(chapter){
       target.innerHTML=`<p class="error">❌ প্ৰশ্নোত্তৰ লোড নহ'ল: ${esc(result.error.message)}</p>`;
       return;
     }
-    const rows=result.data||[];
+    let rows=result.data||[];
+    // Fallback: if a saved chapter uses slightly different spacing/spelling,
+    // find its questions from the lesson section and match the chapter name.
+    if(!rows.length){
+      const allLessons=await supabaseClient.from("questions").select("*")
+        .eq("content_section","lesson").order("id",{ascending:true});
+      if(!allLessons.error){
+        const normName=v=>String(v||"").normalize("NFC").replace(/[\s\u200b\u200c\u200d।॥.,:;–—-]+/g,"").toLowerCase();
+        const wanted=normName(chapter);
+        rows=(allLessons.data||[]).filter(r=>{
+          const saved=normName(r.chapter_name);
+          return saved===wanted || (saved.length>5 && wanted.length>5 && (saved.includes(wanted)||wanted.includes(saved)));
+        });
+      }
+    }
     if(!rows.length){
       target.innerHTML=`<div class="empty">📚 <b>${esc(chapter)}</b> পাঠৰ বাবে Database-ত এতিয়াও প্ৰশ্নোত্তৰ সংৰক্ষিত নাই।<p class="small">Admin Panel-ত এই পাঠৰ প্ৰশ্নোত্তৰ যোগ কৰি Save কৰিলে ইয়াত স্বয়ংক্ৰিয়ভাৱে দেখা যাব।</p><div class="lesson-empty-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🌐 অনলাইনৰ পৰা বিচাৰক</button></div></div>`;
       return;
     }
+    const typeLabels={
+      "Very Short Answer":"অতি চমু প্ৰশ্নোত্তৰ",
+      "Short Answer":"চমু প্ৰশ্নোত্তৰ",
+      "Long Answer":"ৰচনাধৰ্মী প্ৰশ্নোত্তৰ",
+      "গদ্যাংশৰ মূলভাৱ":"গদ্যাংশৰ মূলভাৱ",
+      "MCQ":"বহু-বিকল্পী প্ৰশ্নোত্তৰ",
+      "Q&A":"প্ৰশ্নোত্তৰ"
+    };
+    const groups=new Map();
+    rows.forEach(row=>{
+      const key=String(row.question_type||"Q&A").trim()||"Q&A";
+      if(!groups.has(key))groups.set(key,[]);
+      groups.get(key).push(row);
+    });
     target.innerHTML=`<h3 style="margin-top:14px">❓ ${esc(chapter)} — প্ৰশ্নোত্তৰ (${rows.length})</h3>`+
-      renderResults(rows,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true});
+      Array.from(groups.entries()).map(([key,items])=>`<section class="lesson-summary-card"><h3>📚 ${esc(typeLabels[key]||key)} (${items.length})</h3>${renderResults(items,{lessonTtsEnabled:true,questionAudioEnabled:true,answerAudioEnabled:true})}</section>`).join("");
 
     // Optional settings are loaded only after Q&A is already visible.
     Promise.allSettled([getLessonTtsEnabled(chapter),getLessonAudioControls(chapter)]).then(()=>{});
@@ -1067,7 +1096,7 @@ function openReferralBox(){
  const page=document.getElementById('referralPage');if(!page)return;
  const cachedCode=getReferralCode();
  const cachedLine=(cachedCode && cachedCode!=="LOGIN-REQUIRED")?`<p>🔢 <b>আপোনাৰ Referral Code:</b> ${esc(cachedCode)}</p><p>🌐 <b>Referral Domain:</b> ${esc(getReferralLink(cachedCode))}</p>`:'';
- page.innerHTML=`<div class="card"><button class="main-btn back" onclick="showPage('home')">← Home</button><h2>📤 Share & Invite</h2><p>২০ জন বৈধ নতুন Student-এ Referral Code ব্যৱহাৰ কৰি account সৃষ্টি কৰিলে ৩০ দিনৰ Premium Reward-ৰ বাবে যোগ্য হ’ব।</p><div id="referralStats">${cachedLine}<p class="loading">🔄 Referral-ৰ শেহতীয়া তথ্য পটভূমিত লোড হৈ আছে...</p></div></div>`;
+ page.innerHTML=`<div class="card"><button class="main-btn back" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button><h2>📤 Share & Invite</h2><p>২০ জন বৈধ নতুন Student-এ Referral Code ব্যৱহাৰ কৰি account সৃষ্টি কৰিলে ৩০ দিনৰ Premium Reward-ৰ বাবে যোগ্য হ’ব।</p><div id="referralStats">${cachedLine}<p class="loading">🔄 Referral-ৰ শেহতীয়া তথ্য পটভূমিত লোড হৈ আছে...</p></div></div>`;
  showPage('referralPage');
  // Load account and referral counts after the page is already visible.
  loadReferralStats().catch(e=>{const box=document.getElementById('referralStats');if(box)box.insertAdjacentHTML('beforeend','<p class="error">Referral তথ্য এতিয়া লোড নহ’ল। Internet পৰীক্ষা কৰি পুনৰ চেষ্টা কৰক।</p>');console.warn(e);});

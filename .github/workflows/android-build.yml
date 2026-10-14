@@ -3,10 +3,8 @@ name: Build Assamese Sahayika APK and AAB
 on:
   workflow_dispatch:
   push:
-    branches: [main]
-    paths:
-      - '**'
-      - '.github/workflows/android-build.yml'
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -22,26 +20,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: npm
-          cache-dependency-path: package-lock.json
-        continue-on-error: true
 
       - name: Check project files
         shell: bash
         run: |
-          echo "Repository root:"
+          echo "Repository files:"
           ls -la
-          if [ ! -f index.html ]; then
-            echo "::error::index.html was not found in the repository root."
-            exit 1
-          fi
+          test -f index.html || { echo "::error::index.html not found in repository root"; exit 1; }
 
       - name: Prepare Capacitor project
         shell: bash
         run: |
-          if [ ! -f package.json ]; then
-            npm init -y
-          fi
+          if [ ! -f package.json ]; then npm init -y; fi
           npm install --save-exact @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
           if [ ! -f capacitor.config.json ] && [ ! -f capacitor.config.ts ] && [ ! -f capacitor.config.js ]; then
             cat > capacitor.config.json <<'EOF'
@@ -53,11 +43,10 @@ jobs:
           EOF
           fi
           mkdir -p www
-          cp -R index.html www/
+          cp index.html www/index.html
           for item in assets css js images; do
             if [ -e "$item" ]; then cp -R "$item" www/; fi
           done
-          node -e "const fs=require('fs'); const p=require('./package.json'); p.scripts=p.scripts||{}; p.scripts['build:android']='cap sync android'; fs.writeFileSync('package.json', JSON.stringify(p,null,2));"
           npx cap add android
 
       - name: Setup Java

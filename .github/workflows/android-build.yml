@@ -28,27 +28,27 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      # Set up the SDK tools only; install SDK packages in the next step.
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: |
-            platform-tools
-            platforms;android-35
-            build-tools;35.0.0
+          cmdline-tools-version: 12266719
+
+      - name: Accept licenses and install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Prepare Web App
         run: |
           mkdir -p www
           cp index.html www/index.html
-          if [ -f README.txt ]; then
-            cp README.txt www/
-          fi
 
       - name: Create Capacitor Project
         run: |
           npm init -y
-          npm install @capacitor/core @capacitor/android
-          npm install --save-dev @capacitor/cli
+          npm install @capacitor/core@latest @capacitor/android@latest
+          npm install --save-dev @capacitor/cli@latest
           cat > capacitor.config.json <<'EOF'
           {
             "appId": "com.rbg.assamesesahayika",

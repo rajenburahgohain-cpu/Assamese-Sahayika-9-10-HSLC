@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="as">
-<!-- V55: Initial Home dashboard recovery + Share & Invite retained. -->
+<!-- V56: Home dashboard recovery + safer Share & Invite messaging. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
@@ -356,23 +356,18 @@ body{font-size:17px;line-height:1.7}
 #home > .home-dashboard > .dash-card .dash-grid.three { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
 @media(max-width:420px){#home > .home-dashboard > .dash-card .dash-grid.three{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}}
 
-/* Share & Invite page styled to match the supplied reference image */
-.share-invite-page{padding:16px!important;background:#f3f7ff;border-radius:20px!important;max-width:100%;overflow:hidden}
-.share-hero{display:flex;align-items:center;gap:16px;padding:22px;border:1px solid #c8f1da;border-radius:18px;background:linear-gradient(120deg,#f0fff5,#f7fffc);margin:12px 0 18px}
-.share-book-logo{display:grid;place-items:center;min-width:96px;height:96px;border-radius:50%;background:#075b35;border:5px solid #16a34a;font-size:42px}
+/* Share & Invite refreshed layout */
+.share-invite-page{padding:16px!important;background:#f3f7ff;border-radius:20px!important}
+.share-hero{display:flex;align-items:center;gap:16px;padding:18px;border:1px solid #c8f1da;border-radius:18px;background:linear-gradient(120deg,#f0fff5,#f7fffc);margin:12px 0 18px}
+.share-book-logo{display:grid;place-items:center;min-width:86px;height:86px;border-radius:50%;background:#075b35;border:5px solid #16a34a;font-size:42px}
 .share-hero h2{color:#0645a5;font-size:clamp(22px,5vw,34px);margin:0;flex:1}
 .share-ref-code{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px;background:#eaf9ef;border:1px solid #d0f0dc;border-radius:18px;margin:12px 0}
 .share-ref-code small{display:block;color:#08652b;font-weight:700;font-size:16px}.share-ref-code strong{display:block;font-size:clamp(21px,5vw,30px);letter-spacing:1px;background:#ffedaa;border-radius:30px;padding:8px 14px;margin-top:6px;color:#111}.share-ref-code .main-btn{min-width:92px;background:#079b31}
-.share-apk-row{display:flex;align-items:center;gap:12px;padding:14px;background:#eaf3ff;border:1px solid #d4e5ff;border-radius:18px;margin:14px 0}.apk-symbol{width:70px;height:70px;flex-shrink:0;display:grid;place-content:center;background:#087cff;border-radius:14px;font-size:32px}.apk-symbol small{font-size:12px;background:white;color:#065f46;border-radius:5px;text-align:center;font-weight:bold}.apk-copy{flex:1;min-width:0}.apk-copy h3{margin:0 0 5px;color:#063eaa}.apk-copy p{margin:0;font-size:13px}.share-apk-row .main-btn{font-size:12px;padding:8px 9px;white-space:nowrap;min-height:36px;width:auto;flex:0 0 auto}
-.share-method-title{margin:18px 0 10px}.share-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:8px;background:white;border-radius:18px}.share-method-grid button{border:0;border-radius:16px;color:#fff;min-height:112px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px}.share-method-grid button span{font-size:30px;font-weight:800}.share-method-grid button b{font-size:14px}.share-method-grid button small{font-size:13px}.share-reward-note{margin:16px 0;padding:16px;background:#fff4ca;border:1px solid #ffdc65;border-radius:16px;font-size:16px;line-height:1.7}.share-reward-note b{color:#c52121}.share-home-btn{display:block;width:min(100%,420px);margin:18px auto;background:#075be6!important;border-radius:40px!important;padding:16px!important;font-size:18px!important}.share-apk-note{font-size:12px;color:#687386;text-align:center}
-@media(max-width:520px){.share-hero{padding:14px;gap:10px}.share-book-logo{min-width:72px;height:72px;font-size:34px}.share-ref-code{padding:12px;flex-wrap:wrap}.share-ref-code strong{font-size:21px}.share-apk-row{flex-wrap:nowrap;gap:8px;padding:10px}.share-apk-row .main-btn{width:auto;max-width:118px;white-space:normal;font-size:11px;padding:7px 8px}.apk-symbol{width:54px;height:54px;font-size:25px}.apk-copy h3{font-size:16px}.apk-copy p{font-size:11px}.share-method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.share-method-grid button{min-height:105px}}
+.share-apk-row{display:flex;align-items:center;gap:12px;padding:14px;background:#eaf3ff;border:1px solid #d4e5ff;border-radius:18px;margin:14px 0}.apk-symbol{width:70px;height:70px;flex-shrink:0;display:grid;place-content:center;background:#087cff;border-radius:14px;font-size:32px}.apk-symbol small{font-size:12px;background:white;color:#065f46;border-radius:5px;text-align:center;font-weight:bold}.apk-copy{flex:1;min-width:0}.apk-copy h3{margin:0 0 5px;color:#063eaa}.apk-copy p{margin:0;font-size:13px}.share-apk-row .main-btn{font-size:13px;padding:12px 10px;white-space:nowrap}
+.share-method-title{margin:18px 0 10px}.share-method-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:8px;background:white;border-radius:18px}.share-method-grid button{border:0;border-radius:16px;color:#fff;min-height:112px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px}.share-method-grid button span{font-size:30px;font-weight:800}.share-method-grid button b{font-size:14px}.share-method-grid button small{font-size:13px}.share-reward-note{margin:16px 0;padding:16px;background:#fff4ca;border:1px solid #ffdc65;border-radius:16px;font-size:16px;line-height:1.7}.share-reward-note b{color:#c52121}.share-home-btn{display:block;width:min(100%,420px);margin:18px auto;background:#075be6!important;border-radius:40px!important;padding:16px!important;font-size:18px!important}.share-apk-note{font-size:12px;color:#687386;text-align:center}
+@media(min-width:600px){.share-method-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 
-<style id="v57-recorded-audio-visible-fix">
-.recorded-qa-card{display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;max-height:none!important;overflow:visible!important}
-.recorded-qa-card audio{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;min-height:42px}
-@media(max-width:520px){.share-apk-row .main-btn{width:auto!important;max-width:118px!important;min-height:34px!important}}
-</style>
 </head><body>
 <header><h1>অসমীয়া সহায়িকা 10 + HSLC</h1><p>SEBA.দশম শ্ৰেণী. HSLC পৰীক্ষাৰ্থীৰ বাবে উপযোগী</p></header>
 <nav class="big-nav">
@@ -707,7 +702,7 @@ body{font-size:17px;line-height:1.7}
 const SUPABASE_URL="https://rlmxfzdbipksbrikgfbs.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_YbXRYD3badwrI6iUh3IFJg_k_efMjen";
 // Use the verified, working GitHub Pages URL until a custom domain is connected.
-const REFERRAL_DOMAIN="https://rajenburhagohain-cpu.github.io/Assamese-Sahayika-9-10-HSLC/";
+// No personal GitHub username/repository URL is included in share text.
 /* AI-ৰ বাবে Supabase Edge Function তৈয়াৰ কৰাৰ পিছত এই endpoint ব্যৱহাৰ হ'ব। API key কেতিয়াও এই HTML-ত নিদিব। */
 const AI_ENDPOINT=SUPABASE_URL+"/functions/v1/ai-answer";
 const ASSAMESE_STT_ENDPOINT=SUPABASE_URL+"/functions/v1/Assamese-stt";
@@ -1093,12 +1088,13 @@ function toggleSavedAnswerAudio(btn){
 const APK_DOWNLOAD_URL = ""; // Example: https://github.com/OWNER/REPO/releases/download/v1/app-release.apk
 function getReferralCode(){ return "AS14F7177A"; }
 function getReferralLink(code=getReferralCode()){
-  // Referral domains/links are intentionally not shown or shared in this page.
+  // A clean branded link requires a custom domain or a verified public APK URL.
+  // Do not silently share a personal GitHub Pages URL.
   return "";
 }
 function referralShareText(){
   const apk = APK_DOWNLOAD_URL.trim();
-  return `📚 অসমীয়া সহায়িকা 10 + HSLC\nReferral Code: AS14F7177A${apk ? `\nAPK Download: ${apk}` : ""}\n\n২০ জনক শ্বেয়াৰ কৰিলে এক মাহলৈ Ads Free কৈ App ব্যৱহাৰ কৰিব পাৰিব।`;
+  return `📚 অসমীয়া সহায়িকা 10 + HSLC\nদশম শ্ৰেণী আৰু HSLC-ৰ অসমীয়া পাঠ, ব্যাকৰণ আৰু প্ৰশ্নোত্তৰৰ সহায়িকা।\nReferral Code: AS14F7177A${apk ? `\nAPK Download: ${apk}` : ""}${apk ? "" : "\n\nAPK download link এতিয়াও সংযোগ কৰা হোৱা নাই।"}\n\n২০ জনক শ্বেয়াৰ কৰিলে এক মাহলৈ Ads Free সুবিধাৰ বাবে আবেদন কৰিব পাৰিব।`;
 }
 async function copyReferralText(text, successMessage){
   try { if(navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text); else {const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');ta.remove();if(!ok)throw new Error('copy failed');} alert(successMessage||'✅ Copy হৈছে।'); }
@@ -1112,8 +1108,11 @@ async function shareApp(){
     else await copyReferralText(text,'✅ শ্বেয়াৰ বাৰ্তা Copy হৈছে। এতিয়া WhatsApp/Facebook বা আন App-ত paste কৰক।');
   } catch(e) { if(e && e.name==='AbortError') return; await copyReferralText(text,'✅ শ্বেয়াৰ বাৰ্তা Copy হৈছে।'); }
 }
-async function shareToWhatsApp(){ const text=referralShareText(); window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener'); }
-async function shareToTelegram(){ const text=referralShareText(); window.open('https://t.me/share/url?url='+encodeURIComponent(APK_DOWNLOAD_URL.trim())+'&text='+encodeURIComponent(text),'_blank','noopener'); }
+async function shareToWhatsApp(){
+ const text=referralShareText();
+ // Opens WhatsApp with a ready-to-send message; it does not attach the APK file.
+ window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank','noopener');
+}
 async function shareToFacebook(){
   if(APK_DOWNLOAD_URL.trim()) window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(APK_DOWNLOAD_URL.trim()),'_blank','noopener');
   else { await copyReferralText(referralShareText(),'Facebook-ত paste কৰিবলৈ বাৰ্তা Copy হৈছে। APK download link যোগ কৰিলে সেই link-ও বাৰ্তাত থাকিব।'); window.open('https://www.facebook.com/','_blank','noopener'); }
@@ -1155,22 +1154,22 @@ async function referralLogin(){const email=document.getElementById('refSignupEma
 function openReferralBox(){
  const page=document.getElementById('referralPage');if(!page)return;
  page.innerHTML=`<div class="card share-invite-page">
- <button class="main-btn back" onclick="appBack()" style="width:auto;min-width:48px">←</button>
+ <button class="main-btn back" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button>
  <div class="share-hero"><div class="share-book-logo">📚</div><h2>Share &amp; Invite <span aria-hidden="true">↗</span></h2></div>
  <div id="referralStats"><div class="share-ref-code"><div><small>Referral Code</small><strong>AS14F7177A</strong></div><button class="main-btn" onclick="copyReferralText('AS14F7177A','Referral Code copied')">Copy</button></div></div>
  <div class="share-apk-row"><div class="apk-symbol">🤖<small>APK</small></div><div class="apk-copy"><h3>এপৰ APK ফাইল</h3><p>এপটো ডাউনলোড কৰি বন্ধুৰ সৈতে শ্বেয়াৰ কৰক।</p></div><button class="main-btn" onclick="downloadAPK()">⬇ APK ডাউনলোড</button></div>
- <h3 class="share-method-title" style="display:none">📤 Share &amp; Invite</h3>
+ <h3 class="share-method-title">📤 Share &amp; Invite</h3>
  <div class="share-method-grid">
  <button style="background:#08a94d" onclick="shareToWhatsApp()"><span>◉</span><b>WhatsApp ত</b><small>শ্বেয়াৰ কৰক</small></button>
  <button style="background:#009b54" onclick="shareToWhatsApp()"><span>👥</span><b>WhatsApp Group ত</b><small>শ্বেয়াৰ কৰক</small></button>
  <button style="background:#0866ff" onclick="shareToFacebook()"><span>f</span><b>Facebook ত</b><small>শ্বেয়াৰ কৰক</small></button>
  <button style="background:linear-gradient(45deg,#ff9b00,#f00083,#7834db)" onclick="shareToInstagram()"><span>◎</span><b>Instagram ত</b><small>শ্বেয়াৰ কৰক</small></button>
- <button style="background:#078fd8" onclick="shareToTelegram()"><span>➤</span><b>Telegram ত</b><small>শ্বেয়াৰ কৰক</small></button>
- <button style="background:#6036d9" onclick="shareApp()"><span>↗</span><b>অন্যান্য এপত</b><small>শ্বেয়াৰ কৰক</small></button>
+ <button style="background:#078fd8" onclick="shareApp()"><span>➤</span><b>Telegram / আন Apps</b><small>শ্বেয়াৰ কৰক</small></button>
+ <button style="background:#6036d9" onclick="shareApp()"><span>↗</span><b>অন্য Apps</b><small>শ্বেয়াৰ কৰক</small></button>
  </div>
  <div class="share-reward-note">🎁 <b>20 জনক</b> শ্বেয়াৰ কৰিলে এক মাহলৈ <b>Ads Free</b> কৈ App ব্যৱহাৰ কৰিব পাৰিব।</div>
  <button class="main-btn share-home-btn" onclick="appBack()">← Home Page</button>
- 
+ <p class="share-apk-note" id="apkStatusNote">⚠️ বৰ্তমান APK download link সংযোগ কৰা হোৱা নাই। এই বুটামসমূহে বাৰ্তা share কৰে, APK ফাইল attach নকৰে। APK share/download সক্ৰিয় কৰিবলৈ release APK-ৰ এটা public HTTPS link যোগ কৰিব লাগিব। ব্যক্তিগত GitHub username নেদেখুৱাবলৈ custom domain ব্যৱহাৰ কৰিব পাৰি।</p>
  </div>`;
  showPage('referralPage');
  loadReferralStats().catch(e=>console.warn('Referral stats unavailable',e));
@@ -1801,16 +1800,8 @@ function playRecordedAudio(url, label){
   a.play().catch(()=>{});
 }
 function recordedQAHtml(q,lessonTtsEnabled){
-  // Show previously saved recordings immediately whenever the matching Q&A is rendered.
-  const questionUrl=String(q.question_audio_url||'').trim();
-  const answerUrl=String(q.answer_audio_url||q.audio_url||'').trim();
-  if(!questionUrl && !answerUrl) return '';
-  const safeUrl=u=>escapeHtml(u);
-  return `<div class="recorded-qa-card" style="display:block!important;visibility:visible!important">
-    <div class="recorded-qa-title">🎧 ৰেকৰ্ড কৰা প্ৰশ্নোত্তৰ</div>
-    ${questionUrl?`<div class="recorded-qa-question"><b>🎙️ প্ৰশ্নৰ ৰেকৰ্ড</b><audio controls preload="metadata" style="display:block!important;width:100%;margin-top:7px" src="${safeUrl(questionUrl)}"></audio></div>`:''}
-    ${answerUrl?`<div class="recorded-qa-answer"><b>🔊 উত্তৰৰ ৰেকৰ্ড</b><audio controls preload="metadata" style="display:block!important;width:100%;margin-top:7px" src="${safeUrl(answerUrl)}"></audio></div>`:''}
-  </div>`;
+  // Student-facing question/answer audio playback has been removed.
+  return '';
 }
 
 </script>

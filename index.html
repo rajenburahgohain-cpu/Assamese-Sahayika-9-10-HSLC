@@ -423,7 +423,6 @@ body{font-size:17px;line-height:1.7}
         <button class="dash-item aqua" onclick="openContentTopic('grammar','যতি চিহ্ন বহুৱা')"><span>✒️</span><b>যতি চিহ্ন</b><i>›</i></button>
         <button class="dash-item cream" onclick="openContentTopic('grammar','বাক্য শুদ্ধকৈ লিখা')"><span>✅</span><b>বাক্য শুদ্ধকৈ লিখা</b><i>›</i></button>
       </div>
-      <button class="dash-wide-action purple-action" onclick="openContentSection('grammar','📝 সকলো ব্যাকৰণ')">☷ সকলো ব্যাকৰণৰ বিষয়</button>
     </section>
 
 
@@ -447,15 +446,6 @@ body{font-size:17px;line-height:1.7}
       </div>
     </section>
 
-    <section id="v53-quick-learning-menu" aria-label="পঢ়া আৰম্ভ কৰক" style="display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;width:100%!important;height:auto!important;max-height:none!important;overflow:visible!important;margin:12px 0!important;padding:12px!important;background:#ffffff!important;border:2px solid #0f766e!important;border-radius:14px!important;box-sizing:border-box!important;">
-      <h2 style="display:block!important;visibility:visible!important;margin:0 0 10px!important;font-size:21px!important;color:#075985!important;">📚 পঢ়া আৰম্ভ কৰক</h2>
-      <div style="display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;visibility:visible!important;opacity:1!important;">
-        <button type="button" onclick="showPage('chapters')" style="display:block!important;visibility:visible!important;opacity:1!important;min-height:54px!important;padding:10px!important;border:0!important;border-radius:10px!important;background:#087f70!important;color:#fff!important;font:700 16px sans-serif!important;">📚 পাঠসমূহ</button>
-        <button type="button" onclick="showPage('grammar')" style="display:block!important;visibility:visible!important;opacity:1!important;min-height:54px!important;padding:10px!important;border:0!important;border-radius:10px!important;background:#8e24aa!important;color:#fff!important;font:700 16px sans-serif!important;">📝 ব্যাকৰণ</button>
-        <button type="button" onclick="showPage('hslc')" style="display:block!important;visibility:visible!important;opacity:1!important;min-height:54px!important;padding:10px!important;border:0!important;border-radius:10px!important;background:#ef6c00!important;color:#fff!important;font:700 16px sans-serif!important;">🎯 HSLC প্ৰস্তুতি</button>
-        <button type="button" onclick="showPage('home');document.querySelector('.dash-writing')?.scrollIntoView({behavior:'smooth',block:'start'})" style="display:block!important;visibility:visible!important;opacity:1!important;min-height:54px!important;padding:10px!important;border:0!important;border-radius:10px!important;background:#0284c7!important;color:#fff!important;font:700 16px sans-serif!important;">✍️ লিখন বিভাগ</button>
-      </div>
-    </section>
     <div class="dash-bottom-actions">
       <button class="dash-bottom admin-action" onclick="showPage('admin')"><span>👨‍🏫</span> প্ৰশাসক (Admin) <i>›</i></button>
       <button class="dash-bottom privacy-action" onclick="showPage('privacy')"><span>🔒</span> গোপনীয়তা নীতি <i>›</i></button>
@@ -692,6 +682,7 @@ body{font-size:17px;line-height:1.7}
 <h3>৮. শিশুৰ/শিক্ষাৰ্থীৰ গোপনীয়তা</h3><p>এই এপ শিক্ষাৰ্থীৰ বাবে। ব্যৱহাৰকাৰীৰ বয়স আৰু প্ৰযোজ্য নীতি অনুসৰি তথ্য সংগ্ৰহ সীমিত ৰখা আৰু প্ৰয়োজনীয় সুৰক্ষা ব্যৱস্থা গ্ৰহণ কৰাটো গুৰুত্বপূৰ্ণ। প্ৰয়োজন নোহোৱা ব্যক্তিগত তথ্য এপত নিদিব।</p>
 <h3>৯. এই নীতিৰ পৰিৱৰ্তন</h3><p>এপৰ সুবিধা বা তথ্য ব্যৱহাৰৰ পদ্ধতি সলনি হ’লে এই নীতি সংশোধন কৰা হ’ব। সংশোধিত নীতি এপৰ ভিতৰত আৰু/বা প্ৰকাশিত Privacy Policy পৃষ্ঠাত উপলব্ধ কৰা হ’ব।</p>
 <h3>১০. যোগাযোগ</h3><p>গোপনীয়তা সম্পৰ্কীয় প্ৰশ্ন বা তথ্য মচাৰ অনুৰোধৰ বাবে এপৰ Google Play Store listing-ত দিয়া developer contact email ব্যৱহাৰ কৰক। প্ৰকাশ কৰাৰ আগতে সেই যোগাযোগৰ ইমেইল ঠিকনা সক্ৰিয় আৰু পৰীক্ষিত হোৱাটো নিশ্চিত কৰক।</p>
+<div class="card"><h3>🔔 Notification অনুমতি</h3><p>নতুন প্ৰশ্নোত্তৰৰ জাননী পাবলৈ অনুমতি দিয়ক।</p><button class="main-btn" type="button" onclick="enableStudentNotifications()">🔔 Notification সক্ৰিয় কৰক</button></div>
 <p class="small">টোকা: এই নীতি এপৰ প্ৰকৃত data collection, Supabase policies, অনলাইন Search আৰু account deletion ব্যৱস্থাৰ সৈতে মিলাই ৰখা প্ৰয়োজন।</p></div></section>
 </main><footer>© 2026 Assamese Sahayika<br>Class 10 & HSLC — Assamese
 </footer>
@@ -1578,7 +1569,15 @@ async function adminVoiceTo(targetId,buttonId){
   if(!el||!b)return;
   if(activeCloudVoice.recorder && activeCloudVoice.buttonId===buttonId){stopAdminVoice(buttonId);return;}
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    // Request the device microphone permission at the moment the user taps the voice button.
+    // Android WebView must ALSO grant RECORD_AUDIO through the native app permission handler.
+    if(!window.isSecureContext && location.hostname!=='localhost' && location.protocol!=='file:'){
+      throw new Error('Microphone ব্যৱহাৰৰ বাবে HTTPS connection লাগিব।');
+    }
+    if(!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia!=='function'){
+      throw new Error('এই app/browser-ত microphone API উপলব্ধ নহয়। Android app-ত RECORD_AUDIO permission আৰু WebView microphone permission সংযোগ কৰিব লাগিব।');
+    }
+    const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
     const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(x=>window.MediaRecorder?.isTypeSupported?.(x))||'';
     const recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
     const chunks=[];
@@ -1609,7 +1608,11 @@ async function adminVoiceTo(targetId,buttonId){
     },1000);
   }catch(e){
     setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক',false);
-    alert('🎤 Microphone permission দিব লাগিব। Chrome → Site settings → Microphone → Allow কৰক।\n\nকাৰণ: '+(e.message||e));
+    let reason=e.message||String(e);
+    if(e.name==='NotAllowedError'||e.name==='PermissionDeniedError') reason='Microphone permission Deny হৈছে। Mobile Settings → Apps → আপোনাৰ app → Permissions → Microphone → Allow কৰক; Chrome-ত চলালে Site settings → Microphone → Allow কৰক।';
+    else if(e.name==='NotFoundError'||e.name==='DevicesNotFoundError') reason='মোবাইলত microphone device পোৱা নগ’ল।';
+    else if(e.name==='NotReadableError'||e.name==='TrackStartError') reason='Microphone আন এটা app-এ ব্যৱহাৰ কৰি আছে। আন app বন্ধ কৰি পুনৰ চেষ্টা কৰক।';
+    alert('🎤 Microphone আৰম্ভ কৰিব পৰা নগ’ল।\n\n'+reason+'\n\nAndroid APK-ত RECORD_AUDIO manifest permission আৰু WebView permission handling-ও লাগিব।');
   }
 }
 async function transcribeAssameseBlob(blob,targetId,afterCb,retryCount=0){
@@ -1715,12 +1718,37 @@ function queueStudentContentRefresh(){
   clearTimeout(questionRealtimeRefreshTimer);
   questionRealtimeRefreshTimer = setTimeout(refreshCurrentStudentContent, 350);
 }
+async function enableStudentNotifications(){
+  if (!("Notification" in window)) {
+    alert("এই Browser/WebView-ত Notification সুবিধা উপলব্ধ নহয়।");
+    return false;
+  }
+  try {
+    const permission = await Notification.requestPermission();
+    if(permission === "granted") {
+      alert("✅ Notification অনুমতি সক্ৰিয় হৈছে। নতুন প্ৰশ্নোত্তৰৰ জাননী এপ/পেজ খোলা থকা সময়ত আহিব।");
+      return true;
+    }
+    alert("Notification অনুমতি দিয়া হোৱা নাই। Mobile Settings-ত অনুমতি সক্ৰিয় কৰক।");
+    return false;
+  } catch(e) { alert("Notification অনুমতি ল’ব পৰা নগ’ল: " + e.message); return false; }
+}
 function initQuestionRealtime(){
   if(!supabaseClient || questionRealtimeChannel) return;
   questionRealtimeChannel = supabaseClient.channel("assamese-sahayika-live-questions")
     .on("postgres_changes", {event:"*", schema:"public", table:"questions"}, payload=>{
       console.info("Live question update received:", payload.eventType);
       queueStudentContentRefresh();
+      // Notification works while the page/app is active and only after the user grants permission.
+      if(payload.eventType === "INSERT" && "Notification" in window && Notification.permission === "granted") {
+        try {
+          const row = payload.new || {};
+          new Notification("অসমীয়া সহায়িকা — নতুন প্ৰশ্নোত্তৰ", {
+            body: (row.chapter_name ? row.chapter_name + " — " : "") + "নতুন প্ৰশ্নোত্তৰ যোগ কৰা হৈছে।",
+            tag: "assamese-sahayika-new-question-" + (row.id || Date.now())
+          });
+        } catch(e) { console.warn("Notification unavailable:", e); }
+      }
     })
     .on("postgres_changes", {event:"*", schema:"public", table:"app_settings"}, payload=>{
       // Includes saved custom ordering for questions inside a lesson.
@@ -1897,7 +1925,6 @@ window.addEventListener('error', function(e){
 (function(){
  function restoreHomeLearning(){
   var home=document.getElementById('home'); if(!home) return;
-  var menu=home.querySelector('#v53-quick-learning-menu'); if(menu){menu.style.setProperty('display','block','important');menu.style.setProperty('visibility','visible','important');menu.style.setProperty('opacity','1','important');}
   home.querySelectorAll('.home-dashboard > .dash-card').forEach(function(card){
    card.style.setProperty('display','block','important');
    card.style.setProperty('visibility','visible','important');
@@ -1944,8 +1971,6 @@ window.addEventListener('error', function(e){
       el.style.setProperty('visibility','visible','important');
       el.style.setProperty('opacity','1','important');
     });
-    var quick=home.querySelector('#v53-quick-learning-menu');
-    if(quick){quick.style.setProperty('display','block','important');quick.style.setProperty('visibility','visible','important');quick.style.setProperty('opacity','1','important');}
   }
   function restoreInitialHome(){
     var home=document.getElementById('home');

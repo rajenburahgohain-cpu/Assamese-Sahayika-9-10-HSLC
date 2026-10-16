@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="as">
-<!-- V56: Home dashboard recovery + safer Share & Invite messaging. -->
+<!-- V57: Share & Invite page and entry points removed from the app. -->
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="দশম শ্ৰেণী আৰু HSLC পৰীক্ষাৰ বাবে অসমীয়া সহায়িকা">
@@ -376,7 +376,6 @@ body{font-size:17px;line-height:1.7}
 <button class="n-grammar" data-section-page="grammar" data-nav-section="grammar" onclick="showPage('grammar')"><span>📝</span>ব্যাকৰণ</button>
 <button class="n-hslc" data-section-page="hslc" data-nav-section="hslc" onclick="showPage('hslc')"><span>🎯</span>HSLC</button>
 <button class="n-admin" onclick="showPage('admin')"><span>👨‍🏫</span>Admin</button>
-<button class="n-share" onclick="openReferralBox()"><span>📤</span>Share & Invite</button>
 <button class="n-privacy" onclick="showPage('privacy')"><span>🔒</span>Privacy</button>
 </nav>
 <button id="appBackBtn" class="app-back" onclick="appBack()" aria-label="আগৰ পৃষ্ঠালৈ উভতি যাওক" style="display:none">← Back</button>
@@ -459,12 +458,10 @@ body{font-size:17px;line-height:1.7}
     </section>
     <div class="dash-bottom-actions">
       <button class="dash-bottom admin-action" onclick="showPage('admin')"><span>👨‍🏫</span> প্ৰশাসক (Admin) <i>›</i></button>
-      <button class="dash-bottom share-action" onclick="openReferralBox()"><span>📤</span> Share &amp; Invite <i>›</i></button>
       <button class="dash-bottom privacy-action" onclick="showPage('privacy')"><span>🔒</span> গোপনীয়তা নীতি <i>›</i></button>
     </div>
   </div>
 </section>
-<section id="referralPage" class="hidden"></section>
 <section id="chapters" class="hidden">
 <div class="card section-title lessons-title">
 <button class="main-btn back" onclick="showPage('home')">← Home</button>
@@ -1152,7 +1149,7 @@ async function referralSignUp(){
 }
 async function referralLogin(){const email=document.getElementById('refSignupEmail')?.value.trim(),password=document.getElementById('refSignupPassword')?.value,st=document.getElementById('refAuthStatus');if(!email||!password){st.textContent='Email আৰু Password দিয়ক।';return;}const r=await supabaseClient.auth.signInWithPassword({email,password});if(r.error){st.innerHTML='<p class="error">❌ '+esc(r.error.message)+'</p>';return;}loadReferralStats();}
 function openReferralBox(){
- const page=document.getElementById('referralPage');if(!page)return;
+ return; // Share & Invite page removed from the app.
  page.innerHTML=`<div class="card share-invite-page">
  <button class="main-btn back" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button>
  <div class="share-hero"><div class="share-book-logo">📚</div><h2>Share &amp; Invite <span aria-hidden="true">↗</span></h2></div>

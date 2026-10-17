@@ -34,7 +34,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: npm
+          cache: gradle
 
       - name: Check project files
         shell: bash

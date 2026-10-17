@@ -15,8 +15,8 @@ jobs:
     env:
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
-      # Optional GitHub Actions secrets for later, after AdMob account setup:
-      # ADMOB_APP_ID and ADMOB_BANNER_UNIT_ID
+      # Add these GitHub Actions repository secrets later to use your own IDs.
+      # If either secret is missing, Google's official test ID is used.
       ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
       ADMOB_BANNER_UNIT_ID: ${{ secrets.ADMOB_BANNER_UNIT_ID }}
 
@@ -34,6 +34,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: npm
 
       - name: Check project files
         shell: bash
@@ -67,7 +68,10 @@ jobs:
       - name: Prepare Capacitor project and AdMob plugin
         shell: bash
         run: |
-          if [ ! -f package.json ]; then npm init -y; fi
+          if [ ! -f package.json ]; then
+            npm init -y
+          fi
+
           npm install --save-exact \
             @capacitor/core@6 \
             @capacitor/cli@6 \
@@ -89,52 +93,14 @@ jobs:
           mkdir -p www
           cp index.html www/index.html
           for item in assets css js images; do
-            if [ -e "$item" ]; then cp -R "$item" www/; fi
+            if [ -e "$item" ]; then
+              cp -R "$item" www/
+            fi
           done
 
-          if [ ! -d android ]; then npx cap add android; fi
-
-      - name: Configure AdMob test App ID and Banner ID
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import os, re
-
-          # Google sample App ID is used until the user adds their own AdMob ID.
-          app_id = (os.environ.get("ADMOB_APP_ID") or "").strip() or "ca-app-pub-3940256099942544~3347511713"
-          # Keep the Google demo banner in the HTML when no secret is configured.
-          banner_id = (os.environ.get("ADMOB_BANNER_UNIT_ID") or "").strip() or "ca-app-pub-3940256099942544/6300978111"
-
-          strings = Path("android/app/src/main/res/values/strings.xml")
-          strings.parent.mkdir(parents=True, exist_ok=True)
-          if strings.exists():
-              content = strings.read_text(encoding="utf-8")
-          else:
-              content = '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n</resources>\n'
-          item = f'<string name="admob_app_id">{app_id}</string>'
-          if re.search(r'<string\s+name="admob_app_id">.*?</string>', content, re.S):
-              content = re.sub(r'<string\s+name="admob_app_id">.*?</string>', item, content, flags=re.S)
-          else:
-              content = content.replace('</resources>', f'    {item}\n</resources>')
-          strings.write_text(content, encoding="utf-8")
-
-          manifest = Path("android/app/src/main/AndroidManifest.xml")
-          content = manifest.read_text(encoding="utf-8")
-          meta = '<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="@string/admob_app_id" />'
-          if 'com.google.android.gms.ads.APPLICATION_ID' not in content:
-              m = re.search(r'<application\b[^>]*>', content)
-              if not m:
-                  raise SystemExit("::error::Could not find <application> in AndroidManifest.xml")
-              content = content[:m.end()] + '\n        ' + meta + content[m.end():]
-          manifest.write_text(content, encoding="utf-8")
-
-          html = Path("www/index.html")
-          h = html.read_text(encoding="utf-8")
-          h = re.sub(r"(const ADMOB_BANNER_UNIT_ID = ')[^']*(';)", lambda m: m.group(1)+banner_id+m.group(2), h)
-          html.write_text(h, encoding="utf-8")
-          print("AdMob test configuration written. Test IDs do not earn revenue.")
-          PY
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
 
       - name: Add Android microphone permissions
         shell: bash
@@ -142,29 +108,105 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
+
           manifest = Path("android/app/src/main/AndroidManifest.xml")
+          if not manifest.exists():
+              raise SystemExit("::error::AndroidManifest.xml not found")
           content = manifest.read_text(encoding="utf-8")
-          for permission in ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"]:
-              if permission not in content:
-                  match = re.search(r"<manifest\b[^>]*>", content)
-                  if not match: raise SystemExit("::error::Could not find manifest root tag")
+          match = re.search(r"<manifest\b[^>]*>", content)
+          if not match:
+              raise SystemExit("::error::Could not find manifest root tag")
+
+          for permission in (
+              "android.permission.RECORD_AUDIO",
+              "android.permission.MODIFY_AUDIO_SETTINGS",
+          ):
+              if not re.search(r'<uses-permission\b[^>]*android:name="' + re.escape(permission) + r'"', content):
                   content = content[:match.end()] + f'\n    <uses-permission android:name="{permission}" />' + content[match.end():]
+                  match = re.search(r"<manifest\b[^>]*>", content)
           manifest.write_text(content, encoding="utf-8")
-          print("Microphone/audio permissions present.")
+          print("Microphone/audio permissions added.")
           PY
 
       - name: Sync Capacitor Android
         run: npx cap sync android
 
+      # IMPORTANT: configure the manifest AFTER cap sync so the final manifest is checked.
+      - name: Configure AdMob IDs after Capacitor sync
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os, re, html
+
+          # Official Google sample IDs for development/testing only.
+          test_app_id = "ca-app-pub-3940256099942544~3347511713"
+          test_banner_id = "ca-app-pub-3940256099942544/6300978111"
+          app_id = (os.environ.get("ADMOB_APP_ID") or "").strip() or test_app_id
+          banner_id = (os.environ.get("ADMOB_BANNER_UNIT_ID") or "").strip() or test_banner_id
+
+          # Write the App ID into Android resources.
+          strings = Path("android/app/src/main/res/values/strings.xml")
+          strings.parent.mkdir(parents=True, exist_ok=True)
+          if strings.exists():
+              content = strings.read_text(encoding="utf-8")
+          else:
+              content = '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n</resources>\n'
+
+          app_id_xml = html.escape(app_id, quote=True)
+          item = f'<string name="admob_app_id">{app_id_xml}</string>'
+          pattern = r'<string\s+name="admob_app_id">.*?</string>'
+          if re.search(pattern, content, re.S):
+              content = re.sub(pattern, item, content, flags=re.S)
+          elif "</resources>" in content:
+              content = content.replace("</resources>", f"    {item}\n</resources>")
+          else:
+              raise SystemExit("::error::strings.xml has no </resources> tag")
+          strings.write_text(content, encoding="utf-8")
+
+          # Ensure the AdMob APPLICATION_ID metadata exists under <application>.
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
+          content = manifest.read_text(encoding="utf-8")
+          meta = ('<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" '
+                  'android:value="@string/admob_app_id" />')
+          if "com.google.android.gms.ads.APPLICATION_ID" in content:
+              content = re.sub(
+                  r'<meta-data\b(?=[^>]*android:name="com\.google\.android\.gms\.ads\.APPLICATION_ID")[^>]*/?>',
+                  meta,
+                  content,
+                  count=1,
+              )
+          else:
+              app_match = re.search(r"<application\b[^>]*>", content)
+              if not app_match:
+                  raise SystemExit("::error::Could not find <application> in AndroidManifest.xml")
+              content = content[:app_match.end()] + "\n        " + meta + content[app_match.end():]
+          manifest.write_text(content, encoding="utf-8")
+
+          # Save the Banner ID for the app's web layer. The HTML must call the
+          # Capacitor AdMob plugin to actually display a banner; YAML alone cannot do that.
+          config = Path("www/admob-config.js")
+          config.write_text(
+              "window.ASSAMESE_SAHAYIKA_ADMOB = " +
+              __import__("json").dumps({"bannerAdUnitId": banner_id, "usingTestIds": app_id == test_app_id and banner_id == test_banner_id}) +
+              ";\n",
+              encoding="utf-8",
+          )
+
+          print("AdMob App ID metadata and banner configuration written.")
+          print("Test IDs are active unless ADMOB_APP_ID / ADMOB_BANNER_UNIT_ID secrets are set.")
+          PY
+
       - name: Verify AdMob and microphone configuration
         shell: bash
         run: |
+          set -e
           grep -q 'com.google.android.gms.ads.APPLICATION_ID' android/app/src/main/AndroidManifest.xml
           grep -q 'admob_app_id' android/app/src/main/res/values/strings.xml
           grep -q 'android.permission.RECORD_AUDIO' android/app/src/main/AndroidManifest.xml
           grep -q 'android.permission.MODIFY_AUDIO_SETTINGS' android/app/src/main/AndroidManifest.xml
-          grep -q 'ADMOB_BANNER_UNIT_ID' www/index.html
-          echo "AdMob and microphone configuration verified."
+          test -s www/admob-config.js
+          echo "AdMob App ID metadata and microphone permissions verified."
 
       - name: Build Debug APK
         working-directory: android

@@ -368,6 +368,7 @@ body{font-size:17px;line-height:1.7}
 @media(min-width:600px){.share-method-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 
+<style id="global-question-answer-colors">.result h3,.student-q-item,.recorded-qa-question,.question-text,.qa-question,.question,.admin-question-text,#adminQuestion{color:#c62828!important}.result .answer,.result .answer b,.recorded-qa-answer,.answer-text,.qa-answer,.correct-answer,#adminAnswer{color:#087f5b!important}.result .answer *{color:inherit}</style>
 </head><body>
 <header><h1>অসমীয়া সহায়িকা 10 + HSLC</h1><p>SEBA.দশম শ্ৰেণী. HSLC পৰীক্ষাৰ্থীৰ বাবে উপযোগী</p></header>
 <nav class="big-nav">
@@ -605,8 +606,8 @@ body{font-size:17px;line-height:1.7}
 
 <h3>✍️ প্ৰশ্নোত্তৰ / বিষয়বস্তু লিখক</h3><button class="main-btn" style="width:auto" onclick="adminLogout()">Logout</button></div><input type="hidden" id="editId">
 <label>❓ প্ৰশ্ন</label><textarea id="adminQuestion" placeholder="প্ৰশ্ন লিখক"></textarea><button id="adminQuestionVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminQuestion','adminQuestionVoiceBtn')">🎤 মাত কৈ প্ৰশ্ন লিখক</button><button id="adminQuestionVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminQuestionVoiceBtn')">⏹️ মাত বন্ধ কৰক</button>
-<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ এই Voice Input ব্যৱস্থা <b>পাঠ, ব্যাকৰণ, ৰচনা, দৰ্খাস্ত, ভাব সম্প্ৰসাৰণ, প্ৰতিবেদন আৰু HSLC</b> — সকলো শিতানৰ প্ৰশ্ন আৰু উত্তৰত একে ধৰণে কাম কৰিব। আপুনি কোৱা কথাখিনি textarea-ত নিজে নিজে টাইপ হৈ যাব।</div>
-<div class="assamese-voice-status">🇦🇸 <b>শুদ্ধ অসমীয়া Voice-to-Text:</b> এই সংস্কৰণত browser-ৰ English/Bengali fallback এৰাই Supabase <b>assamese-stt</b> server-ৰ পৰা <b>as-IN</b> transcription লোৱা হ'ব। প্ৰথমবাৰ Microphone-ত <b>Allow</b> কৰক।</div>
+<label style="display:block;margin-top:10px">✅ উত্তৰ</label><textarea id="adminAnswer" placeholder="শুদ্ধ অসমীয়াত উত্তৰ লিখক"></textarea><button id="adminAnswerVoiceBtn" class="voice-write-btn" onclick="adminVoiceTo('adminAnswer','adminAnswerVoiceBtn')">🎤 মাত কৈ উত্তৰ লিখক</button><button id="adminAnswerVoiceStopBtn" class="voice-stop-btn" onclick="stopAdminVoice('adminAnswerVoiceBtn')">⏹️ মাত বন্ধ কৰক</button><div class="small" style="margin-top:6px">💡 প্ৰথমবাৰ 🎤 টিপিলে Microphone permission আহিলে <b>Allow</b> কৰক।</div><div class="small voice-global-note" style="margin-top:6px">🎙️ প্ৰশ্ন বা উত্তৰ ক’বলৈ 🎤 টিপক। কথা কোৱা শেষ হ’লে “মাত বন্ধ কৰক” টিপক; তাৰ পিছত ৰেকৰ্ডিংটো অসমীয়া লিখনীলৈ সলনি হৈ সংশ্লিষ্ট বাকচত দেখা যাব।</div>
+<div class="assamese-voice-status" aria-live="polite">🇦🇸 <b>অসমীয়া Voice-to-Text:</b> ৰেকৰ্ডিং বন্ধ কৰাৰ পিছত Supabase <b>Assamese-stt</b> সেৱাই লিখনী তৈয়াৰ কৰিব। এই সংস্কৰণত কথা কওঁতে live/তাৎক্ষণিক লিখনী দেখুৱাব নোৱাৰে; তাৰ বাবে streaming speech-to-text backend লাগিব। প্ৰথমবাৰ Microphone-ত <b>Allow</b> কৰক।</div>
 <div class="audio-tools">
 <h4>🎧 ৩। প্ৰশ্ন আৰু উত্তৰ অডিঅ' ৰেকৰ্ড কৰি সংৰক্ষণ</h4>
 <p class="assamese-only-note">Admin-এ প্ৰশ্ন আৰু উত্তৰ দুয়োটাই নিজৰ অসমীয়া কণ্ঠত ৰেকৰ্ড কৰিব পাৰে অথবা অডিঅ' ফাইল আপলোড কৰিব পাৰে। Save কৰাৰ পিছত পাঠৰ ভিতৰত দুয়োটা শুনিব পাৰিব।</p>
@@ -803,13 +804,8 @@ async function openLesson(chapter){
   const box=document.getElementById("chapterView");
   box.innerHTML=`<div class="card"><button class="main-btn back-prev" onclick="appBack()">← আগৰ পৃষ্ঠালৈ উভতি যাওক</button><h2 class="lesson-heading">📖 ${esc(chapter)}</h2><div id="lessonQuestions"><p class="loading">⏳ এই পাঠৰ সংৰক্ষিত প্ৰশ্নোত্তৰ লোড হৈ আছে...</p></div><div class="online-box" style="margin-top:12px"><b>🌐 অনলাইন প্ৰশ্নোত্তৰ Search</b><p class="small">ইয়াত পাঠৰ প্ৰশ্ন বা বিষয় লিখি অনলাইনত বিচাৰক। ফলাফলৰ উৎসৰ লিংক খোলিব পাৰিব।</p><label for="onlineLessonQuery" class="small">প্ৰশ্ন বা Search বিষয়</label><input id="onlineLessonQuery" type="search" placeholder="যেনে: ${esc(chapter)} পাঠৰ গুৰুত্বপূৰ্ণ প্ৰশ্নোত্তৰ" style="width:100%;box-sizing:border-box;margin-top:6px;padding:11px;border:1px solid #cbd5e1;border-radius:9px" onkeydown="if(event.key==='Enter'){event.preventDefault();loadOnlineLesson('${esc(chapter)}')}"/><div class="online-actions"><button class="main-btn" onclick="loadOnlineLesson('${esc(chapter)}')">🔎 অনলাইনত প্ৰশ্নোত্তৰ বিচাৰক</button></div><div id="onlineLessonStatus" aria-live="polite"></div><div id="onlineLessonResults"></div></div></div>`;
 
-  // Check lesson visibility in the background, without blocking the page from opening.
-  Promise.resolve().then(()=>getLessonEnabled(chapter)).then(lessonOn=>{
-    if(!lessonOn && chapter!=='প্ৰশস্তি' && currentPage==="chapterView"){
-      alert('🔴 Admin-এ এই পাঠটো বৰ্তমান OFF কৰি ৰাখিছে।');
-      appBack();
-    }
-  }).catch(e=>console.warn('Lesson visibility check:',e));
+  // FIX: Do not redirect away from a lesson based on its visibility toggle.
+  // Always allow the selected lesson page to open; question loading below reports its own status.
   const target=document.getElementById("lessonQuestions");
   if(!supabaseClient){
     target.innerHTML='<p class="error">❌ Supabase সংযোগ হোৱা নাই। Internet পৰীক্ষা কৰি পৃষ্ঠা Reload কৰক।</p>';
@@ -1588,12 +1584,14 @@ async function adminVoiceTo(targetId,buttonId){
       stream.getTracks().forEach(t=>t.stop());
       if(activeCloudVoice.audioContext){try{activeCloudVoice.audioContext.close()}catch(e){}}
       activeCloudVoice={targetId:null,buttonId:null,recorder:null,stream:null,audioContext:null,analyser:null,silenceTimer:null,startedAt:0,chunks:[]};
-      setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক',false);
-      if(blob.size<1500){alert('🎤 যথেষ্ট মাত ৰেকৰ্ড হোৱা নাই। অলপ স্পষ্টকৈ কওক।');return;}
-      await transcribeAssameseBlob(blob,targetId);
+      setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 মাত কৈ প্ৰশ্ন লিখক':'🎤 মাত কৈ উত্তৰ লিখক',false);
+      const stopId=targetId==='adminQuestion'?'adminQuestionVoiceStopBtn':'adminAnswerVoiceStopBtn';
+      const stopButton=document.getElementById(stopId); if(stopButton) stopButton.disabled=true;
+      if(blob.size<1500){if(stopButton)stopButton.disabled=false;alert('🎤 যথেষ্ট মাত ৰেকৰ্ড হোৱা নাই। অলপ স্পষ্টকৈ কওক।');return;}
+      try { await transcribeAssameseBlob(blob,targetId); } finally { if(stopButton)stopButton.disabled=false; }
     };
     recorder.start(250);
-    setAdminVoiceButton(targetId,buttonId,'🔴 অসমীয়া মাত শুনি আছে... ⏹️',true);
+    setAdminVoiceButton(targetId,buttonId,'🔴 অসমীয়া মাত ৰেকৰ্ডিং হৈছে…',false);
     document.getElementById(buttonId).disabled=false;
     // V41: Assamese speech recording is manual-stop only. Do not stop on silence or time limit.
     // Keep the microphone active until the admin presses the same button / stop control.
@@ -1607,7 +1605,7 @@ async function adminVoiceTo(targetId,buttonId){
       setAdminVoiceButton(targetId,buttonId,'🔴 ৰেকৰ্ডিং চলি আছে '+mm+':'+ss+' — বন্ধ কৰিবলৈ টিপক',false);
     },1000);
   }catch(e){
-    setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক',false);
+    setAdminVoiceButton(targetId,buttonId,targetId==='adminQuestion'?'🎤 মাত কৈ প্ৰশ্ন লিখক':'🎤 মাত কৈ উত্তৰ লিখক',false);
     let reason=e.message||String(e);
     if(e.name==='NotAllowedError'||e.name==='PermissionDeniedError') reason='Microphone permission Deny হৈছে। Mobile Settings → Apps → আপোনাৰ app → Permissions → Microphone → Allow কৰক; Chrome-ত চলালে Site settings → Microphone → Allow কৰক।';
     else if(e.name==='NotFoundError'||e.name==='DevicesNotFoundError') reason='মোবাইলত microphone device পোৱা নগ’ল।';
@@ -1651,13 +1649,13 @@ async function transcribeAssameseBlob(blob,targetId,afterCb,retryCount=0){
     el.value=old?(old+'\n'+transcript):transcript;
     el.dispatchEvent(new Event('input',{bubbles:true}));
     if(typeof afterCb==='function')afterCb();
-    if(b)b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';
+    if(b)b.innerText=targetId==='adminQuestion'?'🎤 মাত কৈ প্ৰশ্ন লিখক':'🎤 মাত কৈ উত্তৰ লিখক';
     el.dataset.voiceStatus='done';
     window.lastFailedAssameseVoice=null;
     document.getElementById('retryAssameseVoiceBtn')?.remove();
   }catch(e){
     window.lastFailedAssameseVoice={blob,targetId};
-    if(b){b.innerText=targetId==='adminQuestion'?'🎤 অসমীয়াত মাত কৈ প্ৰশ্ন লিখক':'🎤 অসমীয়াত মাত কৈ উত্তৰ লিখক';document.getElementById('retryAssameseVoiceBtn')?.remove();b.insertAdjacentHTML('afterend','<button type="button" id="retryAssameseVoiceBtn" onclick="retryLastFailedAssameseVoice()" style="display:block;margin:8px 0;padding:10px 14px;border:1px solid #147d64;border-radius:10px;background:#e8fff6;color:#075b48;font-weight:700">🔁 আগৰ ৰেকৰ্ড কৰা অসমীয়া মাত পুনৰ চেষ্টা কৰক</button>');}
+    if(b){b.innerText=targetId==='adminQuestion'?'🎤 মাত কৈ প্ৰশ্ন লিখক':'🎤 মাত কৈ উত্তৰ লিখক';document.getElementById('retryAssameseVoiceBtn')?.remove();b.insertAdjacentHTML('afterend','<button type="button" id="retryAssameseVoiceBtn" onclick="retryLastFailedAssameseVoice()" style="display:block;margin:8px 0;padding:10px 14px;border:1px solid #147d64;border-radius:10px;background:#e8fff6;color:#075b48;font-weight:700">🔁 আগৰ ৰেকৰ্ড কৰা অসমীয়া মাত পুনৰ চেষ্টা কৰক</button>');}
     const raw=e?.name==='AbortError'?'সেৱাৰ পৰা উত্তৰ আহিবলৈ ৯০ ছেকেণ্ডতকৈ বেছি সময় লাগিল। আপোনাৰ ৰেকৰ্ডিং ৰখা হৈছে।':(e?.message||String(e));
     const message=String(raw).replace(/\[object Object\]/g,'Server-এ ভুলৰ তথ্য object হিচাপে পঠিয়াইছে।');
     const retry=retryCount===0 && confirm('❌ অসমীয়া মাতৰ লিখনী তৈয়াৰ নহ’ল।\n\nৰেকৰ্ড কৰা মাতটো মচি যোৱা নাই; এইটো পুনৰ চেষ্টা কৰিবনে?\n\nকাৰণ: '+message);

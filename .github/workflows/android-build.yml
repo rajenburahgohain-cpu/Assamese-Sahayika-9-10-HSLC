@@ -1,4 +1,4 @@
-name: Build Assamese Sahayika APK and AAB
+name: Build Assamese Sahayika APK and AAB (AdMob Test Ads)
 
 on:
   workflow_dispatch:
@@ -12,10 +12,13 @@ permissions:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-
     env:
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+      # Optional GitHub Actions secrets for later, after AdMob account setup:
+      # ADMOB_APP_ID and ADMOB_BANNER_UNIT_ID
+      ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
+      ADMOB_BANNER_UNIT_ID: ${{ secrets.ADMOB_BANNER_UNIT_ID }}
 
     steps:
       - name: Checkout repository
@@ -61,17 +64,15 @@ jobs:
             "platforms;android-35" \
             "build-tools;35.0.0"
 
-      - name: Prepare Capacitor project
+      - name: Prepare Capacitor project and AdMob plugin
         shell: bash
         run: |
-          if [ ! -f package.json ]; then
-            npm init -y
-          fi
-
+          if [ ! -f package.json ]; then npm init -y; fi
           npm install --save-exact \
             @capacitor/core@6 \
             @capacitor/cli@6 \
-            @capacitor/android@6
+            @capacitor/android@6 \
+            @capacitor-community/admob@6
 
           if [ ! -f capacitor.config.json ] && \
              [ ! -f capacitor.config.ts ] && \
@@ -88,14 +89,52 @@ jobs:
           mkdir -p www
           cp index.html www/index.html
           for item in assets css js images; do
-            if [ -e "$item" ]; then
-              cp -R "$item" www/
-            fi
+            if [ -e "$item" ]; then cp -R "$item" www/; fi
           done
 
-          if [ ! -d android ]; then
-            npx cap add android
-          fi
+          if [ ! -d android ]; then npx cap add android; fi
+
+      - name: Configure AdMob test App ID and Banner ID
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os, re
+
+          # Google sample App ID is used until the user adds their own AdMob ID.
+          app_id = (os.environ.get("ADMOB_APP_ID") or "").strip() or "ca-app-pub-3940256099942544~3347511713"
+          # Keep the Google demo banner in the HTML when no secret is configured.
+          banner_id = (os.environ.get("ADMOB_BANNER_UNIT_ID") or "").strip() or "ca-app-pub-3940256099942544/6300978111"
+
+          strings = Path("android/app/src/main/res/values/strings.xml")
+          strings.parent.mkdir(parents=True, exist_ok=True)
+          if strings.exists():
+              content = strings.read_text(encoding="utf-8")
+          else:
+              content = '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n</resources>\n'
+          item = f'<string name="admob_app_id">{app_id}</string>'
+          if re.search(r'<string\s+name="admob_app_id">.*?</string>', content, re.S):
+              content = re.sub(r'<string\s+name="admob_app_id">.*?</string>', item, content, flags=re.S)
+          else:
+              content = content.replace('</resources>', f'    {item}\n</resources>')
+          strings.write_text(content, encoding="utf-8")
+
+          manifest = Path("android/app/src/main/AndroidManifest.xml")
+          content = manifest.read_text(encoding="utf-8")
+          meta = '<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="@string/admob_app_id" />'
+          if 'com.google.android.gms.ads.APPLICATION_ID' not in content:
+              m = re.search(r'<application\b[^>]*>', content)
+              if not m:
+                  raise SystemExit("::error::Could not find <application> in AndroidManifest.xml")
+              content = content[:m.end()] + '\n        ' + meta + content[m.end():]
+          manifest.write_text(content, encoding="utf-8")
+
+          html = Path("www/index.html")
+          h = html.read_text(encoding="utf-8")
+          h = re.sub(r"(const ADMOB_BANNER_UNIT_ID = ')[^']*(';)", lambda m: m.group(1)+banner_id+m.group(2), h)
+          html.write_text(h, encoding="utf-8")
+          print("AdMob test configuration written. Test IDs do not earn revenue.")
+          PY
 
       - name: Add Android microphone permissions
         shell: bash
@@ -103,38 +142,29 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import re
-
           manifest = Path("android/app/src/main/AndroidManifest.xml")
-          if not manifest.exists():
-              raise SystemExit("::error::AndroidManifest.xml not found")
-
           content = manifest.read_text(encoding="utf-8")
-          permissions = [
-              "android.permission.RECORD_AUDIO",
-              "android.permission.MODIFY_AUDIO_SETTINGS",
-          ]
-
-          for permission in permissions:
+          for permission in ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"]:
               if permission not in content:
-                  tag = f'    <uses-permission android:name="{permission}" />\n'
                   match = re.search(r"<manifest\b[^>]*>", content)
-                  if not match:
-                      raise SystemExit("::error::Could not find manifest root tag")
-                  content = content[:match.end()] + "\n" + tag + content[match.end():]
-
+                  if not match: raise SystemExit("::error::Could not find manifest root tag")
+                  content = content[:match.end()] + f'\n    <uses-permission android:name="{permission}" />' + content[match.end():]
           manifest.write_text(content, encoding="utf-8")
-          print("Microphone/audio permissions present in AndroidManifest.xml")
+          print("Microphone/audio permissions present.")
           PY
 
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Verify microphone permissions
+      - name: Verify AdMob and microphone configuration
         shell: bash
         run: |
+          grep -q 'com.google.android.gms.ads.APPLICATION_ID' android/app/src/main/AndroidManifest.xml
+          grep -q 'admob_app_id' android/app/src/main/res/values/strings.xml
           grep -q 'android.permission.RECORD_AUDIO' android/app/src/main/AndroidManifest.xml
           grep -q 'android.permission.MODIFY_AUDIO_SETTINGS' android/app/src/main/AndroidManifest.xml
-          echo "Both microphone/audio permissions verified."
+          grep -q 'ADMOB_BANNER_UNIT_ID' www/index.html
+          echo "AdMob and microphone configuration verified."
 
       - name: Build Debug APK
         working-directory: android
@@ -149,7 +179,7 @@ jobs:
       - name: Upload APK and AAB
         uses: actions/upload-artifact@v4
         with:
-          name: Assamese-Sahayika-APK-AAB
+          name: Assamese-Sahayika-APK-AAB-AdMob-Test
           path: |
             android/app/build/outputs/apk/debug/*.apk
             android/app/build/outputs/bundle/release/*.aab
